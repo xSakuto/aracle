@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Datenschutz – Aracle</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; text-decoration: none; list-style: none; }
+
+:root {
+  --aqua: #00ffff;
+  --aqua-60: rgba(0,255,255,0.6);
+  --aqua-30: rgba(0,255,255,0.3);
+  --aqua-15: rgba(0,255,255,0.15);
+  --aqua-08: rgba(0,255,255,0.08);
+  --aqua-04: rgba(0,255,255,0.04);
+  --bg: #0a0a0b;
+  --bg-2: #15151a;
+  --surface: rgba(255,255,255,0.03);
+  --border: rgba(255,255,255,0.07);
+  --border-aqua: rgba(0,255,255,0.18);
+  --text: #ffffff;
+  --text-dim: rgba(255,255,255,0.75);
+  --text-muted: rgba(255,255,255,0.42);
+  --font: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+html { font-size: 12px; -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+a { color: inherit; }
+img { display: block; max-width: 100%; }
+
+/* ─── NAVBAR ─── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+  height: 6.8rem;
+  display: grid; grid-template-columns: 1fr auto 1fr;
+  align-items: center; padding: 0 4rem;
+  transition: background 0.35s, backdrop-filter 0.35s, border-color 0.35s;
+  border-bottom: 1px solid transparent;
+}
+nav.scrolled {
+  background: rgba(6,6,13,0.32);
+  backdrop-filter: blur(24px) saturate(180%) brightness(0.9);
+  -webkit-backdrop-filter: blur(24px) saturate(180%) brightness(0.9);
+  border-bottom-color: rgba(0,255,255,0.1);
+  box-shadow: 0 1px 0 rgba(0,255,255,0.06), 0 4px 24px rgba(0,0,0,0.4);
+}
+.nav-logo img { height: 4rem; width: auto; filter: brightness(1.05); }
+.nav-center { display: flex; align-items: center; gap: 3.2rem; }
+.nav-center a { font-size: 1.35rem; font-weight: 500; color: var(--text-muted); letter-spacing: 0.01em; transition: color 0.18s; }
+.nav-center a:hover { color: var(--text); }
+.nav-center a.active { color: var(--aqua); }
+.nav-right { display: flex; align-items: center; justify-content: flex-end; }
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  padding: 0.9rem 2rem; font-family: var(--font);
+  font-size: 1.3rem; font-weight: 700; color: #000;
+  background: var(--aqua); border: none; border-radius: 0.5rem;
+  cursor: pointer; letter-spacing: 0.01em;
+  transition: opacity 0.18s, transform 0.18s cubic-bezier(0.25,0.46,0.45,0.94);
+}
+.btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
+.btn-primary:active { transform: translateY(0); }
+
+/* Theme toggle */
+.theme-toggle {
+  background: none; border: 1px solid var(--border); color: var(--text-muted);
+  border-radius: 0.5rem; width: 3.6rem; height: 3.6rem;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; margin-right: 1.4rem; flex-shrink: 0;
+  transition: border-color 0.18s, color 0.18s;
+}
+.theme-toggle:hover { border-color: var(--border-aqua); color: var(--aqua); }
+.theme-toggle:focus-visible { outline: 2px solid var(--aqua); outline-offset: 2px; }
+.theme-toggle svg { width: 1.8rem; height: 1.8rem; }
+.icon-moon { display: block; } .icon-sun { display: none; }
+html.light-mode .icon-moon { display: none; } html.light-mode .icon-sun { display: block; }
+
+/* Light mode */
+html.light-mode {
+  --bg: #f2f2ee; --bg-2: #e8e8e2; --surface: rgba(0,0,0,0.04);
+  --border: rgba(0,0,0,0.12); --border-aqua: rgba(0,140,165,0.28);
+  --text: #0a0a18; --text-dim: rgba(10,10,24,0.78); --text-muted: rgba(10,10,24,0.48);
+  --aqua: #0099bb; --aqua-60: rgba(0,153,187,0.6); --aqua-30: rgba(0,153,187,0.3);
+  --aqua-15: rgba(0,153,187,0.15); --aqua-08: rgba(0,153,187,0.08); --aqua-04: rgba(0,153,187,0.04);
+}
+html.light-mode body { background: var(--bg); color: var(--text); }
+html.light-mode nav.scrolled {
+  background: rgba(242,242,238,0.88);
+  backdrop-filter: blur(24px) saturate(140%) brightness(1.02);
+  -webkit-backdrop-filter: blur(24px) saturate(140%) brightness(1.02);
+  border-bottom-color: rgba(0,140,165,0.15);
+  box-shadow: 0 1px 0 rgba(0,140,165,0.08), 0 4px 24px rgba(0,0,0,0.06);
+}
+
+/* ─── PAGE ─── */
+.page-hero {
+  padding: 14rem 4rem 6rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.page-hero::before {
+  content: '';
+  position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+  width: 80rem; height: 40rem;
+  background: radial-gradient(ellipse at top, rgba(0,255,255,0.06) 0%, transparent 65%);
+  pointer-events: none;
+}
+
+.section-label {
+  display: inline-flex; align-items: center; gap: 1rem;
+  font-size: 1.1rem; font-weight: 600; color: var(--aqua);
+  letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 2rem;
+}
+.section-label::before {
+  content: ''; display: block; width: 2rem; height: 1px;
+  background: var(--aqua); opacity: 0.6;
+}
+
+.page-hero h1 {
+  font-size: clamp(4rem, 6vw, 7rem);
+  font-weight: 700; letter-spacing: -0.04em; line-height: 1.02;
+  margin-bottom: 1.6rem;
+}
+.gradient {
+  background: linear-gradient(130deg, #00ffff 0%, #00e0ff 45%, #0088ff 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+
+/* ─── CONTENT ─── */
+.legal-content {
+  max-width: 740px;
+  margin: 0 auto;
+  padding: 0 4rem 10rem;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 1.6rem;
+  overflow: hidden;
+  margin-bottom: 1.2rem;
+  transition: border-color 0.28s;
+}
+.card:hover { border-color: var(--border-aqua); }
+
+.card-header {
+  padding: 1.4rem 2.4rem 1.2rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 1.6rem;
+}
+
+.card-para {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--aqua);
+  letter-spacing: 0.06em;
+  opacity: 0.7;
+  white-space: nowrap;
+}
+
+.card-header h2 {
+  font-size: 1.55rem;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  color: var(--text);
+}
+
+.card-body {
+  padding: 1.6rem 2.4rem;
+  font-size: 1.35rem;
+  line-height: 1.78;
+  color: var(--text-dim);
+}
+
+.card-body a { color: var(--aqua); text-underline-offset: 3px; }
+.card-body a:hover { opacity: 0.8; }
+
+.card-body ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.card-body ul li {
+  padding-left: 1.8rem;
+  position: relative;
+  color: var(--text-dim);
+}
+.card-body ul li::before {
+  content: '—';
+  position: absolute;
+  left: 0;
+  color: var(--aqua);
+  opacity: 0.5;
+  font-size: 1.1rem;
+}
+
+.footnote {
+  margin-top: 2rem;
+  font-size: 1.2rem;
+  color: var(--text-muted);
+  line-height: 1.7;
+  padding: 0 0.4rem;
+}
+
+/* ─── FOOTER ─── */
+.legal-footer {
+  border-top: 1px solid var(--border);
+  padding: 3rem 4rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.legal-footer a { font-size: 1.3rem; color: var(--text-muted); transition: color 0.18s; }
+.legal-footer a:hover { color: var(--text-dim); }
+.legal-footer img { height: 2.4rem; opacity: 0.6; }
+</style>
+</head>
+<body>
+
+<div id="nav-root"></div>
+<script src="navbar.js"></script>
+
+<section class="page-hero">
+  <div class="section-label">Rechtliches</div>
+  <h1>Daten<span class="gradient">schutz.</span></h1>
+</section>
+
+<div class="legal-content">
+
+  <div class="card">
+    <div class="card-header"><span class="card-para">§ 1</span><h2>Verantwortliche Stelle</h2></div>
+    <div class="card-body">
+      Verantwortlich für die Datenbearbeitung auf dieser Website ist:<br><br>
+      J. Nef Aracle – Media &amp; Design · Joel-Sananda Nef<br>
+      Dörflistrasse 18, 8755 Ennenda, Schweiz<br>
+      <a href="mailto:info@arcl.ch">info@arcl.ch</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><span class="card-para">§ 2</span><h2>Allgemeines zur Datenbearbeitung</h2></div>
+    <div class="card-body">
+      Wir bearbeiten personenbezogene Daten grundsätzlich nur, soweit dies zur Bereitstellung einer funktionsfähigen Website sowie unserer Inhalte und Leistungen erforderlich ist. Die Bearbeitung erfolgt auf Grundlage des Schweizer Datenschutzgesetzes (DSG) sowie, soweit anwendbar, der DSGVO der EU.
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><span class="card-para">§ 3</span><h2>Server-Logfiles</h2></div>
+    <div class="card-body">
+      Beim Besuch dieser Website werden automatisch folgende Daten im Server-Log gespeichert:
+      <ul>
+        <li>IP-Adresse des anfragenden Geräts</li>
+        <li>Datum und Uhrzeit des Zugriffs</li>
+        <li>Aufgerufene Seite / Datei</li>
+        <li>Verwendeter Browser und Betriebssystem</li>
+        <li>HTTP-Statuscode</li>
+      </ul>
+      <br>
+      Diese Daten werden ausschliesslich zur Sicherstellung des technischen Betriebs verwendet und nach spätestens 30 Tagen gelöscht.
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><span class="card-para">§ 4</span><h2>Kontaktformular</h2></div>
+    <div class="card-body">
+      Wenn du uns über das Kontaktformular eine Nachricht sendest, werden die eingegebenen Daten zur Bearbeitung deiner Anfrage gespeichert. Diese Daten geben wir nicht ohne deine Einwilligung weiter. Du kannst jederzeit die Löschung deiner übermittelten Daten verlangen, sofern keine gesetzliche Aufbewahrungspflicht entgegensteht.
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><span class="card-para">§ 5</span><h2>Google Analytics</h2></div>
+    <div class="card-body">
+      Diese Website verwendet Google Analytics der Google LLC. Google Analytics verwendet Cookies zur Analyse deiner Nutzung. Wir haben die IP-Anonymisierung aktiviert, sodass deine IP-Adresse innerhalb der EU/EWR vor der Übermittlung gekürzt wird.<br><br>
+      Du kannst die Erfassung verhindern via: <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener">tools.google.com/dlpage/gaoptout</a> ·
+      <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Datenschutzerklärung Google</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><span class="card-para">§ 6</span><h2>Deine Rechte</h2></div>
+    <div class="card-body">
+      Du hast gemäss DSG (und soweit anwendbar der DSGVO) folgende Rechte:
+      <ul>
+        <li>Auskunft über deine gespeicherten Daten</li>
+        <li>Berichtigung unrichtiger Daten</li>
+        <li>Löschung deiner Daten</li>
+        <li>Einschränkung der Datenbearbeitung</li>
+        <li>Datenübertragbarkeit</li>
+        <li>Widerspruch gegen die Bearbeitung</li>
+      </ul>
+      <br>
+      Anfragen an: <a href="mailto:info@arcl.ch">info@arcl.ch</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><span class="card-para">§ 7</span><h2>Änderungen dieser Erklärung</h2></div>
+    <div class="card-body">
+      Wir behalten uns vor, diese Datenschutzerklärung jederzeit anzupassen. Die jeweils aktuelle Version ist auf dieser Seite abrufbar.
+    </div>
+  </div>
+
+  <p class="footnote">Stand: Mai 2026 · Gemäss Schweizer DSG (SR 235.1) sowie DSGVO (EU) 2016/679.</p>
+</div>
+
+<div id="footer-root"></div>
+<script src="footer.js"></script>
+
+</body>
+</html>

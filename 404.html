@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>404 – Aracle</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; text-decoration: none; list-style: none; }
+
+:root {
+  --aqua: #00ffff;
+  --aqua-60: rgba(0,255,255,0.6);
+  --aqua-30: rgba(0,255,255,0.3);
+  --aqua-15: rgba(0,255,255,0.15);
+  --aqua-08: rgba(0,255,255,0.08);
+  --aqua-04: rgba(0,255,255,0.04);
+  --bg: #0a0a0b;
+  --bg-2: #15151a;
+  --surface: rgba(255,255,255,0.03);
+  --border: rgba(255,255,255,0.07);
+  --border-aqua: rgba(0,255,255,0.18);
+  --text: #ffffff;
+  --text-dim: rgba(255,255,255,0.75);
+  --text-muted: rgba(255,255,255,0.42);
+  --font: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+html { font-size: 10px; -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+a { color: inherit; }
+img { display: block; max-width: 100%; }
+
+/* ─── NAVBAR ─── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+  height: 6.8rem;
+  display: grid; grid-template-columns: 1fr auto 1fr;
+  align-items: center; padding: 0 4rem;
+  transition: background 0.35s, backdrop-filter 0.35s, border-color 0.35s;
+  border-bottom: 1px solid transparent;
+}
+nav.scrolled {
+  background: rgba(6,6,13,0.32);
+  backdrop-filter: blur(24px) saturate(180%) brightness(0.9);
+  -webkit-backdrop-filter: blur(24px) saturate(180%) brightness(0.9);
+  border-bottom-color: rgba(0,255,255,0.1);
+  box-shadow: 0 1px 0 rgba(0,255,255,0.06), 0 4px 24px rgba(0,0,0,0.4);
+}
+.nav-logo img { height: 4rem; width: auto; filter: brightness(1.05); }
+.nav-center { display: flex; align-items: center; gap: 3.2rem; }
+.nav-center a { font-size: 1.35rem; font-weight: 500; color: var(--text-muted); letter-spacing: 0.01em; transition: color 0.18s; }
+.nav-center a:hover { color: var(--text); }
+.nav-center a.active { color: var(--aqua); }
+.nav-right { display: flex; align-items: center; justify-content: flex-end; }
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  padding: 0.9rem 2rem; font-family: var(--font);
+  font-size: 1.3rem; font-weight: 700; color: #000;
+  background: var(--aqua); border: none; border-radius: 0.5rem;
+  cursor: pointer; letter-spacing: 0.01em;
+  transition: opacity 0.18s, transform 0.18s cubic-bezier(0.25,0.46,0.45,0.94);
+}
+.btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
+.btn-primary:active { transform: translateY(0); }
+
+.theme-toggle {
+  background: none; border: 1px solid var(--border); color: var(--text-muted);
+  border-radius: 0.5rem; width: 3.6rem; height: 3.6rem;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; margin-right: 1.4rem; flex-shrink: 0;
+  transition: border-color 0.18s, color 0.18s;
+}
+.theme-toggle:hover { border-color: var(--border-aqua); color: var(--aqua); }
+.theme-toggle:focus-visible { outline: 2px solid var(--aqua); outline-offset: 2px; }
+.theme-toggle svg { width: 1.8rem; height: 1.8rem; }
+.icon-moon { display: block; } .icon-sun { display: none; }
+html.light-mode .icon-moon { display: none; } html.light-mode .icon-sun { display: block; }
+
+html.light-mode {
+  --bg: #f2f2ee; --bg-2: #e8e8e2; --surface: rgba(0,0,0,0.04);
+  --border: rgba(0,0,0,0.12); --border-aqua: rgba(0,140,165,0.28);
+  --text: #0a0a18; --text-dim: rgba(10,10,24,0.78); --text-muted: rgba(10,10,24,0.48);
+  --aqua: #0099bb; --aqua-60: rgba(0,153,187,0.6); --aqua-30: rgba(0,153,187,0.3);
+  --aqua-15: rgba(0,153,187,0.15); --aqua-08: rgba(0,153,187,0.08); --aqua-04: rgba(0,153,187,0.04);
+}
+html.light-mode body { background: var(--bg); color: var(--text); }
+html.light-mode nav.scrolled {
+  background: rgba(242,242,238,0.88);
+  backdrop-filter: blur(24px) saturate(140%) brightness(1.02);
+  -webkit-backdrop-filter: blur(24px) saturate(140%) brightness(1.02);
+  border-bottom-color: rgba(0,140,165,0.15);
+  box-shadow: 0 1px 0 rgba(0,140,165,0.08), 0 4px 24px rgba(0,0,0,0.06);
+}
+
+/* ─── 404 PAGE ─── */
+.not-found {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 12rem 4rem 8rem;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Background glow */
+.not-found::before {
+  content: '';
+  position: absolute; top: 20%; left: 50%; transform: translateX(-50%);
+  width: 80rem; height: 50rem;
+  background: radial-gradient(ellipse at top, rgba(100,100,255,0.06) 0%, rgba(0,255,255,0.04) 40%, transparent 70%);
+  pointer-events: none;
+}
+
+/* ─── MOON ─── */
+.moon-wrap {
+  position: relative;
+  width: 20rem;
+  height: 20rem;
+  margin-bottom: 5rem;
+  animation: moon-float 6s ease-in-out infinite;
+}
+
+@keyframes moon-float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-18px); }
+}
+
+.moon {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 38% 38%, #e8e4d4, #c8c0a0 50%, #a09060 100%);
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.04),
+    0 0 60px rgba(200,190,150,0.15),
+    0 0 120px rgba(200,190,150,0.08);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Moon shadow (crescent) */
+.moon::after {
+  content: '';
+  position: absolute;
+  top: -8%;
+  right: -15%;
+  width: 92%;
+  height: 92%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 45% 45%, #06060d, #0a0a18);
+  box-shadow: 0 0 30px 20px #06060d;
+}
+
+/* Moon craters */
+.crater {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.12);
+  box-shadow: inset 1px 1px 2px rgba(0,0,0,0.2), inset -1px -1px 2px rgba(255,255,255,0.06);
+}
+.crater-1 { width: 3.2rem; height: 3.2rem; top: 22%; left: 20%; }
+.crater-2 { width: 1.8rem; height: 1.8rem; top: 50%; left: 14%; }
+.crater-3 { width: 2.4rem; height: 2.4rem; top: 35%; left: 38%; }
+.crater-4 { width: 1.2rem; height: 1.2rem; top: 62%; left: 32%; }
+
+/* Stars around moon */
+.stars {
+  position: absolute;
+  inset: -6rem;
+  pointer-events: none;
+}
+
+.star {
+  position: absolute;
+  width: 2px; height: 2px;
+  border-radius: 50%;
+  background: white;
+  animation: star-twinkle var(--dur, 3s) ease-in-out infinite;
+  animation-delay: var(--delay, 0s);
+}
+
+@keyframes star-twinkle {
+  0%, 100% { opacity: var(--max-op, 0.7); transform: scale(1); }
+  50% { opacity: 0.1; transform: scale(0.5); }
+}
+
+/* Moon glow ring */
+.moon-glow {
+  position: absolute;
+  inset: -3rem;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(200,190,150,0.08) 40%, transparent 70%);
+  animation: glow-pulse 6s ease-in-out infinite;
+}
+
+@keyframes glow-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(1.06); }
+}
+
+/* ─── 404 TEXT ─── */
+.not-found-code {
+  font-size: clamp(8rem, 15vw, 18rem);
+  font-weight: 700;
+  letter-spacing: -0.06em;
+  line-height: 0.9;
+  margin-bottom: 2rem;
+  position: relative;
+  background: linear-gradient(130deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.4) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.not-found h1 {
+  font-size: clamp(2.4rem, 4vw, 4rem);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  margin-bottom: 1.6rem;
+}
+
+.not-found p {
+  font-size: 1.6rem;
+  color: var(--text-muted);
+  max-width: 44rem;
+  margin: 0 auto 4rem;
+  line-height: 1.7;
+}
+
+.not-found-actions {
+  display: flex;
+  gap: 1.6rem;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn-ghost {
+  font-size: 1.4rem;
+  color: var(--text-dim);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: color 0.18s;
+}
+.btn-ghost:hover { color: var(--text); }
+</style>
+</head>
+<body>
+
+<div id="nav-root"></div>
+<script src="navbar.js"></script>
+
+<main class="not-found">
+  <!-- Moon -->
+  <div class="moon-wrap">
+    <div class="moon-glow"></div>
+    <div class="stars">
+      <div class="star" style="top:10%;left:5%;--dur:2.8s;--delay:0s;--max-op:0.8;"></div>
+      <div class="star" style="top:25%;left:90%;--dur:3.5s;--delay:0.4s;--max-op:0.6;width:3px;height:3px;"></div>
+      <div class="star" style="top:75%;left:8%;--dur:2.2s;--delay:1s;--max-op:0.7;"></div>
+      <div class="star" style="top:85%;left:85%;--dur:4s;--delay:0.7s;--max-op:0.5;"></div>
+      <div class="star" style="top:5%;left:55%;--dur:3.2s;--delay:1.5s;--max-op:0.9;width:3px;height:3px;"></div>
+      <div class="star" style="top:90%;left:45%;--dur:2.6s;--delay:0.2s;--max-op:0.6;"></div>
+      <div class="star" style="top:15%;left:78%;--dur:3.8s;--delay:1.2s;--max-op:0.5;"></div>
+      <div class="star" style="top:65%;left:92%;--dur:2.4s;--delay:0.9s;--max-op:0.8;"></div>
+      <div class="star" style="top:40%;left:2%;--dur:3.6s;--delay:0.3s;--max-op:0.7;width:3px;height:3px;"></div>
+    </div>
+    <div class="moon">
+      <div class="crater crater-1"></div>
+      <div class="crater crater-2"></div>
+      <div class="crater crater-3"></div>
+      <div class="crater crater-4"></div>
+    </div>
+  </div>
+
+  <div class="not-found-code">404</div>
+  <h1>Seite nicht gefunden.</h1>
+  <p>Diese Seite existiert nicht oder wurde verschoben. Geh zurück zur Startseite und finde deinen Weg.</p>
+
+  <div class="not-found-actions">
+    <a href="/" class="btn-primary">← Zurück zur Startseite</a>
+    <a href="/projekte" class="btn-ghost">Projekte ansehen →</a>
+  </div>
+</main>
+
+</body>
+</html>

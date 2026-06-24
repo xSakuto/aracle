@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sakuto — Links</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #0a0a0b;
+  --surface: rgba(255,255,255,0.04);
+  --border: rgba(255,255,255,0.08);
+  --text: #ffffff;
+  --muted: rgba(255,255,255,0.45);
+  --aqua: #00ffff;
+  --aqua-glow: rgba(0,255,255,0.15);
+  --font: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+html { font-size: 10px; -webkit-font-smoothing: antialiased; }
+
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Background glow */
+body::before {
+  content: '';
+  position: fixed;
+  top: -20%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60vw;
+  height: 60vw;
+  background: radial-gradient(circle, rgba(0,255,255,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.card {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  position: relative;
+  z-index: 1;
+}
+
+/* Avatar */
+.avatar {
+  width: 9rem;
+  height: 9rem;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid rgba(0,255,255,0.25);
+  margin-bottom: 1.6rem;
+  box-shadow: 0 0 0 6px rgba(0,255,255,0.06);
+}
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.name {
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.5rem;
+}
+
+.handle {
+  font-size: 1.3rem;
+  color: var(--aqua);
+  letter-spacing: 0.02em;
+  margin-bottom: 0.6rem;
+}
+
+.bio {
+  font-size: 1.3rem;
+  color: var(--muted);
+  text-align: center;
+  line-height: 1.6;
+  max-width: 30ch;
+  margin-bottom: 3rem;
+}
+
+/* Links */
+.links {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.link-btn {
+  display: flex;
+  align-items: center;
+  gap: 1.4rem;
+  padding: 1.4rem 2rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 1.4rem;
+  color: var(--text);
+  text-decoration: none;
+  font-size: 1.45rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  transition: background 0.18s, border-color 0.18s, transform 0.18s cubic-bezier(0.25,0.46,0.45,0.94);
+  position: relative;
+  overflow: hidden;
+}
+
+.link-btn:hover {
+  background: rgba(255,255,255,0.07);
+  border-color: rgba(0,255,255,0.3);
+  transform: translateY(-2px);
+}
+
+.link-btn:active { transform: translateY(0); }
+
+.link-btn svg {
+  width: 2rem;
+  height: 2rem;
+  flex-shrink: 0;
+  opacity: 0.85;
+}
+
+.link-btn .link-arrow {
+  margin-left: auto;
+  opacity: 0.35;
+  font-size: 1.3rem;
+}
+
+/* Instagram specific */
+.link-btn.instagram .link-icon { color: #e1306c; }
+.link-btn.twitter .link-icon { color: var(--text); }
+
+/* Powered by */
+.powered {
+  margin-top: 4rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.powered span {
+  font-size: 1.1rem;
+  color: var(--muted);
+  letter-spacing: 0.05em;
+}
+
+.powered img {
+  height: 1.8rem;
+  width: auto;
+  opacity: 0.4;
+  transition: opacity 0.18s;
+}
+
+.powered img:hover { opacity: 0.7; }
+</style>
+</head>
+<body>
+
+<div class="card">
+
+  <div class="avatar">
+    <img src="https://placehold.co/180x180/06060d/00ffff?text=SK" alt="Sakuto">
+  </div>
+
+  <div class="name">Sakuto</div>
+  <div class="handle">@sakuto</div>
+  <p class="bio">Nintendo Content · Streams · Teil von Aracle</p>
+
+  <div class="links">
+
+    <a href="https://www.instagram.com/aracle.ch/" target="_blank" rel="noopener" class="link-btn instagram">
+      <svg class="link-icon" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/>
+      </svg>
+      Instagram
+      <span class="link-arrow">→</span>
+    </a>
+
+    <a href="https://x.com/AracleCH" target="_blank" rel="noopener" class="link-btn twitter">
+      <svg class="link-icon" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+      </svg>
+      X · Twitter
+      <span class="link-arrow">→</span>
+    </a>
+
+    <a href="https://discord.gg/BgpKdzBYtD" target="_blank" rel="noopener" class="link-btn">
+      <svg class="link-icon" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M20.317 4.492c-1.53-.69-3.17-1.2-4.885-1.49a.075.075 0 0 0-.079.036c-.21.369-.444.85-.608 1.23a18.566 18.566 0 0 0-5.487 0 12.36 12.36 0 0 0-.617-1.23A.077.077 0 0 0 8.562 3c-1.714.29-3.354.8-4.885 1.491a.07.07 0 0 0-.032.027C.533 9.093-.32 13.555.099 17.961a.08.08 0 0 0 .031.055 20.03 20.03 0 0 0 5.993 2.98.078.078 0 0 0 .084-.026c.462-.62.874-1.275 1.226-1.963.021-.04.001-.088-.041-.104a13.201 13.201 0 0 1-1.872-.878.075.075 0 0 1-.008-.125c.126-.093.252-.19.372-.287a.075.075 0 0 1 .078-.01c3.927 1.764 8.18 1.764 12.061 0a.075.075 0 0 1 .079.009c.12.098.245.195.372.288a.075.075 0 0 1-.006.125c-.598.344-1.22.635-1.873.877a.075.075 0 0 0-.041.105c.36.687.772 1.341 1.225 1.962a.077.077 0 0 0 .084.028 19.963 19.963 0 0 0 6.002-2.981.076.076 0 0 0 .032-.054c.5-5.094-.838-9.52-3.549-13.442a.06.06 0 0 0-.031-.028z"/>
+      </svg>
+      Discord
+      <span class="link-arrow">→</span>
+    </a>
+
+  </div>
+
+  <div class="powered">
+    <span>Part of</span>
+    <a href="/"><img src="Brand_assets/aracle logo - black.png" alt="Aracle"></a>
+  </div>
+
+</div>
+
+</body>
+</html>
