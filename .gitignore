@@ -23,3 +23,6 @@ legacy/
 # grosse Original-Bilder bleiben lokal; nur optimierte Versionen deployen
 public/Brand_assets/images/heros/*-hero.*
 public/Brand_assets/images/heros/*hero#*
+
+.vercel
+.env*
