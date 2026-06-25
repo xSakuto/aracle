@@ -2,6 +2,9 @@ node_modules/
 temporary screenshots/
 views.json
 .claude/
+# Grosse Original-Bilder bleiben lokal; nur die optimierten Versionen werden deployed
+Brand_assets/images/heros/*-hero.*
+Brand_assets/images/heros/*hero#*
 .vercel
 .DS_Store
 *.log
