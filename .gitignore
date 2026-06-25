@@ -1,11 +1,25 @@
+# dependencies
 node_modules/
-temporary screenshots/
-views.json
-.claude/
-# Grosse Original-Bilder bleiben lokal; nur die optimierten Versionen werden deployed
-Brand_assets/images/heros/*-hero.*
-Brand_assets/images/heros/*hero#*
-.vercel
+
+# next.js
+.next/
+out/
+next-env.d.ts
+build/
+
+# misc / dev
 .DS_Store
 *.log
 npm-debug.log*
+.env*.local
+.vercel
+temporary screenshots/
+.claude/
+views.json
+
+# alte statische Seite (Referenz, nicht deployen)
+legacy/
+
+# grosse Original-Bilder bleiben lokal; nur optimierte Versionen deployen
+public/Brand_assets/images/heros/*-hero.*
+public/Brand_assets/images/heros/*hero#*

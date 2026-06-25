@@ -1,0 +1,40 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #0a0a0b;
+  --color-bg-2: #15151a;
+  --color-aqua: #00ffff;
+  --color-surface: rgba(255, 255, 255, 0.04);
+  --color-line: rgba(255, 255, 255, 0.08);
+  --color-muted: rgba(255, 255, 255, 0.45);
+  --color-dim: rgba(255, 255, 255, 0.78);
+  --font-sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  font-size: 100%;
+}
+
+body {
+  background: var(--color-bg);
+  color: #fff;
+  font-family: var(--font-sans);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+a { color: inherit; text-decoration: none; }
+::selection { background: rgba(0, 255, 255, 0.25); color: #fff; }
+
+/* Aqua → blau Verlauf für Akzent-Headlines */
+.text-gradient {
+  background: linear-gradient(130deg, #00ffff 0%, #00e0ff 45%, #0088ff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Logos einheitlich weiss normalisieren */
+.logo-white { filter: brightness(0) invert(1); }
