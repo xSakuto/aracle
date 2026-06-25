@@ -47,7 +47,6 @@ const partners: { slug: string; label: string }[] = [
   { slug: "cloudflare", label: "Cloudflare" },
   { slug: "proxmox", label: "Proxmox" },
   { slug: "ubiquiti", label: "UniFi" },
-  { slug: "truenas", label: "TrueNAS" },
 ];
 
 const founderFacts = [
@@ -148,7 +147,7 @@ export default function Home() {
               src={`/Brand_assets/logos/${p.slug}.svg`}
               alt={p.label}
               title={p.label}
-              className={`${p.slug === "sigma" ? "" : "logo-white"} h-7 w-auto max-w-[9rem] opacity-60 transition hover:opacity-100`}
+              className="logo-white h-9 w-auto max-w-[8rem] object-contain opacity-60 transition hover:opacity-100"
             />
           ))}
         </div>
