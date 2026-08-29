@@ -38,3 +38,48 @@ a { color: inherit; text-decoration: none; }
 
 /* Logos einheitlich weiss normalisieren */
 .logo-white { filter: brightness(0) invert(1); }
+
+/* Buttons – kantig, Aqua-Outline (kein Weiss auf Grellfläche).
+   Ruhezustand: transparent mit Aqua-Rand + Aqua-Text.
+   Hover: füllt sich mit Aqua, Text wird dunkel.
+   In @layer components, damit Display-Utilities (hidden/md:*) gewinnen. */
+@layer components {
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border: 1px solid var(--color-aqua);
+    background: rgba(0, 255, 255, 0.06);
+    color: var(--color-aqua);
+    font-weight: 700;
+    padding: 0.85rem 1.6rem;
+    border-radius: 0;
+    transition: background 0.2s, color 0.2s, transform 0.2s;
+  }
+  .btn-primary:hover {
+    background: var(--color-aqua);
+    color: var(--color-bg);
+    transform: translateY(-1px);
+  }
+
+  /* Sekundär – neutraler grauer Outline-Button */
+  .btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border: 1px solid var(--color-line);
+    background: transparent;
+    color: #fff;
+    font-weight: 600;
+    padding: 0.85rem 1.6rem;
+    border-radius: 0;
+    transition: border-color 0.2s, color 0.2s, transform 0.2s;
+  }
+  .btn-ghost:hover {
+    border-color: var(--color-aqua);
+    color: var(--color-aqua);
+    transform: translateY(-1px);
+  }
+}

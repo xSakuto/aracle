@@ -12,7 +12,7 @@ export default function ProjectCard({ project }: { project: Project }) {
   return (
     <Link
       href={`/projekte/${project.slug}`}
-      className="group relative block overflow-hidden rounded-2xl"
+      className="group relative block overflow-hidden rounded-sm"
     >
       <div
         className="aspect-[4/5] w-full bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
@@ -21,7 +21,7 @@ export default function ProjectCard({ project }: { project: Project }) {
       <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
 
       <span
-        className={`absolute right-4 top-4 rounded-full border px-3 py-1 text-xs font-semibold ${statusStyle[project.status]}`}
+        className={`absolute right-4 top-4 border px-3 py-1 text-xs font-semibold uppercase tracking-wide ${statusStyle[project.status]}`}
       >
         {project.status}
       </span>
@@ -37,7 +37,7 @@ export default function ProjectCard({ project }: { project: Project }) {
         <p className="mt-3 line-clamp-2 text-sm text-white/70">
           {project.shortDescription}
         </p>
-        <span className="mt-4 inline-flex items-center gap-1.5 rounded-lg border border-white/20 bg-white/10 px-4 py-2 text-sm font-semibold backdrop-blur-md transition group-hover:border-aqua group-hover:bg-aqua group-hover:text-black">
+        <span className="mt-4 inline-flex items-center gap-1.5 border border-white/25 bg-white/10 px-4 py-2 text-sm font-semibold text-white backdrop-blur-md transition group-hover:border-aqua group-hover:bg-aqua group-hover:text-black">
           Mehr erfahren →
         </span>
       </div>

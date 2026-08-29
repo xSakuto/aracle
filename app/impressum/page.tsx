@@ -48,7 +48,7 @@ export default function ImpressumPage() {
           Im<span className="text-gradient">pressum.</span>
         </h1>
 
-        <div className="mt-12 overflow-hidden rounded-2xl border border-line bg-surface">
+        <div className="mt-12 overflow-hidden rounded-sm border border-line bg-surface">
           {rows.map(([label, value], i) => (
             <div
               key={i}

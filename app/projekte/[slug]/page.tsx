@@ -58,7 +58,7 @@ export default async function ProjectPage({
           </Link>
           <div className="flex flex-wrap items-center gap-3">
             <span
-              className={`rounded-full border px-3 py-1 text-xs font-semibold ${statusStyle[project.status]}`}
+              className={`border px-3 py-1 text-xs font-semibold uppercase tracking-wide ${statusStyle[project.status]}`}
             >
               {project.status}
             </span>
@@ -112,7 +112,7 @@ export default async function ProjectPage({
                   <li key={m.slug}>
                     <Link
                       href={`/team#${m.slug}`}
-                      className="group flex items-center justify-between rounded-xl border border-line bg-surface px-4 py-3 transition hover:border-aqua/40"
+                      className="group flex items-center justify-between rounded-sm border border-line bg-surface px-4 py-3 transition hover:border-aqua/40"
                     >
                       <span className="font-semibold">{m.name}</span>
                       <span className="text-sm text-muted transition group-hover:text-aqua">
@@ -134,7 +134,7 @@ export default async function ProjectPage({
                 {project.techStack.map((t) => (
                   <span
                     key={t}
-                    className="rounded-lg border border-line bg-surface px-3 py-1.5 text-sm text-dim"
+                    className="rounded-sm border border-line bg-surface px-3 py-1.5 text-sm text-dim"
                   >
                     {t}
                   </span>
@@ -166,7 +166,7 @@ export default async function ProjectPage({
 
           <Link
             href="/kontakt"
-            className="rounded-lg bg-aqua px-6 py-3 text-center font-bold text-black transition hover:-translate-y-px hover:opacity-90"
+            className="btn-primary"
           >
             Projekt kontaktieren →
           </Link>

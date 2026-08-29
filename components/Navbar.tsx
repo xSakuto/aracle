@@ -92,7 +92,7 @@ export default function Navbar() {
         {/* Desktop-CTA */}
         <Link
           href="/kontakt"
-          className="hidden rounded-lg bg-aqua px-6 py-3 text-base font-bold text-black transition hover:-translate-y-px hover:opacity-90 md:inline-block"
+          className="btn-primary hidden text-base md:inline-flex"
         >
           Projekt einreichen →
         </Link>
@@ -103,7 +103,7 @@ export default function Navbar() {
           aria-label={open ? "Menü schliessen" : "Menü öffnen"}
           aria-expanded={open}
           onClick={() => setOpen((v) => !v)}
-          className="flex h-12 w-12 items-center justify-center rounded-lg border border-line text-white md:hidden"
+          className="flex h-12 w-12 items-center justify-center rounded-sm border border-line text-white md:hidden"
         >
           <span className="relative block h-4 w-6">
             <span
@@ -166,7 +166,7 @@ export default function Navbar() {
           <Link
             href="/kontakt"
             onClick={() => setOpen(false)}
-            className="mt-8 rounded-xl bg-aqua px-6 py-4 text-center text-lg font-bold text-black"
+            className="btn-primary mt-8 text-lg"
           >
             Projekt einreichen →
           </Link>

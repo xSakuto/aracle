@@ -93,7 +93,7 @@ export default function HostingPage() {
           <div className="mt-16 grid gap-x-9 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
             {features.map((f, i) => (
               <Reveal key={f.title} delay={i * 80} className="max-w-sm">
-                <span className="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-aqua/10 text-aqua">
+                <span className="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-sm bg-aqua/10 text-aqua">
                   <svg
                     viewBox="0 0 24 24"
                     fill="none"
@@ -123,7 +123,7 @@ export default function HostingPage() {
               {stack.map((t) => (
                 <span
                   key={t}
-                  className="rounded-lg border border-line bg-surface px-4 py-2 text-sm font-medium text-dim"
+                  className="rounded-sm border border-line bg-surface px-4 py-2 text-sm font-medium text-dim"
                 >
                   {t}
                 </span>
@@ -135,7 +135,7 @@ export default function HostingPage() {
 
       {/* CTA */}
       <section className="px-6 pb-32 md:px-12">
-        <div className="mx-auto max-w-[1100px] overflow-hidden rounded-3xl border border-line bg-surface p-10 text-center md:p-16">
+        <div className="mx-auto max-w-[1100px] overflow-hidden rounded-sm border border-line bg-surface p-10 text-center md:p-16">
           <h2 className="mx-auto max-w-2xl text-[clamp(2rem,4vw,3.2rem)] font-bold leading-[1.08] tracking-[-0.03em]">
             Projekt hosten?
           </h2>
@@ -144,7 +144,7 @@ export default function HostingPage() {
           </p>
           <Link
             href="/kontakt"
-            className="mt-8 inline-block rounded-lg bg-aqua px-7 py-3.5 font-bold text-black transition hover:-translate-y-px hover:opacity-90"
+            className="btn-primary mt-8"
           >
             Anfrage starten →
           </Link>

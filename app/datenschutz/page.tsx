@@ -100,7 +100,7 @@ export default function DatenschutzPage() {
           {sections.map((s) => (
             <div
               key={s.n}
-              className="rounded-2xl border border-line bg-surface p-7"
+              className="rounded-sm border border-line bg-surface p-7"
             >
               <div className="mb-3 flex items-center gap-3">
                 <span className="text-sm font-bold text-aqua">{s.n}</span>

@@ -121,7 +121,7 @@ export default function Home() {
         <div className="mt-10 flex flex-wrap items-center justify-center gap-6">
           <Link
             href="/projekte"
-            className="rounded-lg bg-aqua px-6 py-3 font-bold text-black transition hover:-translate-y-px hover:opacity-90"
+            className="btn-primary"
           >
             Projekte entdecken →
           </Link>
@@ -167,7 +167,7 @@ export default function Home() {
           <div className="mt-14 grid gap-x-9 gap-y-12 sm:grid-cols-2 lg:grid-cols-4">
             {services.map((s, i) => (
               <Reveal key={s.title} delay={i * 80} className="max-w-xs">
-                <span className="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-aqua/10 text-aqua">
+                <span className="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-sm bg-aqua/10 text-aqua">
                   <svg
                     viewBox="0 0 24 24"
                     fill="none"
@@ -217,7 +217,7 @@ export default function Home() {
       <section className="px-6 py-28 md:px-12">
         <div className="mx-auto grid max-w-[1320px] items-stretch gap-12 md:grid-cols-[0.8fr_1fr]">
           <div
-            className="min-h-[26rem] rounded-2xl bg-cover bg-top md:min-h-[42rem]"
+            className="min-h-[26rem] rounded-sm bg-cover bg-top md:min-h-[42rem]"
             style={{
               backgroundImage: "url(/Brand_assets/images/heros/joel.jpg)",
             }}
@@ -238,7 +238,7 @@ export default function Home() {
             <div className="mt-9 flex flex-col gap-6">
               {founderFacts.map((f) => (
                 <div key={f.title} className="flex items-start gap-4">
-                  <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-aqua/10 text-aqua">
+                  <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-sm bg-aqua/10 text-aqua">
                     <svg
                       viewBox="0 0 24 24"
                       fill="none"
@@ -277,7 +277,7 @@ export default function Home() {
         </p>
         <Link
           href="/kontakt"
-          className="mt-10 inline-block rounded-lg bg-aqua px-8 py-4 font-bold text-black transition hover:-translate-y-px hover:opacity-90"
+          className="btn-primary mt-10"
         >
           Projekt einreichen →
         </Link>

@@ -155,13 +155,13 @@ export default function HistoryPage() {
                 {y.items.map((it) => (
                   <div
                     key={it.name}
-                    className="rounded-xl border border-line bg-surface/50 p-5 transition hover:border-aqua/25"
+                    className="rounded-sm border border-line bg-surface/50 p-5 transition hover:border-aqua/25"
                   >
                     <div className="flex flex-wrap items-center gap-3">
                       <h3 className="font-bold tracking-tight">{it.name}</h3>
                       {it.tag && (
                         <span
-                          className={`rounded-full border px-2.5 py-0.5 text-xs font-semibold ${tagStyle[it.tag]}`}
+                          className={`border px-2.5 py-0.5 text-xs font-semibold uppercase tracking-wide ${tagStyle[it.tag]}`}
                         >
                           {it.tag}
                         </span>

@@ -24,7 +24,7 @@ function Socials({ member }: { member: Member }) {
           target="_blank"
           rel="noopener noreferrer"
           aria-label={s.type}
-          className="grid h-9 w-9 place-items-center rounded-lg border border-line text-muted transition hover:border-aqua/40 hover:text-aqua"
+          className="grid h-9 w-9 place-items-center rounded-sm border border-line text-muted transition hover:border-aqua/40 hover:text-aqua"
         >
           <svg viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4">
             <path d={socialPaths[s.type]} />
@@ -38,7 +38,7 @@ function Socials({ member }: { member: Member }) {
 function Avatar({ member, size }: { member: Member; size: number }) {
   return (
     <div
-      className="grid shrink-0 place-items-center rounded-2xl font-bold"
+      className="grid shrink-0 place-items-center rounded-sm font-bold"
       style={{
         width: size,
         height: size,
@@ -74,7 +74,7 @@ export default function TeamPage() {
         {/* Lead */}
         <div
           id={lead.slug}
-          className="mt-16 grid scroll-mt-28 overflow-hidden rounded-3xl border border-line bg-surface md:grid-cols-[0.72fr_1fr]"
+          className="mt-16 grid scroll-mt-28 overflow-hidden rounded-sm border border-line bg-surface md:grid-cols-[0.72fr_1fr]"
         >
           {lead.photo ? (
             <div
@@ -110,7 +110,7 @@ export default function TeamPage() {
             <div
               key={m.slug}
               id={m.slug}
-              className="group flex scroll-mt-28 flex-col gap-5 rounded-2xl border border-line bg-surface/60 p-6 transition hover:border-aqua/30 hover:bg-surface sm:flex-row sm:items-center sm:gap-7"
+              className="group flex scroll-mt-28 flex-col gap-5 rounded-sm border border-line bg-surface/60 p-6 transition hover:border-aqua/30 hover:bg-surface sm:flex-row sm:items-center sm:gap-7"
             >
               <Avatar member={m} size={72} />
               <div className="flex-1">
@@ -132,7 +132,7 @@ export default function TeamPage() {
         </div>
 
         {/* Wir wachsen */}
-        <div className="mt-6 flex flex-col items-start gap-5 rounded-2xl border border-dashed border-aqua/30 bg-aqua/[0.04] p-8 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-6 flex flex-col items-start gap-5 rounded-sm border border-dashed border-aqua/30 bg-aqua/[0.04] p-8 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h3 className="text-xl font-bold tracking-tight">Wir wachsen.</h3>
             <p className="mt-1 max-w-md text-sm text-muted">
@@ -142,7 +142,7 @@ export default function TeamPage() {
           </div>
           <Link
             href="/kontakt"
-            className="shrink-0 rounded-lg bg-aqua px-5 py-2.5 text-sm font-bold text-black transition hover:-translate-y-px hover:opacity-90"
+            className="btn-primary shrink-0 text-sm"
           >
             Mitmachen →
           </Link>
