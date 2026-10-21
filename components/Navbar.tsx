@@ -48,8 +48,8 @@ export default function Navbar() {
   return (
     <>
       <header
-        className={`wrap fixed inset-x-0 top-0 z-50 flex h-[4.5rem] items-center justify-between transition-[background-color,transform] duration-300 ease-[var(--ease-out)] ${
-          scrolled || open ? "bg-bg" : "bg-transparent"
+        className={`wrap fixed inset-x-0 top-0 z-50 flex h-14 items-center justify-between transition-[background-color,transform] duration-300 ease-[var(--ease-out)] ${
+          scrolled || open ? "bg-black" : "bg-transparent"
         } ${hidden && !open ? "-translate-y-full" : "translate-y-0"}`}
       >
         <Link
@@ -63,27 +63,27 @@ export default function Navbar() {
             alt="Aracle"
             width={1111}
             height={260}
-            className="h-7 w-auto bg-transparent md:h-8"
+            className="h-6 w-auto bg-transparent"
           />
         </Link>
 
-        <nav aria-label="Hauptnavigation" className="hidden items-center gap-8 md:flex">
+        <nav aria-label="Hauptnavigation" className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-8 md:flex">
           {links.map((l) => (
             <Link
               key={l.href}
               href={l.href}
               aria-current={isActive(l.href) ? "page" : undefined}
-              className={`link ${
-                isActive(l.href) ? "text-aqua" : "text-ink"
+              className={`text-[0.8125rem] transition-colors ${
+                isActive(l.href) ? "text-ink" : "text-muted hover:text-ink"
               }`}
             >
               {l.label}
             </Link>
           ))}
-          <Link href="/kontakt" className="btn min-h-10 px-4">
-            Projekt anfragen
-          </Link>
         </nav>
+        <Link href="/kontakt" className="btn hidden min-h-8 px-3.5 text-[0.8125rem] md:inline-flex">
+          Projekt anfragen
+        </Link>
 
         <button
           type="button"
@@ -91,7 +91,7 @@ export default function Navbar() {
           aria-expanded={open}
           aria-controls="mobile-menu"
           onClick={() => setOpen((v) => !v)}
-          className="-mr-2 flex h-11 items-center px-2 font-medium transition-opacity active:opacity-60 md:hidden"
+          className="-mr-2 flex h-11 items-center px-2 text-[0.9375rem] transition-opacity active:opacity-60 md:hidden"
         >
           {open ? "Schliessen" : "Menü"}
         </button>
@@ -99,7 +99,7 @@ export default function Navbar() {
 
       <div
         id="mobile-menu"
-        className={`wrap fixed inset-0 z-40 flex flex-col justify-between overscroll-contain bg-bg pb-8 pt-28 transition-[opacity,visibility] duration-300 md:hidden ${
+        className={`wrap fixed inset-0 z-40 flex flex-col justify-between overscroll-contain bg-black pb-8 pt-24 transition-[opacity,visibility] duration-300 md:hidden ${
           open ? "visible opacity-100" : "pointer-events-none invisible opacity-0"
         }`}
         aria-hidden={!open}
@@ -110,7 +110,7 @@ export default function Navbar() {
               key={l.href}
               href={l.href}
               tabIndex={open ? 0 : -1}
-              className={`font-display text-[2.5rem] leading-tight transition-colors active:opacity-60 ${
+              className={`text-[2rem] font-semibold leading-tight tracking-[-0.03em] transition-colors active:opacity-60 ${
                 (l.href === "/" ? pathname === "/" : isActive(l.href))
                   ? "text-aqua"
                   : "text-ink"

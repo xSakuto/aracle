@@ -1,34 +1,33 @@
 @import "tailwindcss";
-@import "@fontsource-variable/bodoni-moda/opsz.css";
-@import "@fontsource-variable/bodoni-moda/opsz-italic.css";
-@import "@fontsource-variable/jost/wght.css";
+@import "@fontsource-variable/inter/opsz.css";
 
-/* Aracle: Markenfarben bleiben (Schwarz + Aqua), Typo wie ein Magazin.
-   Aqua ist nur für Aktionen und den aktiven Zustand da, nie Deko. */
+/* Aracle, premium dunkel: Bilder führen, die Oberfläche tritt zurück.
+   Schwarz als Grund, Kacheln eine Stufe heller, Aqua nur für Aktionen. */
 @theme {
-  --color-bg: #0a0a0b;
-  --color-surface: #141518;
-  --color-raised: #1c1e22;
-  --color-field: #0f2326; /* Gletscher: ruhiges Feld aus dem Klöntalersee */
-  --color-ink: #f3f4f2;
-  --color-muted: #a7adae;
+  --color-bg: #000000;
+  --color-surface: #111113;
+  --color-raised: #1c1c1e;
+  --color-field: #161618;
+  --color-ink: #f5f5f7;
+  --color-muted: #a1a1a6;
   --color-aqua: #00ffff;
-  --color-accent-ink: #001a1a;
+  --color-accent-ink: #00191a;
   --color-danger: #ff8a7a;
 
-  --font-display: "Bodoni Moda Variable", "Bodoni Moda", Didot, Georgia, serif;
-  --font-sans: "Jost Variable", Jost, "Helvetica Neue", Arial, sans-serif;
+  --font-display: "Inter Variable", Inter, system-ui, -apple-system, sans-serif;
+  --font-sans: "Inter Variable", Inter, system-ui, -apple-system, sans-serif;
 }
 
 :root {
-  --step-small: clamp(0.8125rem, 0.79rem + 0.1vw, 0.875rem);
-  --step-body: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
-  --step-lead: clamp(1.25rem, 1.1rem + 0.7vw, 1.625rem);
-  --step-head: clamp(2.25rem, 1.3rem + 3.6vw, 4.5rem);
-  --step-display: clamp(2.75rem, 0.6rem + 8.4vw, 10rem);
+  --step-small: 0.875rem;
+  --step-body: 1.0625rem;
+  --step-lead: clamp(1.1875rem, 1rem + 0.6vw, 1.5rem);
+  --step-head: clamp(2rem, 1.2rem + 2.8vw, 3.5rem);
+  --step-display: clamp(2.75rem, 1rem + 6vw, 6.5rem);
 
-  --margin: clamp(1rem, 2.2vw, 2rem);
-  --section: clamp(7.5rem, 12vw, 13rem);
+  --margin: clamp(1.25rem, 4vw, 3rem);
+  --section: clamp(5rem, 9vw, 8.5rem);
+  --radius: 22px;
 
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-in-out: cubic-bezier(0.76, 0, 0.24, 1);
@@ -46,17 +45,18 @@ body {
   color: var(--color-ink);
   font-family: var(--font-sans);
   font-size: var(--step-body);
-  line-height: 1.6;
-  letter-spacing: 0.01em;
+  line-height: 1.47;
+  letter-spacing: -0.011em;
+  font-feature-settings: "ss03", "cv11";
   -webkit-font-smoothing: antialiased;
   overflow-x: clip;
 }
 
 h1, h2, h3, h4 {
   font-family: var(--font-display);
-  font-weight: 500;
+  font-weight: 600;
   text-wrap: balance;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.025em;
 }
 
 p { text-wrap: pretty; }
@@ -64,37 +64,39 @@ a { color: inherit; text-decoration: none; }
 img { background: var(--color-surface); }
 ::selection { background: var(--color-aqua); color: var(--color-accent-ink); }
 :focus-visible { outline: 2px solid var(--color-aqua); outline-offset: 3px; }
-:target { scroll-margin-top: 6rem; }
+:target { scroll-margin-top: 5rem; }
 }
 
 @layer components {
   .wrap { padding-inline: var(--margin); }
-  .display { font-family: var(--font-display); font-size: var(--step-display); line-height: 0.95; letter-spacing: -0.02em; font-weight: 500; }
-  .head { font-family: var(--font-display); font-size: var(--step-head); line-height: 1; letter-spacing: -0.02em; font-weight: 500; }
-  .lead { font-size: var(--step-lead); line-height: 1.4; }
-  .small { font-size: var(--step-small); line-height: 1.5; }
+  .inner { max-width: 80rem; margin-inline: auto; }
+  .display { font-size: var(--step-display); line-height: 1.04; letter-spacing: -0.035em; font-weight: 600; }
+  .head { font-size: var(--step-head); line-height: 1.07; letter-spacing: -0.03em; font-weight: 600; }
+  .lead { font-size: var(--step-lead); line-height: 1.33; letter-spacing: -0.015em; }
+  .small { font-size: var(--step-small); line-height: 1.43; letter-spacing: -0.01em; }
   .nums { font-variant-numeric: tabular-nums; }
+  .tile { border-radius: var(--radius); background: var(--color-surface); overflow: hidden; }
 
-  /* Ein Button-Typ, eckig, flach. */
+  /* Pill-Buttons: Aqua für die Hauptaktion, grau für alles andere. */
   .btn {
-    display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
-    min-height: 3rem; padding: 0 1.4rem;
+    display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem;
+    min-height: 2.75rem; padding: 0 1.4rem; border-radius: 999px;
     background: var(--color-aqua); color: var(--color-accent-ink);
-    font-weight: 500; white-space: nowrap; border-radius: 0;
-    transition: transform 140ms var(--ease-out), background-color 180ms ease, color 180ms ease;
+    font-size: 1rem; font-weight: 500; letter-spacing: -0.01em; white-space: nowrap;
+    transition: transform 140ms var(--ease-out), background-color 180ms ease;
   }
-  .btn:hover { background: var(--color-ink); }
+  .btn:hover { background: #7ffcff; }
   .btn:active { transform: scale(0.97); }
   .btn[disabled] { opacity: 0.5; pointer-events: none; }
 
   .btn-quiet {
-    display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
-    min-height: 3rem; padding: 0 1.4rem;
-    background: var(--color-raised); color: var(--color-ink);
-    font-weight: 500; white-space: nowrap; border-radius: 0;
+    display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem;
+    min-height: 2.75rem; padding: 0 1.4rem; border-radius: 999px;
+    background: #2a2a2d; color: var(--color-ink);
+    font-size: 1rem; font-weight: 500; letter-spacing: -0.01em; white-space: nowrap;
     transition: transform 140ms var(--ease-out), background-color 180ms ease;
   }
-  .btn-quiet:hover { background: #2a2d33; }
+  .btn-quiet:hover { background: #3a3a3e; }
   .btn-quiet:active { transform: scale(0.97); }
 
   .link {
@@ -104,45 +106,48 @@ img { background: var(--color-surface); }
   }
   .link:hover { text-decoration-color: currentColor; }
   .link:active { opacity: 0.7; }
+  /* Textlink in Aqua, wie "Mehr erfahren" */
   .link-under {
-    text-decoration: underline; text-underline-offset: 0.22em; text-decoration-thickness: 0.07em;
-    transition: color 180ms ease;
+    color: var(--color-aqua);
+    text-decoration: underline; text-decoration-color: transparent;
+    text-underline-offset: 0.22em; text-decoration-thickness: 0.07em;
+    transition: text-decoration-color 180ms ease;
   }
-  .link-under:hover { color: var(--color-aqua); }
+  .link-under:hover { text-decoration-color: currentColor; }
+  .link-under:active { opacity: 0.7; }
 
   .field {
-    width: 100%; min-height: 3rem; padding: 0.7rem 0.9rem;
+    width: 100%; min-height: 3rem; padding: 0.7rem 1rem;
     background: var(--color-raised); color: var(--color-ink);
-    border: 0; border-radius: 0; font-size: max(1rem, var(--step-body));
+    border: 0; border-radius: 12px; font-size: 1.0625rem;
   }
-  .field::placeholder { color: #6f7678; }
-  textarea.field { min-height: 8rem; line-height: 1.5; resize: vertical; }
+  .field::placeholder { color: #6e6e73; }
 }
 
-/* Bewegung: Inhalte bleiben ohne JavaScript sichtbar. */
+/* Bewegung: ruhig, nur Einblenden. Inhalte bleiben ohne JavaScript sichtbar. */
 @media (prefers-reduced-motion: no-preference) {
   .js [data-reveal] {
-    opacity: 0; transform: translateY(24px);
-    transition: opacity 700ms var(--ease-out), transform 900ms var(--ease-out);
+    opacity: 0; transform: translateY(28px);
+    transition: opacity 900ms var(--ease-out), transform 1100ms var(--ease-out);
     transition-delay: calc(var(--i, 0) * 80ms);
   }
   .js [data-reveal].is-in { opacity: 1; transform: none; }
   .js [data-rise] {
-    opacity: 0; transform: translateY(20px);
-    animation: rise 650ms var(--ease-out) forwards;
-    animation-delay: calc(var(--i, 0) * 90ms + 40ms);
+    opacity: 0; transform: translateY(16px);
+    animation: rise 700ms var(--ease-out) forwards;
+    animation-delay: calc(var(--i, 0) * 90ms + 60ms);
   }
-  .drift { animation: drift 24s var(--ease-soft) infinite alternate; }
+  .zoom-in { animation: zoom 1800ms var(--ease-soft) both; }
 }
 @keyframes rise { to { opacity: 1; transform: none; } }
-@keyframes drift { from { transform: scale(1.02); } to { transform: scale(1.1) translateY(-2%); } }
+@keyframes zoom { from { transform: scale(1.08); } to { transform: scale(1); } }
 
 /* Dashboard: ruhige Arbeitsoberfläche, gleiche Marke, App-Massstab. */
 @layer components {
   .dash-input {
     width: 100%; height: 2.5rem; padding: 0 0.75rem;
-    background: var(--color-bg); color: var(--color-ink);
-    border: 1px solid #2c3036; border-radius: 6px;
+    background: #0a0a0b; color: var(--color-ink);
+    border: 1px solid #2c2c30; border-radius: 8px;
     font-size: 0.875rem; letter-spacing: 0;
     transition: border-color 150ms ease;
   }
@@ -171,5 +176,8 @@ img { background: var(--color-surface); }
   }
   .dash-btn-quiet:hover { background: #2e3238; }
   .dash-btn-quiet:active { transform: scale(0.97); }
-  .dash-panel { background: var(--color-surface); border-radius: 8px; padding: 1.25rem; }
+  .dash-panel { background: var(--color-surface); border-radius: 14px; padding: 1.25rem; }
 }
+
+/* Initialen im Platzhalter-Porträt: reine Deko, deshalb per CSS. */
+.portrait-initials::before { content: attr(data-initials); }

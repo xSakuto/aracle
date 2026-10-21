@@ -133,33 +133,37 @@ const timeline: {
 export default function HistoryPage() {
   return (
     <>
-      <div className="wrap pb-[var(--section)] pt-32 md:pt-40">
+      <div className="wrap pb-[var(--section)] pt-28 md:pt-36">
+        <div className="inner">
+        <div className="text-center">
         <h1 className="display" data-rise>
-          Die Story
+          Die Story.
         </h1>
-        <p className="lead mt-8 max-w-[38rem]" data-rise style={{ ["--i" as string]: 1 }}>
+        <p className="lead mx-auto mt-5 max-w-[38rem] text-muted" data-rise style={{ ["--i" as string]: 1 }}>
           Von einem YouTube-Kanal zum Creative Studio. Acht Jahre Projekte,
           Rebrandings und Erfahrungen, Jahr für Jahr.
         </p>
+        </div>
 
-        <ol className="mt-[calc(var(--section)*0.6)] flex flex-col gap-20 md:gap-28">
+        <ol className="mt-14 flex flex-col gap-3">
           {timeline.map((y) => (
-            <li key={y.year} className="grid grid-cols-12 gap-x-8 gap-y-6">
-              <h2 className="head nums col-span-12 md:col-span-3" data-reveal>
+            <li key={y.year} className="tile grid grid-cols-12 gap-x-3 md:gap-x-8 gap-y-6 p-8 md:p-10">
+              <h2 className="head nums col-span-12 text-muted md:col-span-3" data-reveal>
                 {y.year}
               </h2>
               <ul className="col-span-12 flex flex-col gap-10 md:col-span-8 md:col-start-5">
                 {y.items.map((it, i) => (
                   <li key={it.name} data-reveal style={{ ["--i" as string]: i + 1 }}>
-                    <h3 className="lead font-display">{it.name}</h3>
+                    <h3 className="text-[1.3125rem] tracking-[-0.02em]">{it.name}</h3>
                     {it.tag && <p className="small mt-1 text-muted">{tagText[it.tag]}</p>}
-                    <p className="mt-3 max-w-[60ch]">{it.desc}</p>
+                    <p className="mt-2 max-w-[60ch] text-ink/85">{it.desc}</p>
                   </li>
                 ))}
               </ul>
             </li>
           ))}
         </ol>
+        </div>
       </div>
       <CtaBand
         title="Das nächste Kapitel?"

@@ -6,10 +6,10 @@ export default function NotFound() {
   return (
     <>
       <Navbar />
-      <main className="wrap grid min-h-svh grid-cols-12 items-center gap-x-8 pb-16 pt-32">
+      <main id="inhalt" className="wrap grid min-h-svh grid-cols-12 items-center gap-x-3 md:gap-x-8 pb-16 pt-28">
         <div className="col-span-12 md:col-span-7">
           <h1 className="display">Seite nicht gefunden</h1>
-          <p className="lead mt-8 max-w-[34rem]">
+          <p className="lead mt-5 max-w-[34rem] text-muted">
             Diese Adresse gibt es nicht oder nicht mehr. Vielleicht findest du
             es bei den Projekten.
           </p>
@@ -24,7 +24,7 @@ export default function NotFound() {
           alt="Klöntalersee im Kanton Glarus"
           width={2200}
           height={1238}
-          className="col-span-12 mt-12 aspect-[4/5] w-full object-cover md:col-span-4 md:col-start-9 md:mt-0"
+          className="col-span-12 mt-12 aspect-[4/5] w-full rounded-[var(--radius)] object-cover md:col-span-4 md:col-start-9 md:mt-0"
         />
       </main>
       <Footer />

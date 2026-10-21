@@ -30,19 +30,17 @@ export default function TeamDirectory({
     ? members.filter((m) => m.projects.some((p) => p.slug === filter))
     : members;
 
+  const pill = (on: boolean) =>
+    `min-h-9 rounded-full px-4 text-[0.875rem] transition-[background-color,color,transform] duration-200 active:scale-[0.97] ${
+      on ? "bg-ink text-bg" : "bg-raised text-ink hover:bg-[#2a2a2d]"
+    }`;
+
   return (
     <>
-      <div className="mt-14 md:mt-20" role="group" aria-label="Nach Projekt filtern">
+      <div className="mt-10 flex flex-col items-center" role="group" aria-label="Nach Projekt filtern">
         <p className="small text-muted">Wer arbeitet woran?</p>
-        <div className="mt-3 flex flex-wrap gap-2">
-          <button
-            type="button"
-            aria-pressed={filter === null}
-            onClick={() => setFilter(null)}
-            className={`min-h-10 px-3.5 transition-[background-color,color,transform] duration-200 active:scale-[0.97] ${
-              filter === null ? "bg-aqua text-accent-ink" : "bg-raised text-ink hover:bg-[#2a2d33]"
-            }`}
-          >
+        <div className="mt-3 flex max-w-[52rem] flex-wrap justify-center gap-2">
+          <button type="button" aria-pressed={filter === null} onClick={() => setFilter(null)} className={pill(filter === null)}>
             Alle
           </button>
           {used.map((p) => (
@@ -51,9 +49,7 @@ export default function TeamDirectory({
               type="button"
               aria-pressed={filter === p.slug}
               onClick={() => setFilter(filter === p.slug ? null : p.slug)}
-              className={`min-h-10 px-3.5 transition-[background-color,color,transform] duration-200 active:scale-[0.97] ${
-                filter === p.slug ? "bg-aqua text-accent-ink" : "bg-raised text-ink hover:bg-[#2a2d33]"
-              }`}
+              className={pill(filter === p.slug)}
             >
               {p.title}
             </button>
@@ -64,33 +60,26 @@ export default function TeamDirectory({
         </p>
       </div>
 
-      <ul className="mt-16 flex flex-col gap-24 md:mt-24 md:gap-32">
+      <ul className="mt-12 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {shown.map((m) => (
-          <li
-            key={m.id}
-            id={m.slug}
-            data-reveal
-            className="grid scroll-mt-28 grid-cols-12 gap-x-8 gap-y-6"
-          >
-            <div className="col-span-8 sm:col-span-5 md:col-span-3">
+          <li key={m.id} id={m.slug} data-reveal className="tile flex scroll-mt-24 flex-col p-3">
+            <div className="overflow-hidden rounded-[calc(var(--radius)-8px)]">
               <Portrait name={m.name} photo={m.photo} accent={m.accent} />
             </div>
-            <div className="col-span-12 sm:col-span-7 md:col-span-8 md:col-start-5">
-              <h2 className="head">{m.name}</h2>
-              <p className="lead mt-2 text-muted">{m.role}</p>
-              <p className="mt-6 max-w-[60ch]">{m.bio}</p>
+            <div className="flex flex-1 flex-col px-3 pb-3 pt-5">
+              <h2 className="text-[1.5rem] leading-tight tracking-[-0.025em]">{m.name}</h2>
+              <p className="mt-1 text-muted">{m.role}</p>
+              <p className="mt-4">{m.bio}</p>
 
               {m.projects.length > 0 && (
-                <div className="mt-8">
-                  <h3 className="small font-sans font-medium tracking-normal text-muted">
-                    Projekte
-                  </h3>
-                  <ul className="mt-3 flex flex-wrap gap-2">
+                <div className="mt-5">
+                  <h3 className="sr-only">Projekte</h3>
+                  <ul className="flex flex-wrap gap-1.5">
                     {m.projects.map((p) => (
                       <li key={p.slug}>
                         <Link
                           href={`/projekte/${p.slug}`}
-                          className="inline-flex min-h-10 items-center gap-2 bg-raised px-3.5 transition-[background-color,transform] duration-200 hover:bg-[#2a2d33] active:scale-[0.97]"
+                          className="inline-flex min-h-8 items-center gap-1.5 rounded-full bg-raised px-3 text-[0.8125rem] transition-[background-color,transform] duration-200 hover:bg-[#2a2a2d] active:scale-[0.97]"
                         >
                           {titleOf[p.slug] ?? p.slug}
                           {p.role && <span className="text-muted">{p.role}</span>}
@@ -102,7 +91,7 @@ export default function TeamDirectory({
               )}
 
               {m.socials.length > 0 && (
-                <ul className="mt-8 flex flex-wrap gap-1">
+                <ul className="mt-auto flex flex-wrap gap-1 pt-5">
                   {m.socials.map((s) => (
                     <li key={s.type + s.url}>
                       <a
@@ -111,9 +100,9 @@ export default function TeamDirectory({
                         rel="noopener noreferrer"
                         aria-label={`${m.name} auf ${SOCIAL_LABELS[s.type]}`}
                         title={SOCIAL_LABELS[s.type]}
-                        className="grid h-11 w-11 place-items-center text-ink transition-[color,transform] duration-200 hover:text-aqua active:scale-90"
+                        className="grid h-10 w-10 place-items-center rounded-full text-muted transition-[color,background-color,transform] duration-200 hover:bg-raised hover:text-ink active:scale-90"
                       >
-                        <SocialIcon type={s.type} className="h-5 w-5" />
+                        <SocialIcon type={s.type} className="h-[18px] w-[18px]" />
                       </a>
                     </li>
                   ))}

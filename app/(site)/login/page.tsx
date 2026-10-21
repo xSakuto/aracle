@@ -25,18 +25,19 @@ export default async function LoginPage({
   }
 
   return (
-    <div className="wrap grid min-h-svh grid-cols-12 items-center gap-x-8 gap-y-12 pb-16 pt-32">
+    <div className="wrap pb-16 pt-28">
+    <div className="inner grid min-h-[70svh] grid-cols-12 items-center gap-x-3 md:gap-x-8 gap-y-12">
       <div className="col-span-12 md:col-span-6">
         <h1 className="display" data-rise>
           Team-Login
         </h1>
-        <p className="lead mt-8 max-w-[30rem]" data-rise style={{ ["--i" as string]: 1 }}>
+        <p className="lead mt-5 max-w-[30rem] text-muted" data-rise style={{ ["--i" as string]: 1 }}>
           Für alle im Aracle-Team: Profil, Foto und Social-Links selbst pflegen.
           Kein Passwort nötig, du bekommst einen Code per E-Mail.
         </p>
       </div>
       <div className="col-span-12 md:col-span-5 md:col-start-8" data-rise style={{ ["--i" as string]: 2 }}>
-        <div className="bg-surface p-8">
+        <div className="tile p-8">
           {supabaseConfigured ? (
             <LoginForm next={next} linkError={fehler === "link"} />
           ) : (
@@ -47,6 +48,7 @@ export default async function LoginPage({
           )}
         </div>
       </div>
+    </div>
     </div>
   );
 }

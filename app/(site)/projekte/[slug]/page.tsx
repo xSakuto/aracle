@@ -33,109 +33,105 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
   const category = project.category.replace(" · ", ", ");
 
   return (
-    <article>
-      <header className="wrap grid grid-cols-12 items-end gap-x-8 gap-y-10 pb-[calc(var(--section)/2)] pt-32 md:pt-40">
-        <div className={project.hasPhoto ? "col-span-12 md:col-span-7" : "col-span-12 md:col-span-9"}>
+    <article className="wrap pb-[var(--section)] pt-28 md:pt-36">
+      <div className="inner">
+        <header className="text-center">
           <h1 className="display" data-rise>
             {project.title}
           </h1>
-          <p className="lead mt-8 max-w-[36rem]" data-rise style={{ ["--i" as string]: 1 }}>
+          <p className="lead mx-auto mt-5 max-w-[36rem] text-muted" data-rise style={{ ["--i" as string]: 1 }}>
             {project.shortDescription}
           </p>
           <p className="small mt-4 text-muted" data-rise style={{ ["--i" as string]: 2 }}>
             {category}, seit {project.year ?? "unbekannt"}, {statusLine[project.status]}
           </p>
-        </div>
+        </header>
+
         {project.hasPhoto && (
-          <div className="col-span-12 overflow-hidden md:col-span-5" data-rise style={{ ["--i" as string]: 2 }}>
+          <div className="mt-12 overflow-hidden rounded-[var(--radius)] md:mt-16" data-rise style={{ ["--i" as string]: 2 }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={project.coverImage}
               alt={project.title}
               width={1600}
               height={1067}
-              className="drift aspect-[4/5] w-full object-cover"
+              fetchPriority="high"
+              className="zoom-in aspect-[4/5] w-full object-cover sm:aspect-[16/9]"
             />
           </div>
         )}
-      </header>
 
-      <div className="wrap grid grid-cols-12 gap-x-8 gap-y-16 pb-[var(--section)]">
-        <section aria-labelledby="about-title" className="col-span-12 md:col-span-6">
-          <h2 id="about-title" className="head" data-reveal>
-            Worum es geht
-          </h2>
-          <p className="mt-6 max-w-[60ch]" data-reveal style={{ ["--i" as string]: 1 }}>
-            {project.longDescription}
-          </p>
-
-          {project.timeline.length > 0 && (
-            <ol className="mt-12 flex flex-col gap-6">
-              {project.timeline.map((t, i) => (
-                <li key={i} className="grid grid-cols-[5rem_1fr] gap-4" data-reveal style={{ ["--i" as string]: i + 2 }}>
-                  <span className="nums font-display lead">{t.date}</span>
-                  <span className="pt-1">{t.label}</span>
-                </li>
-              ))}
-            </ol>
-          )}
-        </section>
-
-        <aside className="col-span-12 flex flex-col gap-12 md:col-span-4 md:col-start-9">
-          <section aria-labelledby="team-title">
-            <h2 id="team-title" className="lead font-display" data-reveal>
-              Wer dran ist
+        <div className="mt-3 grid gap-3 md:grid-cols-3">
+          <section aria-labelledby="about-title" className="tile p-8 md:col-span-2 md:p-10" data-reveal>
+            <h2 id="about-title" className="text-[1.5rem] tracking-[-0.025em]">
+              Worum es geht
             </h2>
-            {team.length > 0 ? (
-              <ul className="mt-4 flex flex-col gap-1">
-                {team.map((m) => (
-                  <li key={m.slug} data-reveal>
-                    <Link
-                      href={`/team#${m.slug}`}
-                      className="group flex min-h-12 items-baseline justify-between gap-4 bg-surface px-4 py-3 transition-[background-color,transform] duration-200 hover:bg-raised active:scale-[0.99]"
-                    >
-                      <span className="font-medium group-hover:text-aqua">{m.name}</span>
-                      <span className="small text-muted">{m.role}</span>
-                    </Link>
+            <p className="mt-4 max-w-[60ch] text-ink/90">{project.longDescription}</p>
+
+            {project.timeline.length > 0 && (
+              <ol className="mt-8 flex flex-col gap-4">
+                {project.timeline.map((t, i) => (
+                  <li key={i} className="grid grid-cols-[4.5rem_1fr] gap-4">
+                    <span className="nums font-semibold">{t.date}</span>
+                    <span className="text-muted">{t.label}</span>
                   </li>
                 ))}
-              </ul>
-            ) : (
-              <p className="mt-4 text-muted">Noch niemand eingetragen.</p>
+              </ol>
             )}
           </section>
 
-          {project.techStack.length > 0 && (
-            <section aria-labelledby="stack-title">
-              <h2 id="stack-title" className="lead font-display">Womit</h2>
-              <p className="mt-3">{project.techStack.join(", ")}</p>
+          <aside className="tile flex flex-col gap-8 p-8" data-reveal style={{ ["--i" as string]: 1 }}>
+            <section aria-labelledby="team-title">
+              <h2 id="team-title" className="text-[1.1875rem] tracking-[-0.02em]">Wer dran ist</h2>
+              {team.length > 0 ? (
+                <ul className="mt-3 flex flex-col">
+                  {team.map((m) => (
+                    <li key={m.slug}>
+                      <Link
+                        href={`/team#${m.slug}`}
+                        className="group -mx-3 flex min-h-11 items-baseline justify-between gap-4 rounded-xl px-3 py-2 transition-colors hover:bg-raised"
+                      >
+                        <span className="font-medium">{m.name}</span>
+                        <span className="small text-muted">{m.role}</span>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="mt-3 text-muted">Noch niemand eingetragen.</p>
+              )}
             </section>
-          )}
 
-          {project.links.length > 0 && (
-            <section aria-labelledby="links-title">
-              <h2 id="links-title" className="lead font-display">Links</h2>
-              <ul className="mt-3 flex flex-col gap-1">
-                {project.links.map((l) => (
-                  <li key={l.url}>
-                    <a href={l.url} target="_blank" rel="noopener noreferrer" className="link-under inline-flex min-h-11 items-center">
-                      {l.label}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </section>
-          )}
+            {project.techStack.length > 0 && (
+              <section aria-labelledby="stack-title">
+                <h2 id="stack-title" className="text-[1.1875rem] tracking-[-0.02em]">Womit</h2>
+                <p className="mt-2 text-muted">{project.techStack.join(", ")}</p>
+              </section>
+            )}
 
-          <div className="flex flex-col items-start gap-4">
-            <Link href="/kontakt" className="btn">
-              Projekt anfragen
-            </Link>
-            <Link href="/projekte" className="link-under inline-flex min-h-11 items-center">
-              Alle Projekte ansehen
-            </Link>
-          </div>
-        </aside>
+            {project.links.length > 0 && (
+              <section aria-labelledby="links-title">
+                <h2 id="links-title" className="text-[1.1875rem] tracking-[-0.02em]">Links</h2>
+                <ul className="mt-2">
+                  {project.links.map((l) => (
+                    <li key={l.url}>
+                      <a href={l.url} target="_blank" rel="noopener noreferrer" className="link-under inline-flex min-h-11 items-center">
+                        {l.label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            )}
+
+            <div className="mt-auto flex flex-col items-start gap-2">
+              <Link href="/kontakt" className="btn">Projekt anfragen</Link>
+              <Link href="/projekte" className="link-under inline-flex min-h-11 items-center">
+                Alle Projekte
+              </Link>
+            </div>
+          </aside>
+        </div>
       </div>
     </article>
   );

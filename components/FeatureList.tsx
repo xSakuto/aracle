@@ -1,4 +1,4 @@
-// Leistungen als ruhige Zweispalten-Liste: Name links, Beschreibung rechts.
+// Leistungen als Kacheln.
 export default function FeatureList({
   title,
   intro,
@@ -9,25 +9,27 @@ export default function FeatureList({
   items: { name: string; desc: string }[];
 }) {
   return (
-    <section aria-label={title} className="wrap grid grid-cols-12 gap-x-8 py-[var(--section)]">
-      <div className="col-span-12 md:col-span-4">
-        <h2 className="head" data-reveal>
-          {title}
-        </h2>
-        {intro && (
-          <p className="mt-6 max-w-[28rem]" data-reveal style={{ ["--i" as string]: 1 }}>
-            {intro}
-          </p>
-        )}
+    <section aria-label={title} className="wrap py-[var(--section)]">
+      <div className="inner">
+        <div className="mx-auto max-w-[44rem] text-center">
+          <h2 className="head" data-reveal>
+            {title}
+          </h2>
+          {intro && (
+            <p className="lead mt-4 text-muted" data-reveal style={{ ["--i" as string]: 1 }}>
+              {intro}
+            </p>
+          )}
+        </div>
+        <dl className="mt-14 grid gap-3 sm:grid-cols-2">
+          {items.map((f, i) => (
+            <div key={f.name} className="tile p-8 md:p-10" data-reveal style={{ ["--i" as string]: i % 2 }}>
+              <dt className="text-[1.3125rem] font-semibold leading-tight tracking-[-0.02em]">{f.name}</dt>
+              <dd className="mt-3 text-muted">{f.desc}</dd>
+            </div>
+          ))}
+        </dl>
       </div>
-      <dl className="col-span-12 mt-12 grid gap-x-8 gap-y-12 sm:grid-cols-2 md:col-span-7 md:col-start-6 md:mt-0">
-        {items.map((f, i) => (
-          <div key={f.name} data-reveal style={{ ["--i" as string]: i + 1 }}>
-            <dt className="lead font-display">{f.name}</dt>
-            <dd className="mt-3 max-w-[34ch]">{f.desc}</dd>
-          </div>
-        ))}
-      </dl>
     </section>
   );
 }

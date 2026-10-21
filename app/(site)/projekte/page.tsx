@@ -17,23 +17,24 @@ const groupTitle: Record<string, string> = {
 export default function ProjektePage() {
   const withPhoto = projects.filter((p) => p.hasPhoto);
   return (
-    <div className="wrap pb-[var(--section)] pt-32 md:pt-40">
-      <div className="grid grid-cols-12 items-end gap-x-8 gap-y-8">
-        <h1 className="display col-span-12 md:col-span-7" data-rise>
-          Projekte
+    <div className="wrap pb-[var(--section)] pt-28 md:pt-36">
+      <div className="inner">
+      <div className="text-center">
+        <h1 className="display" data-rise>
+          Projekte.
         </h1>
-        <p className="lead col-span-12 md:col-span-5" data-rise style={{ ["--i" as string]: 1 }}>
+        <p className="lead mx-auto mt-5 max-w-[36rem] text-muted" data-rise style={{ ["--i" as string]: 1 }}>
           {projects.length} Marken und Projekte seit 2017. Was läuft, was geplant
           ist und was wir unterwegs gelernt haben.
         </p>
       </div>
 
       {/* Die drei Marken mit eigenen Fotos */}
-      <ul className="mt-16 grid gap-8 sm:grid-cols-3">
+      <ul className="mt-14 grid gap-3 sm:grid-cols-3">
         {withPhoto.map((p, i) => (
           <li key={p.slug} data-reveal style={{ ["--i" as string]: i }}>
-            <Link href={`/projekte/${p.slug}`} className="group block active:scale-[0.99] transition-transform">
-              <div className="overflow-hidden">
+            <Link href={`/projekte/${p.slug}`} className="tile group block p-3 transition-transform active:scale-[0.99]">
+              <div className="overflow-hidden rounded-[calc(var(--radius)-8px)]">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={p.coverImage}
@@ -44,8 +45,11 @@ export default function ProjektePage() {
                   className="aspect-[4/5] w-full object-cover transition-transform duration-700 ease-[var(--ease-out)] group-hover:scale-[1.04]"
                 />
               </div>
-              <p className="lead mt-4 font-display group-hover:text-aqua">{p.title}</p>
-              <p className="mt-1">{p.shortDescription}</p>
+              <div className="px-3 pb-3 pt-5">
+                <p className="text-[1.3125rem] font-semibold tracking-[-0.02em]">{p.title}</p>
+                <p className="mt-1 text-muted">{p.shortDescription}</p>
+                <p className="link-under mt-3 inline-block">Mehr erfahren</p>
+              </div>
             </Link>
           </li>
         ))}
@@ -56,7 +60,7 @@ export default function ProjektePage() {
         if (!group.length) return null;
         return (
           <section key={status} aria-label={groupTitle[status]} className="mt-[calc(var(--section)*0.6)]">
-            <h2 className="head mb-6" data-reveal>
+            <h2 className="mb-5 text-[clamp(1.5rem,1.2rem+1vw,2rem)] tracking-[-0.025em]" data-reveal>
               {groupTitle[status]}
             </h2>
             <ProjectIndex
@@ -71,6 +75,7 @@ export default function ProjektePage() {
           </section>
         );
       })}
+      </div>
     </div>
   );
 }

@@ -92,13 +92,14 @@ const sections: { n: string; title: string; body: React.ReactNode }[] = [
 
 export default function DatenschutzPage() {
   return (
-    <div className="wrap grid grid-cols-12 gap-x-8 gap-y-12 pb-[var(--section)] pt-32 md:pt-40">
+    <div className="wrap pb-[var(--section)] pt-28 md:pt-36">
+    <div className="inner grid grid-cols-12 gap-x-3 md:gap-x-8 gap-y-12">
       <div className="col-span-12 md:col-span-5">
-        <div className="md:sticky md:top-28">
+        <div className="md:sticky md:top-24">
           <h1 className="display" data-rise>
             Datenschutz
           </h1>
-          <p className="lead mt-8 max-w-[28rem]" data-rise style={{ ["--i" as string]: 1 }}>
+          <p className="lead mt-5 max-w-[28rem] text-muted" data-rise style={{ ["--i" as string]: 1 }}>
             Kurz gesagt: kein Tracking, keine Cookies für Besucher. Gespeichert
             wird nur, was der Betrieb und der Team-Login brauchen.
           </p>
@@ -107,14 +108,15 @@ export default function DatenschutzPage() {
       <div className="col-span-12 flex flex-col gap-12 md:col-span-6 md:col-start-7 md:pt-4">
         {sections.map((s) => (
           <section key={s.n} aria-label={s.title} data-reveal>
-            <h2 className="lead font-display">{s.title}</h2>
-            <div className="mt-3">{s.body}</div>
+            <h2 className="text-[1.3125rem] tracking-[-0.02em]">{s.title}</h2>
+            <div className="mt-3 text-ink/85">{s.body}</div>
           </section>
         ))}
         <p className="small text-muted">
           Stand: Oktober 2026. Gemäss Schweizer DSG (SR 235.1) sowie DSGVO (EU) 2016/679.
         </p>
       </div>
+    </div>
     </div>
   );
 }

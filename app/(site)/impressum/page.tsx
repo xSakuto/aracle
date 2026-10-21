@@ -39,12 +39,13 @@ const rows: [string, React.ReactNode][] = [
 
 export default function ImpressumPage() {
   return (
-    <div className="wrap grid grid-cols-12 gap-x-8 gap-y-12 pb-[var(--section)] pt-32 md:pt-40">
+    <div className="wrap pb-[var(--section)] pt-28 md:pt-36">
+    <div className="inner grid grid-cols-12 gap-x-3 md:gap-x-8 gap-y-12">
       <div className="col-span-12 md:col-span-6">
         <h1 className="display" data-rise>
           Impressum
         </h1>
-        <p className="lead mt-8 max-w-[28rem]" data-rise style={{ ["--i" as string]: 1 }}>
+        <p className="lead mt-5 max-w-[28rem] text-muted" data-rise style={{ ["--i" as string]: 1 }}>
           Wer hinter aracle.ch steht und wie du uns erreichst.
         </p>
       </div>
@@ -59,6 +60,7 @@ export default function ImpressumPage() {
       </dl>
       <p className="small mt-12 text-muted">Gemäss Art. 3 lit. s UWG und DSG Schweiz.</p>
       </div>
+    </div>
     </div>
   );
 }

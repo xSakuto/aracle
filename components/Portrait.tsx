@@ -40,11 +40,10 @@ export default function Portrait({
     >
       <span
         aria-hidden
-        className="display -mb-[0.1em] pl-[6%] leading-none"
+        data-initials={initials(name)}
+        className="portrait-initials display -mb-[0.1em] pl-[6%] leading-none"
         style={{ color: `color-mix(in oklab, ${accent} 70%, #f3f4f2)` }}
-      >
-        {initials(name)}
-      </span>
+      />
     </div>
   );
 }

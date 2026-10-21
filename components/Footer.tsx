@@ -20,6 +20,14 @@ const columns: { title: string; links: [string, string][] }[] = [
     ],
   },
   {
+    title: "Kontakt",
+    links: [
+      ["info@arcl.ch", "mailto:info@arcl.ch"],
+      ["Discord", "https://discord.gg/BgpKdzBYtD"],
+      ["Instagram", "https://www.instagram.com/aracle.ch/"],
+    ],
+  },
+  {
     title: "Intern",
     links: [
       ["Team-Login", "/login"],
@@ -29,72 +37,59 @@ const columns: { title: string; links: [string, string][] }[] = [
   },
 ];
 
-const places: [string, string][] = [
-  ["info@arcl.ch", "mailto:info@arcl.ch"],
-  ["Discord", "https://discord.gg/BgpKdzBYtD"],
-  ["Instagram", "https://www.instagram.com/aracle.ch/"],
-];
-
 export default function Footer() {
   return (
-    <footer className="wrap overflow-hidden bg-field pb-8 pt-16 md:pt-24">
-      <p
-        aria-hidden
-        className="font-display select-none text-[21.5vw] font-medium uppercase leading-[0.78] tracking-[-0.04em] text-ink"
-      >
-        Aracle
-      </p>
+    <footer className="wrap bg-surface pb-8 pt-14 text-[0.8125rem] text-muted">
+      <div className="inner">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/Brand_assets/aracle-logo.png"
+          alt="Aracle"
+          width={1111}
+          height={260}
+          className="h-6 w-auto bg-transparent"
+        />
+        <p className="mt-4 max-w-md">
+          Creative Studio aus Ennenda, Kanton Glarus. Video, Design, Web und
+          Hosting, seit 2017.
+        </p>
 
-      <div className="mt-16 grid gap-12 md:mt-20 md:grid-cols-12 md:gap-x-8">
-        <div className="md:col-span-5">
-          <h2 className="sr-only">Kontakt</h2>
-          <ul className="flex flex-col gap-2">
-            {places.map(([label, href]) => (
-              <li key={href}>
-                <a
-                  href={href}
-                  {...(href.startsWith("http")
-                    ? { target: "_blank", rel: "noopener noreferrer" }
-                    : {})}
-                  className="lead link text-aqua"
-                >
-                  {label}
-                </a>
-              </li>
-            ))}
-          </ul>
-          <p className="mt-6 max-w-sm text-muted">
-            Creative Studio aus Ennenda, Kanton Glarus. Seit 2017.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-2 gap-10 sm:grid-cols-3 md:col-span-7">
+        <div className="mt-10 grid grid-cols-2 gap-x-8 gap-y-8 sm:grid-cols-4">
           {columns.map((c) => (
             <div key={c.title}>
-              <h3 className="small font-sans font-medium tracking-normal text-muted">
+              <h2 className="text-[0.8125rem] font-semibold tracking-normal text-ink">
                 {c.title}
-              </h3>
-              <ul className="mt-3 flex flex-col gap-2">
-                {c.links.map(([label, href]) => (
-                  <li key={href}>
-                    <Link href={href} className="link">
-                      {label}
-                    </Link>
-                  </li>
-                ))}
+              </h2>
+              <ul className="mt-2">
+                {c.links.map(([label, href]) => {
+                  const ext = href.startsWith("http") || href.startsWith("mailto");
+                  return (
+                    <li key={href}>
+                      {ext ? (
+                        <a
+                          href={href}
+                          {...(href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                          className="inline-flex min-h-8 items-center transition-colors hover:text-ink"
+                        >
+                          {label}
+                        </a>
+                      ) : (
+                        <Link href={href} className="inline-flex min-h-8 items-center transition-colors hover:text-ink">
+                          {label}
+                        </Link>
+                      )}
+                    </li>
+                  );
+                })}
               </ul>
             </div>
           ))}
         </div>
-      </div>
 
-      <div className="small mt-20 flex flex-wrap items-center justify-between gap-4 text-muted md:mt-24">
-        <p>
-          © {new Date().getFullYear()} Aracle, Ennenda. Gemacht in der Schweiz.
-        </p>
-        <a href="#top" className="link">
-          Nach oben
-        </a>
+        <div className="mt-10 flex flex-wrap items-center justify-between gap-4 border-t border-[#2a2a2d] pt-6">
+          <p>© {new Date().getFullYear()} Aracle, Ennenda. Gemacht in der Schweiz.</p>
+          <a href="#top" className="transition-colors hover:text-ink">Nach oben</a>
+        </div>
       </div>
     </footer>
   );
