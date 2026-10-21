@@ -30,7 +30,7 @@ export default function ProjektePage() {
       </div>
 
       {/* Die drei Marken mit eigenen Fotos */}
-      <ul className="mt-14 grid gap-3 sm:grid-cols-3">
+      <ul className="mt-14 grid gap-3 sm:grid-cols-2">
         {withPhoto.map((p, i) => (
           <li key={p.slug} data-reveal style={{ ["--i" as string]: i }}>
             <Link href={`/projekte/${p.slug}`} className="tile group block p-3 transition-transform active:scale-[0.99]">

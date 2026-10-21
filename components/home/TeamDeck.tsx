@@ -2,41 +2,41 @@ import Link from "next/link";
 import Portrait from "@/components/Portrait";
 import type { TeamMember } from "@/lib/team";
 
-// Das Team als lockerer Kartenfächer. Beim Überfahren richtet sich eine Karte auf.
+// Üses Team: ruhiges Raster, beim Überfahren hebt sich eine Karte.
 export default function TeamDeck({ members }: { members: TeamMember[] }) {
-  const tilts = [-5, 3, -2, 4, -3, 2, -4, 5];
   return (
-    <section aria-labelledby="team-title" data-shape="helix" className="wrap py-[var(--section)]">
+    <section aria-labelledby="team-title" className="wrap py-[var(--section)]">
       <div className="flex flex-wrap items-end justify-between gap-6">
-        <h2 id="team-title" className="mega" data-split>
-          Das Team
-        </h2>
-        <Link href="/team" className="link-under inline-flex min-h-11 items-center font-semibold" data-cursor="Alle">
+        <div>
+          <p className="kicker text-aqua">Team</p>
+          <h2 id="team-title" className="display mt-4" data-split>
+            Üses Team
+          </h2>
+        </div>
+        <Link href="/team" className="link-under inline-flex min-h-11 items-center font-medium" data-cursor="Alli">
           Alle mit ihren Projekten
         </Link>
       </div>
 
-      <ul className="mt-14 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6 lg:gap-0">
+      <ul className="mt-12 grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-3 lg:grid-cols-6">
         {members.map((m, i) => (
-          <li
-            key={m.id}
-            data-reveal
-            style={{ ["--i" as string]: i % 3, ["--tilt" as string]: `${tilts[i % tilts.length]}deg` }}
-            className="lg:-mx-2"
-          >
+          <li key={m.id} data-reveal style={{ ["--i" as string]: i % 3 }}>
             <Link
               href={`/team#${m.slug}`}
               data-cursor={m.name.split(" ")[0]}
-              className="group block transition-transform duration-500 ease-[var(--ease-out)] hover:z-10 hover:!rotate-0 hover:-translate-y-4 lg:[transform:rotate(var(--tilt))]"
+              className="group block transition-transform duration-500 ease-[var(--ease-out)] hover:-translate-y-2"
             >
-              <div className="overflow-hidden rounded-[var(--radius)] bg-surface p-2 shadow-[0_30px_60px_-30px_rgba(0,255,255,0.25)]">
-                <div className="overflow-hidden rounded-[calc(var(--radius)-6px)]">
-                  <Portrait name={m.name} photo={m.photo} accent={m.accent} />
-                </div>
-                <div className="px-2 pb-2 pt-3">
-                  <p className="font-bold uppercase leading-tight [font-stretch:115%]">{m.name}</p>
-                  <p className="small mt-0.5 text-muted">{m.role}</p>
-                </div>
+              <div className="overflow-hidden rounded-[var(--radius)]">
+                <Portrait
+                  name={m.name}
+                  photo={m.photo}
+                  accent={m.accent}
+                  className="grayscale-[35%] transition-[filter,transform] duration-700 group-hover:scale-[1.03] group-hover:grayscale-0"
+                />
+              </div>
+              <div className="mt-3 border-t border-line pt-3">
+                <p className="font-semibold tracking-[-0.015em]">{m.name}</p>
+                <p className="small mt-0.5 text-muted">{m.role}</p>
               </div>
             </Link>
           </li>

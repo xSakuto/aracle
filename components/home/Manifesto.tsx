@@ -1,15 +1,15 @@
-// Wofür Aracle steht, Wort für Wort beim Scrollen. Dahinter werden die Partikel zu Bergen.
+// Wofür Aracle steht, Wort für Wort beim Scrollen.
 export default function Manifesto() {
   return (
-    <section aria-labelledby="manifest-title" data-shape="mountains" className="wrap py-[var(--section)]">
-      <h2 id="manifest-title" className="kicker text-aqua">Wer wir sind</h2>
+    <section aria-labelledby="manifest-title" className="wrap grid gap-8 py-[var(--section)] md:grid-cols-12">
+      <h2 id="manifest-title" className="kicker text-aqua md:col-span-3 md:pt-3">Wer mir sind</h2>
       <p
         data-scrub-words
-        className="mt-8 max-w-[22ch] text-[clamp(2rem,1rem+3.6vw,5rem)] font-extrabold uppercase leading-[0.98] tracking-[-0.01em] [font-stretch:115%]"
+        className="max-w-[26ch] text-[clamp(1.875rem,1rem+2.8vw,4rem)] font-[560] leading-[1.06] tracking-[-0.035em] md:col-span-9"
       >
-        Ein kleines Studio zwischen Glärnisch und Linth. Wir filmen, gestalten,
-        programmieren und betreiben eigene Server. Und wir bauen eigene Marken,
-        um zu zeigen, dass es funktioniert.
+        Ein kleines Studio zwischen Glärnisch und Linth. Wir filmen,
+        gestalten, programmieren und betreiben unsere eigenen Server.
+        Ehrlich, sauber, mit Schweizer Präzision und ohne leere Versprechen.
       </p>
     </section>
   );

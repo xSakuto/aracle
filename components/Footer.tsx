@@ -1,4 +1,5 @@
 import Link from "next/link";
+import SwissCross from "@/components/swiss/SwissCross";
 
 const columns: { title: string; links: [string, string][] }[] = [
   { title: "Studio", links: [["Projekte", "/projekte"], ["Team", "/team"], ["Story", "/history"], ["Kontakt", "/kontakt"]] },
@@ -9,7 +10,7 @@ const columns: { title: string; links: [string, string][] }[] = [
 
 export default function Footer() {
   return (
-    <footer data-shape="wave" className="wrap relative overflow-hidden pb-6 pt-[var(--section)]">
+    <footer className="wrap relative overflow-hidden border-t border-line pb-6 pt-16">
       <div className="grid grid-cols-2 gap-x-8 gap-y-10 sm:grid-cols-4">
         {columns.map((c) => (
           <div key={c.title}>
@@ -35,12 +36,15 @@ export default function Footer() {
         ))}
       </div>
 
-      <p aria-hidden className="mt-16 select-none text-center text-[21.5vw] font-black uppercase leading-[0.8] tracking-[-0.03em] [font-stretch:125%]">
+      <p aria-hidden className="mt-16 select-none text-[22vw] font-[650] leading-[0.8] tracking-[-0.06em] text-ink">
         Aracle
       </p>
 
       <div className="small mt-6 flex flex-wrap items-center justify-between gap-4 text-muted">
-        <p>© {new Date().getFullYear()} Aracle, Ennenda. Gemacht in der Schweiz.</p>
+        <p className="flex items-center gap-2">
+          <SwissCross className="h-3.5 w-3.5" />
+          © {new Date().getFullYear()} Aracle, CH-8755 Ennenda. Gmacht im Glarnerland.
+        </p>
         <a href="#top" className="transition-colors hover:text-ink">Nach oben</a>
       </div>
     </footer>

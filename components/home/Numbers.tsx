@@ -8,16 +8,16 @@ export default function Numbers({ people, projects }: { people: number; projects
     { value: people, from: 0, label: "Leute im Team" },
   ];
   return (
-    <section aria-labelledby="numbers-title" data-shape="room" className="wrap py-[var(--section)]">
+    <section aria-labelledby="numbers-title" className="wrap py-[var(--section)]">
       <h2 id="numbers-title" className="kicker text-aqua">Vom Minecraft-Server zum Studio</h2>
-      <dl className="mt-10 grid gap-12 md:grid-cols-3">
+      <dl className="mt-10 grid gap-10 md:grid-cols-3 md:gap-8">
         {facts.map((f) => (
           <div key={f.label} data-reveal>
             <dt className="sr-only">{f.label}</dt>
             <dd
               data-count={f.value}
               data-count-from={f.from}
-              className="nums text-[clamp(4.5rem,2rem+8vw,10rem)] font-black leading-[0.85] tracking-[-0.03em] [font-stretch:125%]"
+              className="nums border-t border-line pt-6 text-[clamp(4rem,2rem+6vw,8rem)] font-[600] leading-[0.9] tracking-[-0.05em]"
             >
               {f.value}
             </dd>

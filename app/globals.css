@@ -1,17 +1,20 @@
 @import "tailwindcss";
 @import "@fontsource-variable/mona-sans/wdth.css";
 
-/* Aracle: dunkel, laut, in Bewegung. Aqua ist die Signalfarbe,
-   ganze Abschnitte können darin "fluten". */
+/* Aracle aus dem Glarnerland: Nachtschiefer als Grund, Gletscherblau vom
+   Klöntalersee als Akzent, Alpenglühen sparsam, Schweizer Rot nur fürs Kreuz. */
 @theme {
-  --color-bg: #050607;
-  --color-surface: #0f1113;
-  --color-raised: #1a1d20;
-  --color-field: #0b1416;
-  --color-ink: #f2f5f4;
-  --color-muted: #9aa3a6;
-  --color-aqua: #00ffff;
-  --color-accent-ink: #00191a;
+  --color-bg: #0b1115;
+  --color-surface: #121a1f;
+  --color-raised: #1b252b;
+  --color-field: #0f171b;
+  --color-ink: #eef3f3;
+  --color-muted: #9aa8ad;
+  --color-line: #26323a;
+  --color-aqua: #8fd6d3;      /* Gletscherblau, ersetzt das Neon */
+  --color-glow: #f2a98f;      /* Alpenglühen */
+  --color-swiss: #d52b1e;
+  --color-accent-ink: #0b1418;
   --color-danger: #ff8a7a;
 
   --font-display: "Mona Sans Variable", "Mona Sans", system-ui, sans-serif;
@@ -23,12 +26,12 @@
   --step-body: 1.0625rem;
   --step-lead: clamp(1.1875rem, 1rem + 0.6vw, 1.5rem);
   --step-head: clamp(2rem, 1.2rem + 2.8vw, 3.5rem);
-  --step-display: clamp(2.75rem, 0.5rem + 8vw, 9.5rem);
-  --step-mega: clamp(3rem, 0.5rem + 9.6vw, 12rem);
+  --step-display: clamp(2.5rem, 0.8rem + 5.6vw, 7rem);
+  --step-mega: clamp(3rem, 0.6rem + 8vw, 10rem);
 
   --margin: clamp(1.25rem, 4vw, 3rem);
   --section: clamp(5rem, 9vw, 8.5rem);
-  --radius: 22px;
+  --radius: 6px;
 
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-in-out: cubic-bezier(0.76, 0, 0.24, 1);
@@ -71,9 +74,10 @@ img { background: var(--color-surface); }
   .wrap { padding-inline: var(--margin); }
   .inner { max-width: 80rem; margin-inline: auto; }
   /* Titel: extrabreit, extrafett, Versalien */
-  .display { font-size: var(--step-display); line-height: 0.9; letter-spacing: -0.01em; font-weight: 850; font-stretch: 125%; text-transform: uppercase; }
-  .mega { font-size: var(--step-mega); line-height: 0.82; letter-spacing: -0.02em; font-weight: 900; font-stretch: 125%; text-transform: uppercase; }
-  .head { font-size: var(--step-head); line-height: 0.95; letter-spacing: -0.01em; font-weight: 800; font-stretch: 120%; text-transform: uppercase; }
+  /* Titel: ruhig, gross, Gross-Klein-Schreibung, eng gesetzt */
+  .display { font-size: var(--step-display); line-height: 0.95; letter-spacing: -0.04em; font-weight: 640; font-stretch: 100%; }
+  .mega { font-size: var(--step-mega); line-height: 0.9; letter-spacing: -0.045em; font-weight: 650; font-stretch: 100%; }
+  .head { font-size: var(--step-head); line-height: 1; letter-spacing: -0.03em; font-weight: 640; font-stretch: 100%; }
   .kicker { font-size: 0.8125rem; font-weight: 600; font-stretch: 110%; letter-spacing: 0.08em; text-transform: uppercase; }
   .lead { font-size: var(--step-lead); line-height: 1.33; letter-spacing: -0.015em; }
   .small { font-size: var(--step-small); line-height: 1.43; letter-spacing: -0.01em; }
@@ -83,18 +87,18 @@ img { background: var(--color-surface); }
   /* Pill-Buttons: Aqua für die Hauptaktion, grau für alles andere. */
   .btn {
     display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem;
-    min-height: 2.75rem; padding: 0 1.4rem; border-radius: 999px;
+    min-height: 2.75rem; padding: 0 1.3rem; border-radius: var(--radius);
     background: var(--color-aqua); color: var(--color-accent-ink);
     font-size: 1rem; font-weight: 500; letter-spacing: -0.01em; white-space: nowrap;
     transition: transform 140ms var(--ease-out), background-color 180ms ease;
   }
-  .btn:hover { background: #7ffcff; }
+  .btn:hover { background: var(--color-ink); }
   .btn:active { transform: scale(0.97); }
   .btn[disabled] { opacity: 0.5; pointer-events: none; }
 
   .btn-quiet {
     display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem;
-    min-height: 2.75rem; padding: 0 1.4rem; border-radius: 999px;
+    min-height: 2.75rem; padding: 0 1.3rem; border-radius: var(--radius);
     background: #2a2a2d; color: var(--color-ink);
     font-size: 1rem; font-weight: 500; letter-spacing: -0.01em; white-space: nowrap;
     transition: transform 140ms var(--ease-out), background-color 180ms ease;

@@ -1,37 +1,26 @@
-const items = ["Video", "Design", "Web", "Hosting", "Immobilien", "Content", "Drohne", "Branding"];
+import SwissCross from "@/components/swiss/SwissCross";
 
-function Peak() {
-  // Kleiner Berggipfel als Trenner, aus dem Aracle-Zeichen abgeleitet
-  return (
-    <svg viewBox="0 0 40 28" className="h-[0.55em] w-auto shrink-0" aria-hidden>
-      <path d="M0 28 L14 6 L20 15 L26 4 L40 28 Z" fill="currentColor" />
-    </svg>
-  );
-}
+const items = ["Video", "Design", "Web", "Hosting", "Immobilien", "Drohne", "Branding", "Social Content"];
 
-// Aqua-Band, leicht schräg, läuft endlos und zieht beim Scrollen an.
-export default function Marquee({ reverse = false, tilt = -2.5 }: { reverse?: boolean; tilt?: number }) {
+// Ruhiges Laufband zwischen feinen Linien, Schweizerkreuz als Trenner.
+export default function Marquee({ reverse = false }: { reverse?: boolean }) {
   const row = (
     <>
       {items.map((t) => (
         <span key={t} className="flex items-center gap-10">
           <span>{t}</span>
-          <Peak />
+          <SwissCross className="h-[0.5em] w-[0.5em] opacity-90" />
         </span>
       ))}
     </>
   );
   return (
-    <div className="relative z-10 -mx-4 overflow-hidden py-10" aria-hidden>
-      <div
-        data-marquee={reverse ? "reverse" : ""}
-        className="marquee bg-aqua py-4 text-accent-ink md:py-5"
-        style={{ transform: `rotate(${tilt}deg)` }}
-      >
-        <div className="marquee-track text-[clamp(2rem,1rem+4vw,4.5rem)] font-black uppercase leading-none [font-stretch:125%]">
+    <div className="relative z-10 border-y border-line py-5" aria-hidden>
+      <div data-marquee={reverse ? "reverse" : ""} className="marquee">
+        <div className="marquee-track text-[clamp(1.5rem,1rem+2vw,2.75rem)] font-medium leading-none tracking-[-0.03em] text-ink/80">
           {row}
         </div>
-        <div className="marquee-track text-[clamp(2rem,1rem+4vw,4.5rem)] font-black uppercase leading-none [font-stretch:125%]">
+        <div className="marquee-track text-[clamp(1.5rem,1rem+2vw,2.75rem)] font-medium leading-none tracking-[-0.03em] text-ink/80">
           {row}
         </div>
       </div>

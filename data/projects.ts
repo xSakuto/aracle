@@ -53,7 +53,6 @@ export const projects: Project[] = [
   {
     slug: "highside",
     year: "2024",
-    hasPhoto: true,
     title: "Highside",
     category: "Fashion · Brand",
     status: "Aktiv",
