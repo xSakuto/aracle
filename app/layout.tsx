@@ -1,12 +1,16 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+import Motion from "@/components/Motion";
 
 export const metadata: Metadata = {
-  title: "Aracle · Creative Studio",
+  title: "Aracle · Creative Studio aus Glarus",
   description:
-    "Aracle ist ein Creative Studio für Video, Design, Web und Hosting mit eigenen Marken im Portfolio.",
+    "Aracle ist ein Creative Studio aus Ennenda, Glarus: Video, Design, Web und Hosting, dazu eigene Marken wie Highside, Aracle Living und Aracle Cloud.",
+};
+
+export const viewport: Viewport = {
+  themeColor: "#0a0a0b",
+  colorScheme: "dark",
 };
 
 export default function RootLayout({
@@ -15,11 +19,23 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="de">
-      <body>
-        <Navbar />
-        <main>{children}</main>
-        <Footer />
+    <html lang="de-CH" className="[color-scheme:dark]" suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: "document.documentElement.classList.add('js')",
+          }}
+        />
+      </head>
+      <body id="top">
+        <a
+          href="#inhalt"
+          className="sr-only z-[60] bg-aqua px-4 py-3 text-accent-ink focus:not-sr-only focus:fixed focus:left-4 focus:top-4"
+        >
+          Zum Inhalt springen
+        </a>
+        {children}
+        <Motion />
       </body>
     </html>
   );

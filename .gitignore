@@ -26,3 +26,5 @@ public/Brand_assets/images/heros/*hero#*
 
 .vercel
 .env*
+!.env.example
+.taste-skill/

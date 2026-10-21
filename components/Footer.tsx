@@ -1,85 +1,100 @@
 import Link from "next/link";
 
-function FooterCol({
-  title,
-  links,
-}: {
-  title: string;
-  links: [string, string][];
-}) {
-  return (
-    <div>
-      <h4 className="mb-5 text-xs font-semibold uppercase tracking-[0.2em] text-white/50">
-        {title}
-      </h4>
-      <ul className="flex flex-col gap-3">
-        {links.map(([label, href]) => (
-          <li key={href + label}>
-            <Link
-              href={href}
-              className="text-sm text-muted transition-colors hover:text-white"
-            >
-              {label}
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
+const columns: { title: string; links: [string, string][] }[] = [
+  {
+    title: "Studio",
+    links: [
+      ["Projekte", "/projekte"],
+      ["Team", "/team"],
+      ["Story", "/history"],
+      ["Kontakt", "/kontakt"],
+    ],
+  },
+  {
+    title: "Marken",
+    links: [
+      ["Highside", "/projekte/highside"],
+      ["Aracle Living", "/living"],
+      ["Aracle Cloud", "/hosting"],
+      ["Swizzly", "/projekte/swizzly"],
+    ],
+  },
+  {
+    title: "Intern",
+    links: [
+      ["Team-Login", "/login"],
+      ["Impressum", "/impressum"],
+      ["Datenschutz", "/datenschutz"],
+    ],
+  },
+];
+
+const places: [string, string][] = [
+  ["info@arcl.ch", "mailto:info@arcl.ch"],
+  ["Discord", "https://discord.gg/BgpKdzBYtD"],
+  ["Instagram", "https://www.instagram.com/aracle.ch/"],
+];
 
 export default function Footer() {
   return (
-    <footer className="border-t border-line px-6 pb-14 pt-20 md:px-12">
-      <div className="mx-auto grid max-w-[1320px] gap-12 md:grid-cols-[2.2fr_1fr_1fr]">
-        <div>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/Brand_assets/aracle-logo.png"
-            alt="Aracle"
-            className="mb-6 h-9 w-auto"
-          />
-          <p className="max-w-[28rem] text-sm leading-relaxed text-muted">
-            Creative Studio für Video, Design, Web und Hosting. Eigene Marken,
-            echte Projekte, aus einer Hand.
+    <footer className="wrap overflow-hidden bg-field pb-8 pt-16 md:pt-24">
+      <p
+        aria-hidden
+        className="font-display select-none text-[21.5vw] font-medium uppercase leading-[0.78] tracking-[-0.04em] text-ink"
+      >
+        Aracle
+      </p>
+
+      <div className="mt-16 grid gap-12 md:mt-20 md:grid-cols-12 md:gap-x-8">
+        <div className="md:col-span-5">
+          <h2 className="sr-only">Kontakt</h2>
+          <ul className="flex flex-col gap-2">
+            {places.map(([label, href]) => (
+              <li key={href}>
+                <a
+                  href={href}
+                  {...(href.startsWith("http")
+                    ? { target: "_blank", rel: "noopener noreferrer" }
+                    : {})}
+                  className="lead link text-aqua"
+                >
+                  {label}
+                </a>
+              </li>
+            ))}
+          </ul>
+          <p className="mt-6 max-w-sm text-muted">
+            Creative Studio aus Ennenda, Kanton Glarus. Seit 2017.
           </p>
         </div>
-        <FooterCol
-          title="Studio"
-          links={[
-            ["Projekte", "/projekte"],
-            ["Team", "/team"],
-            ["Story", "/history"],
-            ["Kontakt", "/kontakt"],
-          ]}
-        />
-        <FooterCol
-          title="Marken"
-          links={[
-            ["Highside", "/projekte/highside"],
-            ["Swizzly", "/projekte/swizzly"],
-            ["Aracle Living", "/projekte/aracle-living"],
-            ["Aracle Cloud", "/projekte/aracle-cloud-hosting"],
-          ]}
-        />
-      </div>
-      <div className="mx-auto mt-16 flex max-w-[1320px] flex-wrap items-center justify-between gap-6 border-t border-line pt-8">
-        <p className="flex items-center gap-2 text-xs text-muted">
-          <span className="inline-flex h-3.5 w-3.5 items-center justify-center rounded-[2px] bg-[#d52b1e]">
-            <svg viewBox="0 0 32 32" className="h-2 w-2" fill="white">
-              <path d="M13 6h6v7h7v6h-7v7h-6v-7H6v-6h7z" />
-            </svg>
-          </span>
-          Made in Switzerland · © {new Date().getFullYear()} Aracle
-        </p>
-        <div className="flex gap-5 text-xs text-muted">
-          <Link href="/datenschutz" className="hover:text-white">
-            Datenschutz
-          </Link>
-          <Link href="/impressum" className="hover:text-white">
-            Impressum
-          </Link>
+
+        <div className="grid grid-cols-2 gap-10 sm:grid-cols-3 md:col-span-7">
+          {columns.map((c) => (
+            <div key={c.title}>
+              <h3 className="small font-sans font-medium tracking-normal text-muted">
+                {c.title}
+              </h3>
+              <ul className="mt-3 flex flex-col gap-2">
+                {c.links.map(([label, href]) => (
+                  <li key={href}>
+                    <Link href={href} className="link">
+                      {label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
+      </div>
+
+      <div className="small mt-20 flex flex-wrap items-center justify-between gap-4 text-muted md:mt-24">
+        <p>
+          © {new Date().getFullYear()} Aracle, Ennenda. Gemacht in der Schweiz.
+        </p>
+        <a href="#top" className="link">
+          Nach oben
+        </a>
       </div>
     </footer>
   );

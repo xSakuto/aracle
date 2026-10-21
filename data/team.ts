@@ -1,10 +1,8 @@
-// Team-Daten (Entwurf — Bios/Rollen bei Bedarf anpassen). Wir wachsen 🙂
-export type SocialType = "x" | "discord" | "instagram";
-export interface Social {
-  type: SocialType;
-  url: string;
-}
-export interface Member {
+// Statische Team-Daten. Werden nur genutzt, solange Supabase nicht
+// eingerichtet ist, und dienen als Vorlage für supabase/seed.sql.
+import type { Social } from "@/data/socials";
+
+export interface StaticMember {
   slug: string;
   name: string;
   role: string;
@@ -18,7 +16,7 @@ export interface Member {
 
 const DISCORD = "https://discord.gg/BgpKdzBYtD";
 
-export const team: Member[] = [
+export const team: StaticMember[] = [
   {
     slug: "joel",
     name: "Joel Nef",
@@ -39,7 +37,7 @@ export const team: Member[] = [
     name: "Tim Mockweiss",
     role: "Developer & Co-Director",
     bio: "Entwickler und Co-Director. Verantwortlich für Cloud-Infrastruktur, Server-Systeme und die technische Umsetzung der Projekte.",
-    accent: "#22c55e",
+    accent: "#6bbf59",
     initials: "TM",
     socials: [{ type: "discord", url: DISCORD }],
   },
@@ -48,7 +46,7 @@ export const team: Member[] = [
     name: "Noah",
     role: "Web-Developer",
     bio: "Web-Entwickler im Studio. Bringt technisches Know-how für Web- und Softwareprojekte ein und unterstützt bei der Umsetzung.",
-    accent: "#38bdf8",
+    accent: "#5aa9e6",
     initials: "N",
     socials: [{ type: "discord", url: DISCORD }],
   },
@@ -56,8 +54,8 @@ export const team: Member[] = [
     slug: "jan-waser",
     name: "Jan Waser",
     role: "Creative & Photography",
-    bio: "Creative bei Aracle. Zuständig für Grafik, Design und visuelle Gestaltung sowie die Leitung von Aracle Immo.",
-    accent: "#3b82f6",
+    bio: "Creative bei Aracle. Zuständig für Grafik, Design und visuelle Gestaltung sowie die Leitung von Aracle Living.",
+    accent: "#7c93c9",
     initials: "JW",
     socials: [
       { type: "instagram", url: "https://www.instagram.com/aracle.ch/" },
@@ -69,7 +67,7 @@ export const team: Member[] = [
     name: "Lars",
     role: "Community",
     bio: "Betreut die Community rund um den Zelda DE Server. Theorien, Speedruns und das Miteinander auf Discord.",
-    accent: "#a855f7",
+    accent: "#e48aa3",
     initials: "L",
     socials: [{ type: "discord", url: DISCORD }],
   },
@@ -78,7 +76,7 @@ export const team: Member[] = [
     name: "Tim",
     role: "Community & Moderation",
     bio: "Hält die Community zusammen. Verantwortlich für Moderation, Support und das Miteinander auf den Aracle-Kanälen.",
-    accent: "#f59e0b",
+    accent: "#d9a441",
     initials: "T",
     socials: [{ type: "discord", url: DISCORD }],
   },

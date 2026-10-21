@@ -1,34 +1,33 @@
 import Link from "next/link";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 
 export default function NotFound() {
   return (
-    <section className="relative flex min-h-screen flex-col items-center justify-center px-6 text-center">
-      <div
-        className="absolute inset-0 -z-20 bg-cover bg-center"
-        style={{ backgroundImage: "url(/Brand_assets/arcl-header.jpg)" }}
-      />
-      <div
-        className="absolute inset-0 -z-10"
-        style={{
-          background:
-            "linear-gradient(180deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.7) 60%, var(--color-bg) 100%)",
-        }}
-      />
-      <p className="text-sm font-semibold uppercase tracking-[0.2em] text-aqua [text-shadow:0_2px_8px_rgba(0,0,0,0.6)]">
-        Fehler 404
-      </p>
-      <h1 className="mt-4 text-[clamp(2.8rem,9vw,7rem)] font-bold leading-none tracking-[-0.04em] [text-shadow:0_4px_24px_rgba(0,0,0,0.5)]">
-        Seite nicht gefunden<span className="text-gradient">.</span>
-      </h1>
-      <p className="mt-6 max-w-md text-lg text-white/75 [text-shadow:0_2px_12px_rgba(0,0,0,0.5)]">
-        Diese Seite gibt es nicht (mehr). Zurück ins Studio?
-      </p>
-      <Link
-        href="/"
-        className="btn-primary mt-9"
-      >
-        Zur Startseite →
-      </Link>
-    </section>
+    <>
+      <Navbar />
+      <main className="wrap grid min-h-svh grid-cols-12 items-center gap-x-8 pb-16 pt-32">
+        <div className="col-span-12 md:col-span-7">
+          <h1 className="display">Seite nicht gefunden</h1>
+          <p className="lead mt-8 max-w-[34rem]">
+            Diese Adresse gibt es nicht oder nicht mehr. Vielleicht findest du
+            es bei den Projekten.
+          </p>
+          <div className="mt-10 flex flex-wrap gap-3">
+            <Link href="/projekte" className="btn">Projekte ansehen</Link>
+            <Link href="/" className="btn-quiet">Zur Startseite</Link>
+          </div>
+        </div>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/Brand_assets/arcl-header.jpg"
+          alt="Klöntalersee im Kanton Glarus"
+          width={2200}
+          height={1238}
+          className="col-span-12 mt-12 aspect-[4/5] w-full object-cover md:col-span-4 md:col-start-9 md:mt-0"
+        />
+      </main>
+      <Footer />
+    </>
   );
 }

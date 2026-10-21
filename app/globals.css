@@ -1,85 +1,175 @@
 @import "tailwindcss";
+@import "@fontsource-variable/bodoni-moda/opsz.css";
+@import "@fontsource-variable/bodoni-moda/opsz-italic.css";
+@import "@fontsource-variable/jost/wght.css";
 
+/* Aracle: Markenfarben bleiben (Schwarz + Aqua), Typo wie ein Magazin.
+   Aqua ist nur für Aktionen und den aktiven Zustand da, nie Deko. */
 @theme {
   --color-bg: #0a0a0b;
-  --color-bg-2: #15151a;
+  --color-surface: #141518;
+  --color-raised: #1c1e22;
+  --color-field: #0f2326; /* Gletscher: ruhiges Feld aus dem Klöntalersee */
+  --color-ink: #f3f4f2;
+  --color-muted: #a7adae;
   --color-aqua: #00ffff;
-  --color-surface: rgba(255, 255, 255, 0.04);
-  --color-line: rgba(255, 255, 255, 0.08);
-  --color-muted: rgba(255, 255, 255, 0.45);
-  --color-dim: rgba(255, 255, 255, 0.78);
-  --font-sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --color-accent-ink: #001a1a;
+  --color-danger: #ff8a7a;
+
+  --font-display: "Bodoni Moda Variable", "Bodoni Moda", Didot, Georgia, serif;
+  --font-sans: "Jost Variable", Jost, "Helvetica Neue", Arial, sans-serif;
 }
 
+:root {
+  --step-small: clamp(0.8125rem, 0.79rem + 0.1vw, 0.875rem);
+  --step-body: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
+  --step-lead: clamp(1.25rem, 1.1rem + 0.7vw, 1.625rem);
+  --step-head: clamp(2.25rem, 1.3rem + 3.6vw, 4.5rem);
+  --step-display: clamp(2.75rem, 0.6rem + 8.4vw, 10rem);
+
+  --margin: clamp(1rem, 2.2vw, 2rem);
+  --section: clamp(7.5rem, 12vw, 13rem);
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.76, 0, 0.24, 1);
+  --ease-soft: cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+@layer base {
 html {
-  scroll-behavior: smooth;
-  -webkit-font-smoothing: antialiased;
-  font-size: 100%;
+  -webkit-text-size-adjust: 100%;
+  touch-action: manipulation;
 }
 
 body {
   background: var(--color-bg);
-  color: #fff;
+  color: var(--color-ink);
   font-family: var(--font-sans);
+  font-size: var(--step-body);
   line-height: 1.6;
-  overflow-x: hidden;
+  letter-spacing: 0.01em;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
 }
 
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  text-wrap: balance;
+  letter-spacing: -0.02em;
+}
+
+p { text-wrap: pretty; }
 a { color: inherit; text-decoration: none; }
-::selection { background: rgba(0, 255, 255, 0.25); color: #fff; }
-
-/* Aqua → blau Verlauf für Akzent-Headlines */
-.text-gradient {
-  background: linear-gradient(130deg, #00ffff 0%, #00e0ff 45%, #0088ff 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+img { background: var(--color-surface); }
+::selection { background: var(--color-aqua); color: var(--color-accent-ink); }
+:focus-visible { outline: 2px solid var(--color-aqua); outline-offset: 3px; }
+:target { scroll-margin-top: 6rem; }
 }
 
-/* Logos einheitlich weiss normalisieren */
-.logo-white { filter: brightness(0) invert(1); }
-
-/* Buttons – kantig, Aqua-Outline (kein Weiss auf Grellfläche).
-   Ruhezustand: transparent mit Aqua-Rand + Aqua-Text.
-   Hover: füllt sich mit Aqua, Text wird dunkel.
-   In @layer components, damit Display-Utilities (hidden/md:*) gewinnen. */
 @layer components {
-  .btn-primary {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    border: 1px solid var(--color-aqua);
-    background: rgba(0, 255, 255, 0.06);
-    color: var(--color-aqua);
-    font-weight: 700;
-    padding: 0.85rem 1.6rem;
-    border-radius: 0;
-    transition: background 0.2s, color 0.2s, transform 0.2s;
-  }
-  .btn-primary:hover {
-    background: var(--color-aqua);
-    color: var(--color-bg);
-    transform: translateY(-1px);
-  }
+  .wrap { padding-inline: var(--margin); }
+  .display { font-family: var(--font-display); font-size: var(--step-display); line-height: 0.95; letter-spacing: -0.02em; font-weight: 500; }
+  .head { font-family: var(--font-display); font-size: var(--step-head); line-height: 1; letter-spacing: -0.02em; font-weight: 500; }
+  .lead { font-size: var(--step-lead); line-height: 1.4; }
+  .small { font-size: var(--step-small); line-height: 1.5; }
+  .nums { font-variant-numeric: tabular-nums; }
 
-  /* Sekundär – neutraler grauer Outline-Button */
-  .btn-ghost {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    border: 1px solid var(--color-line);
-    background: transparent;
-    color: #fff;
-    font-weight: 600;
-    padding: 0.85rem 1.6rem;
-    border-radius: 0;
-    transition: border-color 0.2s, color 0.2s, transform 0.2s;
+  /* Ein Button-Typ, eckig, flach. */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+    min-height: 3rem; padding: 0 1.4rem;
+    background: var(--color-aqua); color: var(--color-accent-ink);
+    font-weight: 500; white-space: nowrap; border-radius: 0;
+    transition: transform 140ms var(--ease-out), background-color 180ms ease, color 180ms ease;
   }
-  .btn-ghost:hover {
-    border-color: var(--color-aqua);
-    color: var(--color-aqua);
-    transform: translateY(-1px);
+  .btn:hover { background: var(--color-ink); }
+  .btn:active { transform: scale(0.97); }
+  .btn[disabled] { opacity: 0.5; pointer-events: none; }
+
+  .btn-quiet {
+    display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+    min-height: 3rem; padding: 0 1.4rem;
+    background: var(--color-raised); color: var(--color-ink);
+    font-weight: 500; white-space: nowrap; border-radius: 0;
+    transition: transform 140ms var(--ease-out), background-color 180ms ease;
   }
+  .btn-quiet:hover { background: #2a2d33; }
+  .btn-quiet:active { transform: scale(0.97); }
+
+  .link {
+    text-decoration: underline; text-decoration-color: transparent;
+    text-underline-offset: 0.22em; text-decoration-thickness: 0.07em;
+    transition: text-decoration-color 180ms ease, color 180ms ease;
+  }
+  .link:hover { text-decoration-color: currentColor; }
+  .link:active { opacity: 0.7; }
+  .link-under {
+    text-decoration: underline; text-underline-offset: 0.22em; text-decoration-thickness: 0.07em;
+    transition: color 180ms ease;
+  }
+  .link-under:hover { color: var(--color-aqua); }
+
+  .field {
+    width: 100%; min-height: 3rem; padding: 0.7rem 0.9rem;
+    background: var(--color-raised); color: var(--color-ink);
+    border: 0; border-radius: 0; font-size: max(1rem, var(--step-body));
+  }
+  .field::placeholder { color: #6f7678; }
+  textarea.field { min-height: 8rem; line-height: 1.5; resize: vertical; }
+}
+
+/* Bewegung: Inhalte bleiben ohne JavaScript sichtbar. */
+@media (prefers-reduced-motion: no-preference) {
+  .js [data-reveal] {
+    opacity: 0; transform: translateY(24px);
+    transition: opacity 700ms var(--ease-out), transform 900ms var(--ease-out);
+    transition-delay: calc(var(--i, 0) * 80ms);
+  }
+  .js [data-reveal].is-in { opacity: 1; transform: none; }
+  .js [data-rise] {
+    opacity: 0; transform: translateY(20px);
+    animation: rise 650ms var(--ease-out) forwards;
+    animation-delay: calc(var(--i, 0) * 90ms + 40ms);
+  }
+  .drift { animation: drift 24s var(--ease-soft) infinite alternate; }
+}
+@keyframes rise { to { opacity: 1; transform: none; } }
+@keyframes drift { from { transform: scale(1.02); } to { transform: scale(1.1) translateY(-2%); } }
+
+/* Dashboard: ruhige Arbeitsoberfläche, gleiche Marke, App-Massstab. */
+@layer components {
+  .dash-input {
+    width: 100%; height: 2.5rem; padding: 0 0.75rem;
+    background: var(--color-bg); color: var(--color-ink);
+    border: 1px solid #2c3036; border-radius: 6px;
+    font-size: 0.875rem; letter-spacing: 0;
+    transition: border-color 150ms ease;
+  }
+  .dash-input:hover { border-color: #3a3f47; }
+  .dash-input:focus-visible { outline: none; border-color: var(--color-aqua); box-shadow: 0 0 0 1px var(--color-aqua); }
+  textarea.dash-input { height: auto; min-height: 6.5rem; padding: 0.6rem 0.75rem; line-height: 1.5; resize: vertical; }
+  select.dash-input { appearance: none; padding-right: 2rem; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M3 4.5 6 7.5 9 4.5' fill='none' stroke='%23a7adae' stroke-width='1.5'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 0.6rem center; background-size: 12px; }
+  .dash-label { display: block; margin-bottom: 0.5rem; font-size: 0.875rem; font-weight: 500; letter-spacing: 0; }
+  .dash-help { font-size: 0.8125rem; color: var(--color-muted); letter-spacing: 0; }
+  .dash-btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem;
+    height: 2.25rem; padding: 0 0.9rem; border-radius: 6px;
+    background: var(--color-ink); color: var(--color-bg);
+    font-size: 0.875rem; font-weight: 500; letter-spacing: 0; white-space: nowrap;
+    transition: background-color 150ms ease, transform 120ms var(--ease-out);
+  }
+  .dash-btn:hover { background: #ffffff; }
+  .dash-btn:active { transform: scale(0.97); }
+  .dash-btn[disabled] { opacity: 0.55; pointer-events: none; }
+  .dash-btn-quiet {
+    display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem;
+    height: 2.25rem; padding: 0 0.9rem; border-radius: 6px;
+    background: #24272c; color: var(--color-ink);
+    font-size: 0.875rem; font-weight: 500; letter-spacing: 0; white-space: nowrap;
+    transition: background-color 150ms ease, transform 120ms var(--ease-out);
+  }
+  .dash-btn-quiet:hover { background: #2e3238; }
+  .dash-btn-quiet:active { transform: scale(0.97); }
+  .dash-panel { background: var(--color-surface); border-radius: 8px; padding: 1.25rem; }
 }

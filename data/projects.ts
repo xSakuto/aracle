@@ -1,4 +1,5 @@
-// Projekte (Inhalte aus der alten Seite übernommen — bei Bedarf anpassen).
+// Projekte. Die Team-Zuordnung kommt aus Supabase (project_members),
+// die Liste `team` hier ist nur der Fallback ohne Datenbank.
 export type ProjectStatus = "Aktiv" | "In Planung" | "Pausiert" | "Eingestellt";
 
 export interface Project {
@@ -15,6 +16,10 @@ export interface Project {
   timeline: { date: string; label: string }[];
   links: { label: string; url: string }[];
   featured?: boolean;
+  /** Eigenes Foto vorhanden (sonst kein Bild zeigen) */
+  hasPhoto?: boolean;
+  /** Startjahr fürs Inhaltsverzeichnis */
+  year?: string;
 }
 
 const PLACEHOLDER = "/Brand_assets/arcl-header.jpg";
@@ -22,6 +27,8 @@ const PLACEHOLDER = "/Brand_assets/arcl-header.jpg";
 export const projects: Project[] = [
   {
     slug: "aracle-cloud-hosting",
+    year: "2022",
+    hasPhoto: true,
     title: "Aracle Cloud Hosting",
     category: "Cloud · Tech",
     status: "Aktiv",
@@ -45,6 +52,8 @@ export const projects: Project[] = [
   },
   {
     slug: "highside",
+    year: "2024",
+    hasPhoto: true,
     title: "Highside",
     category: "Fashion · Brand",
     status: "Aktiv",
@@ -61,8 +70,10 @@ export const projects: Project[] = [
     featured: true,
   },
   {
-    slug: "aracle-immo",
-    title: "Aracle Immo",
+    slug: "aracle-living",
+    year: "2025",
+    hasPhoto: true,
+    title: "Aracle Living",
     category: "Photography",
     status: "In Planung",
     owner: "Jan Waser",
@@ -79,6 +90,7 @@ export const projects: Project[] = [
   },
   {
     slug: "swizzly",
+    year: "2024",
     title: "Swizzly",
     category: "Content · Media",
     status: "Aktiv",
@@ -95,6 +107,7 @@ export const projects: Project[] = [
   },
   {
     slug: "sakuto",
+    year: "2021",
     title: "Sakuto",
     category: "Content · Gaming",
     status: "Aktiv",
@@ -111,6 +124,7 @@ export const projects: Project[] = [
   },
   {
     slug: "zelda-de-server",
+    year: "2022",
     title: "Zelda DE Server",
     category: "Community",
     status: "Aktiv",
@@ -130,6 +144,7 @@ export const projects: Project[] = [
   },
   {
     slug: "all-the-clients",
+    year: "2023",
     title: "All the Clients",
     category: "Gaming",
     status: "Aktiv",
@@ -146,6 +161,7 @@ export const projects: Project[] = [
   },
   {
     slug: "araclesmp",
+    year: "2025",
     title: "AracleSMP",
     category: "Gaming · Community",
     status: "Aktiv",
@@ -162,6 +178,7 @@ export const projects: Project[] = [
   },
   {
     slug: "noreply",
+    year: "2025",
     title: "NoReply",
     category: "Game Dev",
     status: "Pausiert",
@@ -178,6 +195,7 @@ export const projects: Project[] = [
   },
   {
     slug: "rexusmods",
+    year: "2021",
     title: "RexusMods",
     category: "3D · Design",
     status: "Pausiert",
@@ -197,6 +215,7 @@ export const projects: Project[] = [
   },
   {
     slug: "alcatros",
+    year: "2021",
     title: "Alcatros",
     category: "Community",
     status: "Eingestellt",
@@ -212,6 +231,7 @@ export const projects: Project[] = [
   },
   {
     slug: "beer-game",
+    year: "2025",
     title: "Beer Game",
     category: "Game Dev",
     status: "Eingestellt",
