@@ -4,16 +4,18 @@ export default function PageIntro({
   lead,
   image,
   children,
+  shape = "sphere",
 }: {
   title: string;
   lead: string;
   image?: { src: string; alt: string; width: number; height: number };
   children?: React.ReactNode;
+  shape?: string;
 }) {
   return (
-    <header className="wrap pt-28 md:pt-36">
+    <header data-shape={shape} className="wrap pt-28 md:pt-36">
       <div className="inner text-center">
-        <h1 className="display mx-auto max-w-[16ch]" data-rise>
+        <h1 className="display mx-auto max-w-[16ch]" data-split="load">
           {title}
         </h1>
         <p className="lead mx-auto mt-5 max-w-[38rem] text-muted" data-rise style={{ ["--i" as string]: 1 }}>
@@ -34,7 +36,8 @@ export default function PageIntro({
             width={image.width}
             height={image.height}
             fetchPriority="high"
-            className="zoom-in aspect-[4/5] w-full object-cover sm:aspect-[16/9]"
+            data-clip
+            className="aspect-[4/5] w-full object-cover sm:aspect-[16/9]"
           />
         </div>
       )}

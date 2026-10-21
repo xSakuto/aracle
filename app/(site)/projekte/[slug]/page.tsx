@@ -33,10 +33,10 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
   const category = project.category.replace(" · ", ", ");
 
   return (
-    <article className="wrap pb-[var(--section)] pt-28 md:pt-36">
+    <article data-shape="sphere" className="wrap pb-[var(--section)] pt-28 md:pt-36">
       <div className="inner">
         <header className="text-center">
-          <h1 className="display" data-rise>
+          <h1 className="display" data-split="load">
             {project.title}
           </h1>
           <p className="lead mx-auto mt-5 max-w-[36rem] text-muted" data-rise style={{ ["--i" as string]: 1 }}>
@@ -56,7 +56,8 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
               width={1600}
               height={1067}
               fetchPriority="high"
-              className="zoom-in aspect-[4/5] w-full object-cover sm:aspect-[16/9]"
+              data-clip
+              className="aspect-[4/5] w-full object-cover sm:aspect-[16/9]"
             />
           </div>
         )}

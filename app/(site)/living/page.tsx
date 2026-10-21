@@ -19,6 +19,7 @@ export default function LivingPage() {
   return (
     <>
       <PageIntro
+        shape="room"
         title="Aracle Living"
         lead="Immobilien, professionell in Szene gesetzt: Fotografie, 360°-Touren und digitale Vermarktung aus einer Hand. Geleitet von Jan Waser, aktuell im Aufbau."
         image={{

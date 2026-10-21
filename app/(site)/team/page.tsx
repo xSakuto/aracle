@@ -14,10 +14,10 @@ export default async function TeamPage() {
   const team = await getTeam();
   return (
     <>
-      <div className="wrap pb-[var(--section)] pt-28 md:pt-36">
+      <div data-shape="helix" className="wrap pb-[var(--section)] pt-28 md:pt-36">
         <div className="inner">
           <div className="text-center">
-            <h1 className="display" data-rise>
+            <h1 className="display" data-split="load">
               Das Team.
             </h1>
             <p className="lead mx-auto mt-5 max-w-[36rem] text-muted" data-rise style={{ ["--i" as string]: 1 }}>

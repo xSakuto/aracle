@@ -19,6 +19,7 @@ export default function HostingPage() {
   return (
     <>
       <PageIntro
+        shape="racks"
         title="Aracle Cloud"
         lead="Die technische Basis des Studios: eigene Server, sauber betrieben. Hosting für Web, Game-Server und Community-Projekte, aus der Schweiz."
         image={{

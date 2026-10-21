@@ -92,11 +92,11 @@ const sections: { n: string; title: string; body: React.ReactNode }[] = [
 
 export default function DatenschutzPage() {
   return (
-    <div className="wrap pb-[var(--section)] pt-28 md:pt-36">
+    <div data-shape="wave" className="wrap pb-[var(--section)] pt-28 md:pt-36">
     <div className="inner grid grid-cols-12 gap-x-3 md:gap-x-8 gap-y-12">
       <div className="col-span-12 md:col-span-5">
         <div className="md:sticky md:top-24">
-          <h1 className="display" data-rise>
+          <h1 className="display" data-split="load">
             Datenschutz
           </h1>
           <p className="lead mt-5 max-w-[28rem] text-muted" data-rise style={{ ["--i" as string]: 1 }}>
