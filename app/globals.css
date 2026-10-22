@@ -246,6 +246,26 @@ html.lenis, html.lenis body { height: auto; }
 }
 .topo path { stroke-dasharray: 1; fill: none; vector-effect: non-scaling-stroke; }
 
+/* ---------- Panorama (berechnete Glarner Silhouetten) ---------- */
+.pano-path { vector-effect: non-scaling-stroke; stroke-dasharray: 1; stroke-dashoffset: 0; }
+.pano-guide { stroke-opacity: 0.18; }
+.pano-fade { mask-image: linear-gradient(to bottom, #000 58%, transparent 100%); }
+.pano-dashed { background: repeating-linear-gradient(to bottom, rgb(238 243 243 / 0.45) 0 3px, transparent 3px 6px); }
+.pano-cursor { background: linear-gradient(to bottom, rgb(143 214 211 / 0.6), rgb(143 214 211 / 0)); transition: opacity 300ms var(--ease-out); }
+@media (prefers-reduced-motion: no-preference) {
+  .js .pano:not(.no-anim) .pano-path { stroke-dashoffset: 1; }
+  .js .pano.is-drawn .pano-path {
+    stroke-dashoffset: 0;
+    transition: stroke-dashoffset 2400ms var(--ease-in-out) var(--d, 0ms);
+  }
+  .js .pano-scroll:not(.no-anim) .pano-path { stroke-dashoffset: calc(1 - var(--prog, 0)); transition: none; }
+  .js .pano:not(.no-anim) .pano-label { opacity: 0; transform: translateY(6px); }
+  .js .pano.is-drawn .pano-label {
+    opacity: 1; transform: none;
+    transition: opacity 700ms var(--ease-out) var(--d, 0ms), transform 900ms var(--ease-out) var(--d, 0ms);
+  }
+}
+
 /* Feines 12er-Raster (Swiss Style), nur als leiser Hintergrund */
 .swiss-grid {
   --cols: 12;
@@ -319,4 +339,18 @@ html.lenis, html.lenis body { height: auto; }
   .choice:active .choice-pill { transform: scale(0.97); }
   .peer:checked + .choice-pill { background: var(--color-aqua); border-color: var(--color-aqua); color: var(--color-accent-ink); }
   .peer:focus-visible + .choice-pill { outline: 2px solid var(--color-aqua); outline-offset: 2px; }
+}
+
+/* Hero-Foto: die Markierungsebene bildet object-fit: cover exakt nach,
+   damit Marken auf jedem Format an derselben Bildstelle sitzen. */
+.hero-photo { --fx: 0.5; --fy: 0.55; object-position: calc(var(--fx) * 100%) calc(var(--fy) * 100%); }
+.hero-photo-frame {
+  --fx: 0.5; --fy: 0.55;
+  width: max(100cqw, 100cqh * 16 / 9);
+  height: max(100cqh, 100cqw * 9 / 16);
+  left: calc((100cqw - max(100cqw, 100cqh * 16 / 9)) * var(--fx));
+  top: calc((100cqh - max(100cqh, 100cqw * 9 / 16)) * var(--fy));
+}
+@media (max-width: 767px) {
+  .hero-photo, .hero-photo-frame { --fx: 0.24; }
 }
