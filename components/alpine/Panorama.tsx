@@ -42,6 +42,8 @@ export default function Panorama({
   className = "",
   tone = "ink",
   yMax,
+  layers = "all",
+  glow = false,
 }: {
   data: Pano;
   view?: PanoView;
@@ -56,6 +58,10 @@ export default function Panorama({
   tone?: "ink" | "dark";
   /** unterer Beschnitt in Panorama-Einheiten */
   yMax?: number;
+  /** "sky": nur die Horizontlinie, ohne innere Grate */
+  layers?: "all" | "sky";
+  /** leichtes Leuchten der Horizontlinie */
+  glow?: boolean;
 }) {
   const H = yMax ?? data.h;
   const full = { x0: 0, x1: data.w };
@@ -209,7 +215,7 @@ export default function Panorama({
         viewBox={`${vb.x0} 0 ${vw} ${H}`}
         preserveAspectRatio="xMidYMid meet"
         aria-hidden
-        className={`absolute inset-0 h-full w-full overflow-visible ${fade ? "pano-fade" : ""}`}
+        className={`absolute inset-0 h-full w-full overflow-visible ${fade ? "pano-fade" : ""} ${glow ? "pano-glow" : ""}`}
         fill="none"
         stroke={stroke}
         strokeLinecap="round"
@@ -226,11 +232,11 @@ export default function Panorama({
           className="pano-guide"
         />
         <g ref={(g) => { groups.current[0] = g; }}>
-          {byDepth.sky.map((p) => pathEl(p, 0, 0.95, 1.2))}
+          {byDepth.sky.map((p) => pathEl(p, 0, 0.95, glow ? 1.4 : 1.2))}
         </g>
         {([2, 1, 0] as const).map((d, gi) => (
           <g key={d} ref={(g) => { groups.current[gi + 1] = g; }}>
-            {byDepth[d].map((p) => pathEl(p, 350 + gi * 300, DEPTH_STYLE[d].o, DEPTH_STYLE[d].w))}
+            {layers === "all" && byDepth[d].map((p) => pathEl(p, 350 + gi * 300, DEPTH_STYLE[d].o, DEPTH_STYLE[d].w))}
           </g>
         ))}
       </svg>
@@ -242,7 +248,7 @@ export default function Panorama({
         const row = ROW_Y[l.row ?? 0];
         const side = l.side ?? "center";
         return (
-          <div key={l.peak} aria-hidden className="pano-label" style={{ ["--d" as string]: `${1500 + i * 140}ms` }}>
+          <div key={l.peak} aria-hidden className="pano-label [text-shadow:0_1px_10px_rgb(11_17_21/0.95)]" style={{ ["--d" as string]: `${1500 + i * 140}ms` }}>
             <span
               className={`absolute w-px ${pk.visible ? "bg-ink/35" : "pano-dashed"}`}
               style={{ left: `${pctX(pk.x)}%`, top: `${pctY(row)}%`, height: `${pctY(pk.y - row)}%` }}

@@ -20,7 +20,32 @@ export default function HeroTechnical() {
   const sp = SCHILT.standpoint;
   return (
     <section aria-labelledby="hero-title" className="relative flex min-h-svh flex-col overflow-hidden">
-      <div aria-hidden className="swiss-grid pointer-events-none absolute inset-0" />
+      {/* Hintergrund: der Klöntalersee, ruhig abgedunkelt, mit Licht von Westen */}
+      <div aria-hidden className="pointer-events-none absolute inset-0">
+        <picture>
+          <source type="image/webp" srcSet="/images/hero/kloentalersee-1280.webp 1280w, /images/hero/kloentalersee-2560.webp 2560w" sizes="100vw" />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/images/hero/kloentalersee-1280.jpg"
+            srcSet="/images/hero/kloentalersee-1280.jpg 1280w, /images/hero/kloentalersee-2560.jpg 2560w"
+            sizes="100vw"
+            alt=""
+            width={2560}
+            height={1440}
+            fetchPriority="high"
+            data-parallax="0.06"
+            className="h-[110%] w-full object-cover object-[55%_45%] opacity-80"
+          />
+        </picture>
+        {/* Leuchten: Sonnenlicht über dem See, kühl getönt */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_62%_40%,rgb(143_214_211/0.30),transparent_70%)] mix-blend-screen" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_32%_28%_at_60%_42%,rgb(255_248_235/0.26),transparent_70%)] mix-blend-screen" />
+        <div className="absolute inset-0 bg-[#0b1115]/25 mix-blend-multiply" />
+        <div className="absolute inset-0 bg-gradient-to-r from-bg/75 via-bg/15 to-transparent" />
+        <div className="absolute inset-x-0 bottom-0 h-[45%] bg-gradient-to-t from-bg via-bg/75 to-transparent" />
+        <div className="absolute inset-x-0 top-0 h-48 bg-gradient-to-b from-bg/80 to-transparent" />
+      </div>
+      <div aria-hidden className="swiss-grid pointer-events-none absolute inset-0 opacity-60" />
 
       <div className="wrap relative z-10 pt-24">
         <dl className="kicker grid grid-cols-2 gap-4 border-b border-line pb-4 text-muted md:grid-cols-4">
@@ -73,6 +98,9 @@ export default function HeroTechnical() {
           mobileView={{ x0: 990, x1: 1640 }}
           labels={HERO_LABELS}
           yMax={470}
+          layers="sky"
+          glow
+          fade={false}
           scale
         />
         {/* Schriftfeld wie auf einem Plan */}

@@ -233,6 +233,7 @@ html.lenis, html.lenis body { height: auto; }
 /* ---------- Panorama (berechnete Glarner Silhouetten) ---------- */
 .pano-path { vector-effect: non-scaling-stroke; }
 .pano-guide { stroke-opacity: 0.18; }
+.pano-glow { filter: drop-shadow(0 0 6px rgb(143 214 211 / 0.55)) drop-shadow(0 0 18px rgb(143 214 211 / 0.25)); }
 .pano-fade { mask-image: linear-gradient(to bottom, #000 58%, transparent 100%); }
 .pano-dashed { background: repeating-linear-gradient(to bottom, rgb(238 243 243 / 0.45) 0 3px, transparent 3px 6px); }
 .pano-cursor { background: linear-gradient(to bottom, rgb(143 214 211 / 0.6), rgb(143 214 211 / 0)); transition: opacity 300ms var(--ease-out); }
