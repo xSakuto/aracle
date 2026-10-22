@@ -4,7 +4,6 @@ import PillarMark from "@/components/alpine/PillarMark";
 import Portrait from "@/components/Portrait";
 import ProjectCard from "@/components/ProjectCard";
 import ProjectHero from "@/components/project/ProjectHero";
-import SectionIndex from "@/components/project/SectionIndex";
 import ProductMockup from "@/components/visuals/ProductMockup";
 import { getProject, neighbours, projects, type GalleryItem, type ProjectStatus } from "@/data/projects";
 import { PILLAR_MOUNTAIN } from "@/lib/mountains";
@@ -37,7 +36,7 @@ const statusNote: Record<ProjectStatus, string> = {
 };
 
 function GalleryTile({ item, wide }: { item: GalleryItem; wide: boolean }) {
-  const cls = `overflow-hidden rounded-[var(--radius)] ${wide ? "aspect-[16/10]" : "aspect-[4/5]"}`;
+  const cls = `overflow-hidden rounded-[var(--radius)] ${wide ? "aspect-[16/10]" : item.kind === "placeholder" ? "aspect-square" : "aspect-[4/5]"}`;
   if (item.kind === "placeholder") {
     // PLATZHALTER: wird durch echtes Foto ersetzt, sobald vorhanden
     return <ProductMockup motif={item.motif} caption={item.caption} className={`h-full w-full ${cls}`} />;
@@ -53,16 +52,6 @@ function GalleryTile({ item, wide }: { item: GalleryItem; wide: boolean }) {
   );
 }
 
-/** Abschnittskopf: Nummer, Titel, feine Linie */
-function Head({ n, id, title }: { n: number; id: string; title: string }) {
-  return (
-    <div className="flex items-baseline gap-4 border-t border-line pt-5">
-      <span className="nums text-[0.8125rem] text-aqua">{String(n).padStart(2, "0")}</span>
-      <h2 id={`${id}-title`} className="kicker text-ink/90">{title}</h2>
-    </div>
-  );
-}
-
 export default async function ProjectPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const p = getProject(slug);
@@ -73,19 +62,31 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
     m.projects.filter((x) => x.slug === slug).map((x) => ({ ...m, projectRole: x.role || m.role })),
   );
   const { next } = neighbours(slug);
-  const related = projects.filter((x) => x.pillar === p.pillar && x.slug !== p.slug).slice(0, 3);
+  const related = projects.filter((x) => x.pillar === p.pillar && x.slug !== p.slug && x.slug !== next.slug).slice(0, 3);
   const gallery = (p.gallery ?? []).filter((g, i) => !(i === 0 && g.kind === "photo" && g.src === p.coverImage));
 
-  const sections = [
-    { id: "ziel", label: "Ziel" },
-    { id: "inhalt", label: "Was dazugehört" },
-    { id: "umsetzung", label: "Umsetzung" },
-    ...(gallery.length ? [{ id: "einblicke", label: "Einblicke" }] : []),
-    { id: "stand", label: "Stand und Verlauf" },
-    ...(people.length ? [{ id: "team", label: "Team" }] : []),
-  ];
-  const num = (id: string) => sections.findIndex((s) => s.id === id) + 1;
   const nextMt = PILLAR_MOUNTAIN[next.pillar];
+  const specs: { label: string; body: React.ReactNode }[] = [
+    { label: "Unser Beitrag", body: <ul className="flex flex-col gap-1">{p.scope.map((s) => <li key={s}>{s}</li>)}</ul> },
+    ...(p.techStack.length ? [{ label: "Stack", body: <ul className="flex flex-col gap-1">{p.techStack.map((s) => <li key={s}>{s}</li>)}</ul> }] : []),
+    ...(p.links.length
+      ? [{
+          label: "Links",
+          body: (
+            <ul className="flex flex-col gap-1">
+              {p.links.map((l) => (
+                <li key={l.url}>
+                  <a href={l.url} target="_blank" rel="noopener noreferrer" className="link-under">
+                    {l.label} <span aria-hidden>↗</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          ),
+        }]
+      : []),
+    { label: "Stand", body: statusNote[p.status] },
+  ];
 
   return (
     // key: beim Wechsel zwischen Projekten neu aufbauen (zerlegte Titel, Animationen)
@@ -94,148 +95,92 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
 
       {/* Inhalt als Blatt, das sich über den Kopf schiebt */}
       <div className="relative z-10 -mt-8 rounded-t-[1.75rem] border-t border-line bg-bg shadow-[0_-24px_60px_-30px_rgb(143_214_211/0.18)]">
-        <div className="wrap grid gap-10 pb-[var(--section)] pt-16 md:grid-cols-12 md:pt-24">
-          <aside className="md:col-span-3">
-            <div className="flex flex-col gap-8 md:sticky md:top-24">
-              <SectionIndex items={sections} />
-              <div className="hidden rounded-[var(--radius)] border border-line p-4 md:block">
-                <p className="kicker text-muted">Status</p>
-                <p className="mt-1 font-medium">{p.status}</p>
-                <p className="small mt-2 text-muted">{statusNote[p.status]}</p>
-              </div>
-            </div>
-          </aside>
-
-          <div className="flex flex-col gap-[calc(var(--section)*0.7)] md:col-span-9">
-            {/* 01 Ziel */}
-            <section id="ziel" aria-labelledby="ziel-title" className="scroll-mt-24">
-              <Head n={num("ziel")} id="ziel" title="Ziel" />
-              <p data-scrub-words className="mt-8 max-w-[30ch] text-[clamp(1.75rem,1rem+2.2vw,3.25rem)] font-[560] leading-[1.08] tracking-[-0.035em]">
+        <div className="wrap flex flex-col gap-[var(--section)] pb-[var(--section)] pt-16 md:pt-24">
+          {/* Überblick: Ziel gross, Beschreibung daneben, Eckdaten als eine Zeile */}
+          <section aria-labelledby="ueberblick-title">
+            <h2 id="ueberblick-title" className="sr-only">Überblick</h2>
+            <div className="grid gap-x-8 gap-y-10 md:grid-cols-12">
+              <p data-scrub-words className="max-w-[24ch] text-[clamp(1.75rem,1rem+2.2vw,3.25rem)] font-[560] leading-[1.08] tracking-[-0.035em] md:col-span-8">
                 {p.goal}
               </p>
-            </section>
+              <p className="max-w-[44ch] text-ink/80 md:col-span-4 md:pt-2">{p.longDescription}</p>
+            </div>
+            <dl className="mt-14 grid grid-cols-2 gap-x-8 gap-y-8 border-t border-line pt-6 md:grid-cols-12">
+              {specs.map((sp) => (
+                <div key={sp.label} className="md:col-span-3">
+                  <dt className="small text-muted">{sp.label}</dt>
+                  <dd className="mt-2 text-[0.9375rem] leading-relaxed">{sp.body}</dd>
+                </div>
+              ))}
+            </dl>
+          </section>
 
-            {/* 02 Was dazugehört */}
-            <section id="inhalt" aria-labelledby="inhalt-title" className="scroll-mt-24">
-              <Head n={num("inhalt")} id="inhalt" title="Was dazugehört" />
-              <ul className="mt-8 grid gap-px overflow-hidden rounded-[var(--radius)] border border-line bg-line sm:grid-cols-2">
-                {p.includes.map((it, i) => (
-                  <li key={it.title} data-reveal style={{ ["--i" as string]: i % 2 }} className="group bg-bg p-6 transition-colors hover:bg-surface md:p-8">
-                    <span className="nums text-[0.75rem] text-muted">{String(i + 1).padStart(2, "0")}</span>
-                    <h3 className="mt-6 text-[clamp(1.25rem,1rem+0.8vw,1.625rem)] font-[620] tracking-[-0.025em] transition-colors group-hover:text-aqua">
-                      {it.title}
-                    </h3>
-                    <p className="mt-2 text-ink/75">{it.text}</p>
-                  </li>
-                ))}
+          {/* Einblicke: Bilder bekommen Platz, ohne Rahmen */}
+          {gallery.length > 0 && (
+            <section aria-labelledby="einblicke-title">
+              <div className="flex items-baseline justify-between gap-4 border-t border-line pt-5">
+                <h2 id="einblicke-title" className="small text-muted">Einblicke</h2>
+                {gallery.some((g) => g.kind === "placeholder") && (
+                  <p className="small text-muted">Platzhalter, Produktbilder folgen</p>
+                )}
+              </div>
+              <ul className={`mt-6 grid gap-4 md:gap-6 ${gallery.every((g) => g.kind === "placeholder") ? "grid-cols-2 lg:grid-cols-4" : "sm:grid-cols-2"}`}>
+                {gallery.map((g, i) => {
+                  const wide = i === 0 && g.kind === "photo" && gallery.length > 2;
+                  return (
+                    <li key={i} data-reveal style={{ ["--i" as string]: i % 2 }} className={wide || gallery.length === 1 ? "sm:col-span-2" : ""}>
+                      <GalleryTile item={g} wide={wide || gallery.length === 1} />
+                    </li>
+                  );
+                })}
               </ul>
             </section>
+          )}
 
-            {/* 03 Umsetzung */}
-            <section id="umsetzung" aria-labelledby="umsetzung-title" className="scroll-mt-24">
-              <Head n={num("umsetzung")} id="umsetzung" title="Umsetzung" />
-              <p className="lead mt-8 max-w-[44rem] text-ink/90">{p.longDescription}</p>
-              <dl className="mt-10 grid gap-x-8 gap-y-8 border-t border-line pt-8 sm:grid-cols-3">
-                <div>
-                  <dt className="kicker text-muted">Unser Beitrag</dt>
-                  <dd className="mt-3">
-                    <ul className="flex flex-col gap-1.5">{p.scope.map((s) => <li key={s}>{s}</li>)}</ul>
-                  </dd>
-                </div>
-                {p.techStack.length > 0 && (
-                  <div>
-                    <dt className="kicker text-muted">Stack</dt>
-                    <dd className="mt-3 flex flex-wrap gap-2">
-                      {p.techStack.map((s) => (
-                        <span key={s} className="rounded-full border border-line px-3 py-1 text-[0.875rem]">{s}</span>
-                      ))}
-                    </dd>
-                  </div>
-                )}
-                <div>
-                  <dt className="kicker text-muted">{p.links.length ? "Links" : "Verantwortlich"}</dt>
-                  <dd className="mt-3">
-                    {p.links.length ? (
-                      <ul className="flex flex-col gap-1">
-                        {p.links.map((l) => (
-                          <li key={l.url}>
-                            <a href={l.url} target="_blank" rel="noopener noreferrer" className="link-under inline-flex min-h-9 items-center">
-                              {l.label} <span aria-hidden className="ml-1">↗</span>
-                            </a>
-                          </li>
-                        ))}
-                      </ul>
-                    ) : (
-                      p.owner
-                    )}
-                  </dd>
-                </div>
-              </dl>
-            </section>
+          {/* Was dazugehört: Liniensatz statt Kästen */}
+          <section aria-labelledby="inhalt-title" className="grid gap-x-8 gap-y-6 md:grid-cols-12">
+            <h2 id="inhalt-title" className="small border-t border-line pt-5 text-muted md:col-span-3">Was dazugehört</h2>
+            <ul className="border-b border-line md:col-span-9">
+              {p.includes.map((it) => (
+                <li key={it.title} className="grid gap-x-8 gap-y-1 border-t border-line py-5 sm:grid-cols-9">
+                  <h3 className="font-medium tracking-[-0.015em] sm:col-span-3">{it.title}</h3>
+                  <p className="text-ink/70 sm:col-span-6">{it.text}</p>
+                </li>
+              ))}
+            </ul>
+          </section>
 
-            {/* 04 Einblicke */}
-            {gallery.length > 0 && (
-              <section id="einblicke" aria-labelledby="einblicke-title" className="scroll-mt-24">
-                <div className="flex items-baseline justify-between gap-4">
-                  <div className="flex-1"><Head n={num("einblicke")} id="einblicke" title="Einblicke" /></div>
-                </div>
-                {gallery.some((g) => g.kind === "placeholder") && (
-                  <p className="small mt-3 text-muted">Platzhalter: Produktbilder folgen.</p>
-                )}
-                <ul className="mt-8 grid gap-4 sm:grid-cols-2">
-                  {gallery.map((g, i) => {
-                    const wide = i === 0 && g.kind === "photo" && gallery.length > 2;
-                    return (
-                      <li key={i} data-reveal style={{ ["--i" as string]: i % 2 }} className={wide || gallery.length === 1 ? "sm:col-span-2" : ""}>
-                        <GalleryTile item={g} wide={wide || gallery.length === 1} />
-                      </li>
-                    );
-                  })}
-                </ul>
-              </section>
-            )}
-
-            {/* 05 Stand und Verlauf */}
-            <section id="stand" aria-labelledby="stand-title" className="scroll-mt-24">
-              <Head n={num("stand")} id="stand" title="Stand und Verlauf" />
-              <div className="mt-8 grid gap-10 md:grid-cols-9">
-                <div className="md:col-span-3">
-                  <p className="text-[clamp(1.5rem,1rem+1vw,2rem)] font-[620] tracking-[-0.03em]">{p.status}</p>
-                  <p className="mt-2 text-ink/75">{statusNote[p.status]}</p>
-                </div>
-                <ol className="relative md:col-span-6">
-                  <span aria-hidden className="absolute bottom-2 left-[5px] top-2 w-px bg-line" />
-                  {p.timeline.map((t, i) => (
-                    <li key={i} className="relative pb-7 pl-9 last:pb-0" data-reveal style={{ ["--i" as string]: i }}>
-                      <span aria-hidden className="absolute left-0 top-1.5 h-[11px] w-[11px] rounded-full border border-aqua bg-bg" />
-                      <p className="nums text-[1.5rem] font-[620] leading-none tracking-[-0.04em]">{t.date}</p>
-                      <p className="mt-2 text-ink/80">{t.label}</p>
-                    </li>
-                  ))}
-                </ol>
-              </div>
-            </section>
-
-            {/* 06 Team */}
+          {/* Verlauf und Team in einem Abschnitt */}
+          <section aria-labelledby="verlauf-title" className="grid gap-x-8 gap-y-10 md:grid-cols-12">
+            <h2 id="verlauf-title" className="small border-t border-line pt-5 text-muted md:col-span-3">Verlauf</h2>
+            <ol className={`border-b border-line ${people.length ? "md:col-span-5" : "md:col-span-9"}`}>
+              {p.timeline.map((t, i) => (
+                <li key={i} className="grid grid-cols-[4.5rem_1fr] gap-x-4 border-t border-line py-4">
+                  <span className="nums font-[620] tracking-[-0.02em] text-aqua">{t.date}</span>
+                  <span className="text-ink/85">{t.label}</span>
+                </li>
+              ))}
+            </ol>
             {people.length > 0 && (
-              <section id="team" aria-labelledby="team-title" className="scroll-mt-24">
-                <Head n={num("team")} id="team" title="Team" />
-                <ul className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+              <div className="md:col-span-4">
+                <h3 className="small border-t border-line pt-5 text-muted md:border-t-0 md:pt-0">Team</h3>
+                <ul className="mt-3 border-b border-line">
                   {people.map((m) => (
                     <li key={m.id}>
-                      <Link href={`/team#${m.slug}`} className="group block">
-                        <div className="overflow-hidden rounded-[var(--radius)]">
-                          <Portrait name={m.name} photo={m.photo} accent={m.accent} className="transition-transform duration-700 group-hover:scale-[1.03]" />
-                        </div>
-                        <p className="mt-3 font-semibold transition-colors group-hover:text-aqua">{m.name}</p>
-                        <p className="small text-muted">{m.projectRole}</p>
+                      <Link href={`/team#${m.slug}`} className="seg-host group relative flex items-center gap-4 border-t border-line py-3">
+                        <span aria-hidden className="seg seg-top" />
+                        <span className="w-10 shrink-0 overflow-hidden rounded-[4px]">
+                          <Portrait name={m.name} photo={m.photo} accent={m.accent} sizes="40px" />
+                        </span>
+                        <span className="min-w-0 flex-1 font-medium transition-colors group-hover:text-aqua">{m.name}</span>
+                        <span className="small shrink-0 text-muted">{m.projectRole}</span>
                       </Link>
                     </li>
                   ))}
                 </ul>
-              </section>
+              </div>
             )}
-          </div>
+          </section>
         </div>
 
         {/* Mehr aus dem Bereich */}

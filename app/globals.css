@@ -12,7 +12,7 @@
   --color-line: #26323a;
   --color-aqua: #8fd6d3;      /* Gletscherblau, ersetzt das Neon */
   --color-glow: #f2a98f;      /* Alpenglühen */
-  --color-swiss: #d52b1e;
+  --color-swiss: #da291c;      /* Schweizer Rot, nur fürs Kreuz */
   --color-accent-ink: #0b1418;
   --color-danger: #ff8a7a;
 
@@ -99,11 +99,11 @@ img { background: var(--color-surface); }
   .btn-quiet {
     display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem;
     min-height: 2.75rem; padding: 0 1.3rem; border-radius: var(--radius);
-    background: #2a2a2d; color: var(--color-ink);
+    background: color-mix(in oklab, var(--color-ink) 10%, var(--color-bg)); color: var(--color-ink);
     font-size: 1rem; font-weight: 500; letter-spacing: -0.01em; white-space: nowrap;
     transition: transform 140ms var(--ease-out), background-color 180ms ease;
   }
-  .btn-quiet:hover { background: #3a3a3e; }
+  .btn-quiet:hover { background: color-mix(in oklab, var(--color-ink) 16%, var(--color-bg)); }
   .btn-quiet:active { transform: scale(0.97); }
 
   .link {
@@ -128,7 +128,7 @@ img { background: var(--color-surface); }
     background: var(--color-raised); color: var(--color-ink);
     border: 0; border-radius: 12px; font-size: 1.0625rem;
   }
-  .field::placeholder { color: #6e6e73; }
+  .field::placeholder { color: #66757b; }
 }
 
 /* Einfache Einblendungen (GSAP übernimmt die grossen Bewegungen).
@@ -189,6 +189,15 @@ img { background: var(--color-surface); }
 
 /* Initialen im Platzhalter-Porträt: reine Deko, deshalb per CSS. */
 .portrait-initials::before { content: attr(data-initials); }
+/* Ohne Foto: feines Raster wie im Hintergrund der Seite, statt einer bunten Fläche */
+.portrait-empty::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background-image:
+    linear-gradient(to right, rgb(238 243 243 / 0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(238 243 243 / 0.035) 1px, transparent 1px);
+  background-size: 25% 20%;
+  box-shadow: inset 0 0 0 1px rgb(238 243 243 / 0.06);
+}
 
 /* ---------- Bewegung & Effekte ---------- */
 html.lenis, html.lenis body { height: auto; }
@@ -337,24 +346,74 @@ html.lenis, html.lenis body { height: auto; }
   .hero-photo, .hero-photo-frame { --fx: 0.24; }
 }
 
-/* Navigation: schwebende Glasleiste, immer sichtbar */
-.nav-glass {
-  background:
-    linear-gradient(180deg, rgb(238 243 243 / 0.08), rgb(238 243 243 / 0.02)),
-    rgb(11 17 21 / 0.55);
-  -webkit-backdrop-filter: blur(22px) saturate(1.5);
-  backdrop-filter: blur(22px) saturate(1.5);
-  box-shadow:
-    inset 0 1px 0 0 rgb(255 255 255 / 0.12),
-    inset 0 0 0 1px rgb(255 255 255 / 0.06),
-    0 10px 30px -12px rgb(3 8 11 / 0.55),
-    0 2px 6px -2px rgb(3 8 11 / 0.35);
+/* Navigation, mobil: schwebende Glasleiste, immer sichtbar */
+@media (max-width: 767px) {
+  .nav-glass {
+    background:
+      linear-gradient(180deg, rgb(238 243 243 / 0.08), rgb(238 243 243 / 0.02)),
+      rgb(11 17 21 / 0.55);
+    -webkit-backdrop-filter: blur(22px) saturate(1.5);
+    backdrop-filter: blur(22px) saturate(1.5);
+    box-shadow:
+      inset 0 1px 0 0 rgb(255 255 255 / 0.12),
+      inset 0 0 0 1px rgb(255 255 255 / 0.06),
+      0 10px 30px -12px rgb(3 8 11 / 0.55),
+      0 2px 6px -2px rgb(3 8 11 / 0.35);
+  }
+  .nav-glass.is-open { background: rgb(11 17 21 / 0.92); }
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .nav-glass { background: rgb(11 17 21 / 0.9); }
+  }
 }
-.nav-glass.is-open { background: rgb(11 17 21 / 0.92); }
-@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-  .nav-glass { background: rgb(11 17 21 / 0.9); }
+
+/* Navigation, Desktop: Leiste auf dem Raster. Oben über dem Bild durchsichtig,
+   beim Scrollen eine ruhige Fläche. Getragen von einer Haarlinie mit Ticks. */
+@media (min-width: 768px) {
+  .nav-bar {
+    border-bottom: 1px solid rgb(238 243 243 / 0.12);
+    background: linear-gradient(to bottom, rgb(11 17 21 / 0.55), rgb(11 17 21 / 0));
+    transition: background-color 400ms var(--ease-out), border-color 400ms ease;
+  }
+  .nav-bar[data-scrolled] {
+    background: rgb(11 17 21 / 0.8);
+    border-bottom-color: var(--color-line);
+    -webkit-backdrop-filter: blur(16px) saturate(1.3);
+    backdrop-filter: blur(16px) saturate(1.3);
+  }
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .nav-bar[data-scrolled] { background: rgb(11 17 21 / 0.94); }
+  }
+  .nav-ticks {
+    position: absolute; left: var(--margin); right: var(--margin); bottom: -1px; height: 5px;
+    pointer-events: none;
+    border-right: 1px solid rgb(238 243 243 / 0.28);
+    background-image: linear-gradient(to right, rgb(238 243 243 / 0.28) 1px, transparent 1px);
+    background-size: calc(100% / 12) 100%;
+  }
+  .nav-link .seg { bottom: -1px; }
+  .nav-link:focus-visible { outline-offset: 6px; }
+}
+
+/* Segment auf einer Haarlinie: das wiederkehrende Zeichen für "hier bist du".
+   Hover zeichnet es leise von links, aktiv steht es voll. Wie die Gipfelmarken. */
+.seg {
+  position: absolute; left: 0; right: 0; bottom: 0; height: 1px;
+  background: var(--color-aqua); pointer-events: none;
+  transform: scaleX(0); transform-origin: left; opacity: 0.55;
+  transition: transform 420ms var(--ease-out), opacity 200ms ease;
+}
+.seg-top { top: -1px; bottom: auto; }
+.seg-host:hover .seg, .seg-host:focus-visible .seg, .seg-host.is-on .seg { transform: scaleX(1); }
+.seg-host[aria-current="page"] .seg, .seg-host[aria-pressed="true"] .seg, .seg-host.is-current .seg { transform: scaleX(1); opacity: 1; }
+@media (prefers-reduced-motion: reduce) {
+  .seg { transition: opacity 200ms ease; }
 }
 
 /* Footer: der Wiggis als leiser Grund hinter Links und Zeile */
 .footer-ridge { opacity: 0.32; -webkit-mask-image: linear-gradient(to bottom, transparent, #000 45%); mask-image: linear-gradient(to bottom, transparent, #000 45%); }
 @media (max-width: 767px) { .footer-ridge { opacity: 0.22; } }
+
+/* Brand-Seite: Easing-Demo und Schutzzone */
+.ease-dot { transition-property: transform; }
+@media (prefers-reduced-motion: reduce) { .ease-dot { transition: none !important; } }
+.clearzone { outline: 1px dashed rgb(143 214 211 / 0.55); outline-offset: 0; }

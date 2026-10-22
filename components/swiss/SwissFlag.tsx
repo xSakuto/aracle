@@ -3,7 +3,7 @@
 export default function SwissFlag({ className = "", title = "Schweiz" }: { className?: string; title?: string }) {
   return (
     <svg viewBox="0 0 32 32" role="img" aria-label={title} className={`shrink-0 ${className}`}>
-      <rect width="32" height="32" fill="#da291c" />
+      <rect width="32" height="32" fill="var(--color-swiss)" />
       <path d="M13 6h6v7h7v6h-7v7h-6v-7H6v-6h7z" fill="#fff" />
     </svg>
   );

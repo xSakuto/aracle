@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Panorama from "@/components/alpine/Panorama";
 import PillarMark from "@/components/alpine/PillarMark";
-import ProjectCard from "@/components/ProjectCard";
+import ProjectPoster from "@/components/visuals/ProjectPoster";
 import { TOEDI } from "@/data/panorama/toedi";
 import { PILLARS, featuredProjects, projects, type Pillar } from "@/data/projects";
 import { PILLAR_MOUNTAIN } from "@/lib/mountains";
@@ -18,11 +18,18 @@ const pillarText: Record<Pillar, string> = {
   "Community & Gaming": "Communities und Server, mit denen alles begann.",
 };
 
+const posterTone: Record<string, "slate" | "glacier" | "glow"> = {
+  highside: "glow",
+  "beer-game": "glacier",
+};
+
 const anchor = (p: string) => p.toLowerCase().replace(/ & /g, "-").replace(/\s+/g, "-");
 
 export default function ProjektePage() {
   const used = PILLARS.filter((pl) => projects.some((p) => p.pillar === pl));
-  const lead = featuredProjects[0];
+  // Die vier Hauptprojekte stehen oben, alle weiteren darunter nach Bereich.
+  const others = projects.filter((p) => !p.featured);
+  const otherPillars = PILLARS.filter((pl) => others.some((p) => p.pillar === pl));
   const active = projects.filter((p) => p.status === "Aktiv").length;
   const first = Math.min(...projects.map((p) => Number(p.year)));
 
@@ -62,15 +69,18 @@ export default function ProjektePage() {
             </div>
           </div>
 
-          <nav aria-label="Bereiche" className="mt-10 flex flex-wrap gap-2" data-rise style={{ ["--i" as string]: 3 }}>
-            {used.map((pl) => (
+          <nav aria-label="Abschnitte" className="mt-10 flex flex-wrap gap-2" data-rise style={{ ["--i" as string]: 3 }}>
+            {[
+              { id: "fokus", label: "Im Fokus", n: featuredProjects.length },
+              ...otherPillars.map((pl) => ({ id: anchor(pl), label: pl, n: others.filter((p) => p.pillar === pl).length })),
+            ].map((c) => (
               <a
-                key={pl}
-                href={`#${anchor(pl)}`}
-                className="inline-flex min-h-10 items-center rounded-full border border-line bg-bg/60 px-4 text-[0.875rem] backdrop-blur transition-colors hover:border-aqua hover:text-aqua focus-visible:border-aqua active:scale-[0.98]"
+                key={c.id}
+                href={`#${c.id}`}
+                className="inline-flex min-h-10 items-center rounded-full border border-line bg-bg/60 px-4 text-[0.875rem] backdrop-blur transition-[border-color,color,transform] duration-200 hover:border-aqua hover:text-aqua focus-visible:border-aqua active:scale-[0.98]"
               >
-                {pl}
-                <span className="nums ml-2 text-muted">{projects.filter((p) => p.pillar === pl).length}</span>
+                {c.label}
+                <span className="nums ml-2 text-muted">{c.n}</span>
               </a>
             ))}
           </nav>
@@ -92,68 +102,91 @@ export default function ProjektePage() {
         </div>
       </header>
 
-      {/* Fliessender Übergang: das Leitprojekt schiebt sich über den Hero */}
-      {lead && (
-        <section aria-label="Im Fokus" className="relative z-10 -mt-px">
-          <div className="wrap">
-            <Link
-              href={`/projekte/${lead.slug}`}
-              className="group relative grid overflow-hidden rounded-[calc(var(--radius)*2)] border border-line bg-surface md:grid-cols-12"
-            >
-              <div className="relative aspect-[16/10] overflow-hidden md:col-span-7 md:aspect-auto md:min-h-[26rem]">
-                {lead.coverImage && (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={lead.coverImage}
-                    alt={lead.title}
-                    width={1600}
-                    height={1067}
-                    className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1200ms] ease-[var(--ease-out)] group-hover:scale-[1.04]"
-                  />
-                )}
-                <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent md:bg-gradient-to-r md:from-transparent md:via-transparent md:to-surface/60" />
-              </div>
-              <div className="flex flex-col justify-between gap-10 p-7 md:col-span-5 md:p-10">
-                <div>
-                  <p className="kicker text-aqua">Im Fokus · {lead.pillar}</p>
-                  <h2 className="display mt-4 transition-colors group-hover:text-aqua">{lead.title}</h2>
-                  <p className="lead mt-4 text-ink/85">{lead.tagline}</p>
-                </div>
-                <div>
-                  <p className="text-ink/80">{lead.goal}</p>
-                  <span className="link-under mt-6 inline-flex min-h-11 items-center font-medium">
-                    Zum Projekt <span aria-hidden className="ml-2 transition-transform duration-500 group-hover:translate-x-1">→</span>
-                  </span>
-                </div>
-              </div>
-            </Link>
-          </div>
-        </section>
-      )}
+      {/* Im Fokus: die vier Hauptprojekte, gross und mit Bild */}
+      <section id="fokus" aria-labelledby="fokus-title" className="wrap relative z-10 scroll-mt-24 pt-[calc(var(--section)*0.6)]">
+        <div className="flex items-baseline justify-between gap-6 border-t border-line pt-5">
+          <h2 id="fokus-title" className="kicker text-aqua">Im Fokus</h2>
+          <p className="small hidden text-muted sm:block">Infrastruktur, Marke, Content und ein eigenes Game</p>
+        </div>
+        <ul className="mt-8 grid gap-x-6 gap-y-14 md:grid-cols-12">
+          {featuredProjects.map((p, i) => {
+            const wide = i === 0 || i === 3;
+            return (
+              <li key={p.slug} data-reveal style={{ ["--i" as string]: i % 2 }} className={wide ? "md:col-span-7" : "md:col-span-5"}>
+                <Link href={`/projekte/${p.slug}`} className="group block">
+                  <div className="relative aspect-[4/3] overflow-hidden rounded-[var(--radius)] md:aspect-auto md:h-[min(38rem,62svh)]">
+                    {p.coverImage ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={p.coverImage}
+                        alt={p.title}
+                        width={1600}
+                        height={1067}
+                        loading={i < 2 ? "eager" : "lazy"}
+                        className="h-full w-full object-cover transition-transform duration-[1200ms] ease-[var(--ease-out)] group-hover:scale-[1.03]"
+                      />
+                    ) : (
+                      <ProjectPoster
+                        project={p}
+                        tone={posterTone[p.slug] ?? "slate"}
+                        size="lg"
+                        className="h-full w-full transition-transform duration-[1200ms] ease-[var(--ease-out)] group-hover:scale-[1.02]"
+                      />
+                    )}
+                  </div>
+                  <div className="mt-5 grid gap-x-6 gap-y-2 border-t border-line pt-4 sm:grid-cols-[1fr_auto]">
+                    <h3 className="text-[clamp(1.75rem,1rem+1.6vw,2.5rem)] font-[640] leading-[1] tracking-[-0.035em] transition-colors group-hover:text-aqua">
+                      {p.title}
+                    </h3>
+                    <p className="small nums text-muted sm:pt-2 sm:text-right">
+                      {p.pillar}, seit {p.year}
+                      {p.status !== "Aktiv" && <span className="text-glow">, {p.status}</span>}
+                    </p>
+                    <p className="max-w-[40ch] text-ink/75 sm:col-span-2">{p.tagline}</p>
+                  </div>
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
+      </section>
 
-      {/* Bereiche: jeder mit seinem Gipfel */}
-      <div className="wrap pb-[var(--section)] pt-[calc(var(--section)*0.8)]">
-        {used.map((pl) => {
-          const group = projects.filter((p) => p.pillar === pl);
+      {/* Weitere Projekte: nach Bereich, als ruhiges Register */}
+      <div className="wrap pb-[var(--section)] pt-[var(--section)]">
+        <h2 className="head">More work.</h2>
+        <p className="mt-4 max-w-[40ch] text-muted">
+          Communities, Kanäle und Experimente. Vieles davon ist der Grund, warum es Aracle heute gibt.
+        </p>
+        {otherPillars.map((pl) => {
+          const group = others.filter((p) => p.pillar === pl);
           const mt = PILLAR_MOUNTAIN[pl];
           return (
             <section
               key={pl}
               id={anchor(pl)}
               aria-labelledby={`${anchor(pl)}-title`}
-              className="grid scroll-mt-24 gap-10 border-t border-line pt-10 md:grid-cols-12 [&:not(:first-child)]:mt-[calc(var(--section)*0.7)]"
+              className="mt-14 grid scroll-mt-24 gap-x-8 gap-y-8 border-t border-line pt-8 md:grid-cols-12"
             >
               <div className="md:col-span-3">
                 <div className="md:sticky md:top-24">
-                  <h2 id={`${anchor(pl)}-title`} className="text-[clamp(1.625rem,1rem+1.4vw,2.25rem)] font-[640] leading-[1.02] tracking-[-0.03em] [overflow-wrap:anywhere]">{pl}</h2>
-                  <p className="mt-3 text-muted">{pillarText[pl]}</p>
-                  <PillarMark mountain={mt} className="mt-8 max-w-[22rem] text-ink" />
+                  <h3 id={`${anchor(pl)}-title`} className="text-[1.375rem] font-[640] leading-[1.05] tracking-[-0.025em]">{pl}</h3>
+                  <p className="small mt-2 text-muted">{pillarText[pl]}</p>
+                  <PillarMark mountain={mt} className="mt-6 hidden max-w-[16rem] text-ink opacity-80 md:block" />
                 </div>
               </div>
-              <ul className="grid gap-x-6 gap-y-12 sm:grid-cols-2 md:col-span-9 lg:grid-cols-3">
-                {group.map((p, i) => (
-                  <li key={p.slug} data-reveal style={{ ["--i" as string]: i % 3 }}>
-                    <ProjectCard project={p} />
+              <ul className="border-b border-line md:col-span-9">
+                {group.map((p) => (
+                  <li key={p.slug}>
+                    <Link
+                      href={`/projekte/${p.slug}`}
+                      className="seg-host group relative grid grid-cols-[1fr_auto] items-baseline gap-x-6 gap-y-1 border-t border-line py-5 sm:grid-cols-9"
+                    >
+                      <span aria-hidden className="seg seg-top" />
+                      <span className="text-[1.1875rem] font-semibold tracking-[-0.02em] transition-colors group-hover:text-aqua sm:col-span-3">{p.title}</span>
+                      <span className="small nums text-muted sm:order-last sm:col-span-1 sm:text-right">{p.year}</span>
+                      <span className="col-span-2 text-ink/70 sm:col-span-4">{p.shortDescription}</span>
+                      <span className={`small col-span-2 sm:col-span-1 ${p.status === "Aktiv" ? "text-muted" : "text-glow"}`}>{p.status}</span>
+                    </Link>
                   </li>
                 ))}
               </ul>

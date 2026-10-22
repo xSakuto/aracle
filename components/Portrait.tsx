@@ -35,14 +35,15 @@ export default function Portrait({
     <div
       role="img"
       aria-label={`${name}, noch ohne Foto`}
-      className={`relative flex aspect-[4/5] w-full items-end overflow-hidden ${className}`}
-      style={{ background: `color-mix(in oklab, ${accent} 22%, #141518)` }}
+      className={`portrait-empty relative flex aspect-[4/5] w-full items-end overflow-hidden ${className}`}
+      style={{ background: `color-mix(in oklab, ${accent} 9%, #121a1f)` }}
     >
+      {/* Leise Fläche in der Profilfarbe, damit ein fehlendes Foto nicht lauter ist als ein echtes */}
       <span
         aria-hidden
         data-initials={initials(name)}
-        className="portrait-initials display -mb-[0.1em] pl-[6%] leading-none"
-        style={{ color: `color-mix(in oklab, ${accent} 70%, #f3f4f2)` }}
+        className="portrait-initials display relative -mb-[0.1em] pl-[6%] leading-none"
+        style={{ color: `color-mix(in oklab, ${accent} 30%, #6f7f86)` }}
       />
     </div>
   );

@@ -1,31 +1,41 @@
 import Link from "next/link";
 import PillarMark from "@/components/alpine/PillarMark";
+import { getProject } from "@/data/projects";
+import { MOUNTAINS } from "@/lib/mountains";
 
-const pillars = [
+// Was Aracle ausmacht, als Profil von oben nach unten: eigene Marken und Produkte,
+// der Content dazu, und die Infrastruktur, auf der alles läuft. Jede Ebene steht
+// auf ihrem Glarner Gipfel und zeigt die echten Projekte, darunter was buchbar ist.
+const layers = [
   {
-    title: "Creative Production",
-    lead: "Bilder und Geschichten, die zur Marke passen.",
-    items: ["Video & Content", "Design & Branding", "Social Media"],
-    href: "/projekte#creative-production",
-    mountain: "glaernisch" as const,
+    title: "Brands & Products",
+    text: "Wir entwickeln eigene Marken und Produkte, von Streetwear bis zum Game.",
+    projects: ["highside", "beer-game", "rexusmods"],
+    offer: "Branding, Websites und digitale Produkte",
+    cta: "Projekt anfragen",
+    ctaHref: "/kontakt",
+    mountain: MOUNTAINS.toedi,
   },
   {
-    title: "Digital Experiences",
-    lead: "Websites und digitale Produkte, schnell und sauber gebaut.",
-    items: ["Websites", "Webentwicklung", "Digitale Produkte"],
-    href: "/projekte#digital-experiences",
-    mountain: "toedi" as const,
+    title: "Content",
+    text: "Wir produzieren den Content dazu, für die eigenen Kanäle und Communities.",
+    projects: ["swizzly", "sakuto"],
+    offer: "Video, Content und Social Media",
+    cta: "Projekt anfragen",
+    ctaHref: "/kontakt",
+    mountain: MOUNTAINS.glaernisch,
   },
   {
-    title: "Cloud & Infrastructure",
-    lead: "Hosting und Server, die wir selbst betreiben.",
-    items: ["Webhosting", "Server-Lösungen", "Wartung & Monitoring"],
-    href: "/hosting",
-    mountain: "kaerpf" as const,
+    title: "Infrastructure",
+    text: "Und wir betreiben die Technik dahinter, auf eigener Hardware im Glarnerland.",
+    projects: ["aracle-cloud-hosting", "araclesmp"],
+    offer: "Webhosting, Server und Monitoring",
+    cta: "Zu Aracle Cloud",
+    ctaHref: "/hosting",
+    mountain: MOUNTAINS.kaerpf,
   },
 ];
 
-// Leistungen in drei Säulen, jede mit ihrem Glarner Gipfel.
 export default function Services() {
   return (
     <section id="leistungen" aria-labelledby="services-title" className="wrap scroll-mt-20 py-[var(--section)]">
@@ -37,39 +47,57 @@ export default function Services() {
           </h2>
         </div>
         <p className="text-ink/80 md:col-span-4 md:col-start-9">
-          Vom ersten Bild bis zum Server, auf dem es läuft. Ein Team, ein
-          Ansprechpartner, kurze Wege.
+          Aracle entwickelt eigene Produkte und Marken, produziert Content und
+          betreibt die technische Infrastruktur dahinter. Was wir dabei lernen,
+          bauen wir auch für andere.
         </p>
       </div>
 
-      <ul className="mt-14 grid border-t border-line md:grid-cols-3">
-        {pillars.map((p, i) => (
+      <ol className="mt-14 border-b border-line">
+        {layers.map((l, i) => (
           <li
-            key={p.title}
+            key={l.title}
             data-reveal
             style={{ ["--i" as string]: i }}
-            className="border-b border-line md:border-b-0 md:border-r md:px-8 md:first:pl-0 md:last:border-r-0 md:last:pr-0"
+            className="grid gap-x-8 gap-y-6 border-t border-line py-10 md:grid-cols-12 md:py-14"
           >
-            <Link href={p.href} className="group flex h-full flex-col py-8">
-              <PillarMark mountain={p.mountain} className="mb-8 text-ink opacity-85 transition-opacity group-hover:opacity-100" />
-              <h3 className="text-[clamp(1.5rem,1rem+1.2vw,2.125rem)] font-[620] leading-[1.05] tracking-[-0.03em] transition-colors group-hover:text-aqua">
-                {p.title}
+            <PillarMark mountain={l.mountain} className="max-w-[16rem] text-ink opacity-85 md:col-span-3" />
+
+            <div className="md:col-span-5">
+              <h3 className="text-[clamp(1.75rem,1rem+1.8vw,2.75rem)] font-[620] leading-[1] tracking-[-0.035em]">
+                {l.title}
               </h3>
-              <p className="mt-3 text-ink/80">{p.lead}</p>
-              <ul className="mt-6 flex flex-col">
-                {p.items.map((it) => (
-                  <li key={it} className="flex items-center justify-between border-t border-line/70 py-2.5 text-[0.9375rem]">
-                    {it}
-                  </li>
-                ))}
+              <p className="mt-4 max-w-[34ch] text-ink/80">{l.text}</p>
+            </div>
+
+            <div className="md:col-span-4">
+              <p className="small text-muted">Eigene Projekte</p>
+              <ul className="mt-3 border-b border-line/70">
+                {l.projects.map((slug) => {
+                  const p = getProject(slug);
+                  if (!p) return null;
+                  return (
+                    <li key={slug}>
+                      <Link
+                        href={`/projekte/${slug}`}
+                        className="seg-host relative flex min-h-11 items-center justify-between gap-4 border-t border-line/70 transition-colors hover:text-aqua"
+                      >
+                        <span aria-hidden className="seg seg-top" />
+                        {p.title}
+                        <span className="small shrink-0 text-muted">{p.status === "Aktiv" ? p.category : p.status}</span>
+                      </Link>
+                    </li>
+                  );
+                })}
               </ul>
-              <span className="link-under mt-6 inline-flex min-h-11 items-center font-medium">
-                {p.title === "Cloud & Infrastructure" ? "Zu Aracle Cloud" : "Passende Projekte"}
-              </span>
-            </Link>
+              <p className="small mt-5 text-muted">Für dich: {l.offer}.</p>
+              <Link href={l.ctaHref} className="link-under small inline-flex min-h-10 items-center font-medium">
+                {l.cta}
+              </Link>
+            </div>
           </li>
         ))}
-      </ul>
+      </ol>
     </section>
   );
 }

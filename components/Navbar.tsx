@@ -12,8 +12,12 @@ const links = [
   { href: "/history", label: "Journey" },
 ];
 
+// Desktop: eine Leiste auf dem 12er-Raster, getragen von einer Haarlinie.
+// Der aktive Punkt ist ein Segment in Gletscherblau auf dieser Linie, wie die
+// Gipfelmarken im Panorama. Mobile: die bewährte Glasleiste mit Vollbild-Menü.
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
 
   useEffect(() => setOpen(false), [pathname]);
@@ -25,55 +29,80 @@ export default function Navbar() {
     };
   }, [open]);
 
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   const isActive = (href: string) => !href.includes("#") && pathname.startsWith(href);
 
   return (
     <>
-      <header className="fixed inset-x-0 top-0 z-50 px-[calc(var(--margin)-0.75rem)] pt-3">
-        <div className={`nav-glass relative flex h-14 items-center justify-between rounded-[14px] px-3 ${open ? "is-open" : ""}`}>
-        <Link
-          href="/"
-          aria-label="Aracle, zur Startseite"
-          className="flex items-center transition-opacity hover:opacity-80 active:opacity-60"
+      <header className="fixed inset-x-0 top-0 z-50 px-[calc(var(--margin)-0.75rem)] pt-3 md:p-0">
+        <div
+          data-scrolled={scrolled || undefined}
+          className={`nav-glass nav-bar relative flex h-14 items-center justify-between rounded-[14px] px-3 md:grid md:h-16 md:grid-cols-12 md:gap-x-8 md:rounded-none md:px-[var(--margin)] ${open ? "is-open" : ""}`}
         >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/Brand_assets/aracle-logo.png"
-            alt="Aracle"
-            width={1111}
-            height={260}
-            className="h-6 w-auto bg-transparent"
-          />
-        </Link>
+          {/* Ticks auf der Haarlinie, im Takt des Hintergrundrasters */}
+          <span aria-hidden className="nav-ticks hidden md:block" />
 
-        <nav aria-label="Hauptnavigation" className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-8 md:flex">
-          {links.map((l) => (
-            <Link
-              key={l.href}
-              href={l.href}
-              aria-current={isActive(l.href) ? "page" : undefined}
-              className={`text-[0.8125rem] transition-colors ${
-                isActive(l.href) ? "text-ink" : "text-muted hover:text-ink"
-              }`}
-            >
-              {l.label}
+          <Link
+            href="/"
+            aria-label="Aracle, zur Startseite"
+            className="flex items-center transition-opacity hover:opacity-80 active:opacity-60 md:col-span-3"
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/Brand_assets/aracle-logo.png"
+              alt="Aracle"
+              width={1111}
+              height={260}
+              className="h-6 w-auto bg-transparent"
+            />
+          </Link>
+
+          <nav aria-label="Hauptnavigation" className="hidden h-full items-stretch gap-7 md:col-span-5 md:col-start-4 md:flex">
+            {links.map((l) => {
+              const on = isActive(l.href);
+              return (
+                <Link
+                  key={l.href}
+                  href={l.href}
+                  aria-current={on ? "page" : undefined}
+                  className={`nav-link seg-host relative flex items-center text-[0.8125rem] transition-colors duration-200 ${
+                    on ? "text-ink" : "text-muted hover:text-ink"
+                  }`}
+                >
+                  {l.label}
+                  <span aria-hidden className="seg" />
+                </Link>
+              );
+            })}
+          </nav>
+
+          <div className="hidden items-center justify-between gap-6 md:col-span-4 md:col-start-9 md:flex">
+            <p className="nums hidden text-[0.75rem] text-muted lg:block">
+              <span className="text-ink/80">Glarus</span>
+              <span className="ml-2">47°02′ N</span>
+              <span className="ml-2">9°04′ E</span>
+            </p>
+            <Link href="/kontakt" className="btn ml-auto min-h-8 px-3.5 text-[0.8125rem]">
+              Projekt anfragen
             </Link>
-          ))}
-        </nav>
-        <Link href="/kontakt" className="btn hidden min-h-8 px-3.5 text-[0.8125rem] md:inline-flex">
-          Projekt anfragen
-        </Link>
+          </div>
 
-        <button
-          type="button"
-          aria-label={open ? "Menü schliessen" : "Menü öffnen"}
-          aria-expanded={open}
-          aria-controls="mobile-menu"
-          onClick={() => setOpen((v) => !v)}
-          className="flex h-11 items-center px-2 text-[0.9375rem] transition-opacity active:opacity-60 md:hidden"
-        >
-          {open ? "Schliessen" : "Menü"}
-        </button>
+          <button
+            type="button"
+            aria-label={open ? "Menü schliessen" : "Menü öffnen"}
+            aria-expanded={open}
+            aria-controls="mobile-menu"
+            onClick={() => setOpen((v) => !v)}
+            className="flex h-11 items-center px-2 text-[0.9375rem] transition-opacity active:opacity-60 md:hidden"
+          >
+            {open ? "Schliessen" : "Menü"}
+          </button>
         </div>
       </header>
 

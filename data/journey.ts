@@ -70,8 +70,8 @@ export const journey: JourneyStage[] = [
       },
       {
         name: "RexusMods",
-        desc: "3D-Modelling für GTA V, von MLO-Maps bis zu Fahrzeuglackierungen. Zusammen mit Tim Mockweiss.",
-        tag: "Pausiert",
+        desc: "3D-Modelling für GTA V, von MLO-Maps bis zu Fahrzeuglackierungen. Zusammen mit Tim Mockweiss, heute wieder aktiv und um Flugsimulator-Add-ons erweitert.",
+        tag: "Aktiv",
         project: "rexusmods",
       },
       {

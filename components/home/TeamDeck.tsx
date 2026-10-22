@@ -1,8 +1,8 @@
 import Link from "next/link";
-import Portrait from "@/components/Portrait";
+import PeopleIndex from "@/components/home/PeopleIndex";
 import type { TeamMember } from "@/lib/team";
 
-// Das Team: ruhiges Raster, beim Überfahren hebt sich eine Karte.
+// Das Team als Register: Namen gross auf Haarlinien, ein Porträt daneben.
 export default function TeamDeck({ members }: { members: TeamMember[] }) {
   return (
     <section aria-labelledby="team-title" className="wrap py-[var(--section)]">
@@ -17,30 +17,7 @@ export default function TeamDeck({ members }: { members: TeamMember[] }) {
           Alle mit ihren Projekten
         </Link>
       </div>
-
-      <ul className="mt-12 grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-3 lg:grid-cols-6">
-        {members.map((m, i) => (
-          <li key={m.id} data-reveal style={{ ["--i" as string]: i % 3 }}>
-            <Link
-              href={`/team#${m.slug}`}
-              className="group block transition-transform duration-500 ease-[var(--ease-out)] hover:-translate-y-2"
-            >
-              <div className="overflow-hidden rounded-[var(--radius)]">
-                <Portrait
-                  name={m.name}
-                  photo={m.photo}
-                  accent={m.accent}
-                  className="grayscale-[35%] transition-[filter,transform] duration-700 group-hover:scale-[1.03] group-hover:grayscale-0"
-                />
-              </div>
-              <div className="mt-3 border-t border-line pt-3">
-                <p className="font-semibold tracking-[-0.015em]">{m.name}</p>
-                <p className="small mt-0.5 text-muted">{m.role}</p>
-              </div>
-            </Link>
-          </li>
-        ))}
-      </ul>
+      <PeopleIndex members={members} />
     </section>
   );
 }
