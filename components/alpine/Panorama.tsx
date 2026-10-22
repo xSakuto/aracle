@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import { settle } from "@/components/alpine/DrawOnView";
 import { azAt, cardinal, meters, xAt, type Panorama as Pano, type PanoView } from "@/lib/panorama";
 
 export type PanoLabel = {
@@ -91,15 +92,19 @@ export default function Panorama({
     const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
     const fine = matchMedia("(hover: hover) and (pointer: fine)").matches;
     if (reduce || draw === "none") {
-      el.classList.add("is-drawn", "no-anim");
+      el.classList.add("is-drawn", "no-anim", "is-done");
       return;
     }
 
     let inView = false;
+    let settleTimer = 0;
     const io = new IntersectionObserver(
       ([e]) => {
         inView = e.isIntersecting;
-        if (inView && draw === "load") el.classList.add("is-drawn");
+        if (inView && draw === "load" && !el.classList.contains("is-drawn")) {
+          el.classList.add("is-drawn");
+          settleTimer = window.setTimeout(() => settle(el), 4800);
+        }
       },
       { threshold: 0.1 },
     );
@@ -149,12 +154,14 @@ export default function Panorama({
           lastProg = prog;
           el.style.setProperty("--prog", String(prog));
           if (prog > 0.6) el.classList.add("is-drawn");
+          if (prog >= 1 && !el.classList.contains("is-done")) settle(el);
         }
       }
     };
     loop();
     return () => {
       cancelAnimationFrame(raf);
+      clearTimeout(settleTimer);
       io.disconnect();
       removeEventListener("pointermove", onMove);
     };
@@ -187,7 +194,6 @@ export default function Panorama({
     <path
       key={n}
       d={p.d}
-      pathLength={1}
       className="pano-path"
       style={{ ["--d" as string]: `${base + (n++ % 14) * 55}ms`, strokeOpacity: o, strokeWidth: w }}
     />
@@ -228,6 +234,7 @@ export default function Panorama({
           </g>
         ))}
       </svg>
+      <span aria-hidden className="pano-curtain-wrap"><span className="pano-curtain" /></span>
 
       {/* Gipfelmarken und Beschriftungen als HTML, damit die Schrift nicht mitskaliert */}
       {peaks.map(({ l, i, p }) => {

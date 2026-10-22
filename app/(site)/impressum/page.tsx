@@ -1,3 +1,5 @@
+import Descent from "@/components/alpine/Descent";
+
 export const metadata = { title: "Impressum · Aracle" };
 
 const rows: [string, React.ReactNode][] = [
@@ -12,9 +14,11 @@ const rows: [string, React.ReactNode][] = [
   [
     "Adresse",
     <>
-      Dörflistrasse 18
+      Joel-Sananda Nef
       <br />
-      8755 Ennenda
+      Büel-Waid 12
+      <br />
+      8750 Glarus
       <br />
       Schweiz
     </>,
@@ -42,12 +46,15 @@ export default function ImpressumPage() {
     <div className="wrap pb-[var(--section)] pt-28 md:pt-36">
     <div className="inner grid grid-cols-12 gap-x-3 md:gap-x-8 gap-y-12">
       <div className="col-span-12 md:col-span-6">
+        <div className="md:sticky md:top-24">
         <h1 className="display" data-split="load">
           Impressum
         </h1>
         <p className="lead mt-5 max-w-[28rem] text-muted" data-rise style={{ ["--i" as string]: 1 }}>
           Wer hinter aracle.ch steht und wie du uns erreichst.
         </p>
+        <Descent className="mt-14 hidden w-[12rem] md:block" />
+        </div>
       </div>
       <div className="col-span-12 md:col-span-6 md:pt-4">
       <dl className="grid grid-cols-1 gap-x-8 gap-y-8 sm:grid-cols-[11rem_1fr]">

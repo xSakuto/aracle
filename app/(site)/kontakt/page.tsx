@@ -3,7 +3,7 @@ import Contours from "@/components/alpine/Contours";
 
 export const metadata = {
   title: "Kontakt · Aracle",
-  description: "Projekt anfragen: Website, Branding, Video oder Hosting. Aracle, Creative & Technology Studio aus Ennenda, Glarus.",
+  description: "Projekt anfragen: Website, Branding, Video oder Hosting. Aracle, Creative & Technology Studio aus Glarus.",
 };
 
 const direct: { label: string; value: string; href: string }[] = [
@@ -45,7 +45,7 @@ export default async function KontaktPage({ searchParams }: { searchParams: Prom
             ))}
             <div className="flex items-baseline justify-between gap-6 border-b border-line py-4">
               <dt className="text-muted">Studio</dt>
-              <dd className="text-right">Ennenda, Kanton Glarus</dd>
+              <dd className="text-right">Glarus, Schweiz</dd>
             </div>
           </dl>
         </div>

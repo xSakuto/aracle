@@ -22,7 +22,7 @@ export default function Contours({
         viewBox={`0 0 ${m.w} ${m.h}`}
         preserveAspectRatio="xMidYMid meet"
         aria-hidden
-        className="absolute inset-0 h-full w-full"
+        className="pano-fadein absolute inset-0 h-full w-full"
         fill="none"
         stroke="currentColor"
       >
@@ -30,7 +30,6 @@ export default function Contours({
           <path
             key={i}
             d={p.d}
-            pathLength={1}
             className="pano-path"
             style={{
               ["--d" as string]: `${Math.round(((p.m - 1500) / 1300) * 1600)}ms`,

@@ -81,10 +81,15 @@ def render(cfg):
     pitch = math.radians(cfg.get("pitch", 0.0))
     dmax = cfg.get("dmax", 60000)
     dmin = cfg.get("dmin", 60)
-    d = np.concatenate([np.arange(60, 3000, 15), np.arange(3000, 15000, 30), np.arange(15000, dmax, 60)]).astype(np.float64)
+    # Abtastung feiner als das 30-m-Raster, auch in der Ferne
+    d = np.concatenate([np.arange(30, 3000, 8), np.arange(3000, 12000, 14), np.arange(12000, dmax, 20)]).astype(np.float64)
     d = d[d >= dmin]
+    drop = d * d / (2 * R) * (1 - K)
     cols = cfg.get("cols", 1200)
-    min_gap = cfg.get("min_gap", 0.0025)  # rad: wie viel Gelände dahinter verdeckt sein muss
+    # Eine Gratkante zählt nur, wenn dahinter Gelände über eine echte Strecke verdeckt ist
+    min_hidden = cfg.get("min_hidden", 180.0)   # m
+    rel_hidden = cfg.get("rel_hidden", 0.035)  # Anteil der Distanz
+    min_gap = cfg.get("min_gap", 0.0004)       # rad Mindestabfall dahinter
     crests_per_col = []
     horizon_cols = []
     xs = []
@@ -94,30 +99,26 @@ def render(cfg):
         az = az_c + daz
         la, lo = dest(lat, lon, az, d)
         h = elev(la, lo)
-        drop = d * d / (2 * R) * (1 - K)
         ang = np.arctan2(h - eye - drop, d)
-        # sichtbare Grate: lokale Maxima, die über dem bisherigen Maximum liegen
         runmax = np.maximum.accumulate(ang)
         horizon_cols.append(float(runmax[-1]))
-        prev = np.concatenate([[-9], runmax[:-1]])
-        vis = ang >= prev
+        prev = np.concatenate([[-9.0], runmax[:-1]])
+        # Kandidaten: sichtbare lokale Maxima
+        cand = np.where((ang[1:-1] >= prev[1:-1]) & (ang[1:-1] >= ang[:-2]) & (ang[1:-1] > ang[2:]))[0] + 1
         crest = []
-        n = len(ang)
-        j = 1
-        while j < n - 1:
-            if vis[j] and ang[j] >= ang[j - 1] and ang[j] > ang[j + 1]:
-                # wie tief fällt das Gelände dahinter ab, bevor es wieder auftaucht?
-                k = j + 1
-                low = ang[j]
-                while k < n and ang[k] < ang[j]:
-                    low = min(low, ang[k])
-                    k += 1
-                gap = ang[j] - low
-                if k >= n or gap > min_gap:
-                    crest.append((float(ang[j]), float(d[j]), k >= n))
-                j = k
-            else:
-                j += 1
+        if len(cand):
+            # Wo taucht dahinter wieder Gelände auf? Erste Stelle, an der das laufende Maximum den Grat übersteigt
+            k = np.searchsorted(runmax, ang[cand], side="right")
+            n = len(ang)
+            for j, kk in zip(cand, k):
+                sky = kk >= n
+                hidden = (d[min(kk, n - 1)] - d[j]) if not sky else 1e9
+                if not sky and hidden < max(min_hidden, rel_hidden * d[j]):
+                    continue
+                seg = ang[j + 1 : kk] if kk > j + 1 else ang[j : j + 1]
+                if not sky and ang[j] - seg.min() < min_gap:
+                    continue
+                crest.append((float(ang[j]), float(d[j]), bool(sky)))
         crests_per_col.append(crest)
         xs.append(x)
 
@@ -129,19 +130,21 @@ def render(cfg):
         y = -f * math.tan(a - pitch) / cosd
         return x + W / 2, y
 
-    # Kanten über Spalten verbinden
-    lines = []  # dict(points, d)
+    # Kanten über Spalten verbinden; kurze Aussetzer (bis 3 Spalten) werden überbrückt
+    link_px = cfg.get("link_px", 4)
+    lines = []
     open_lines = []
     for i, crest in enumerate(crests_per_col):
         used = set()
         new_open = []
-        for ln in open_lines:
+        for ln in sorted(open_lines, key=lambda l: l["miss"]):
             la_, ld = ln["last"]
+            tol = link_px * (1 + ln["miss"])
             best, bi = None, -1
             for ci, (a, dd, sky) in enumerate(crest):
                 if ci in used:
                     continue
-                if abs(a - la_) * f > cfg.get("link_px", 4) or abs(dd - ld) / ld > 0.12:
+                if abs(a - la_) * f > tol or abs(dd - ld) / ld > 0.12:
                     continue
                 score = abs(a - la_) * f + abs(dd - ld) / ld * 20
                 if best is None or score < best:
@@ -153,12 +156,16 @@ def render(cfg):
                 ln["ds"].append(dd)
                 ln["sky"] += sky
                 ln["last"] = (a, dd)
+                ln["miss"] = 0
+                new_open.append(ln)
+            elif ln["miss"] < 3:
+                ln["miss"] += 1
                 new_open.append(ln)
             else:
                 lines.append(ln)
         for ci, (a, dd, sky) in enumerate(crest):
             if ci not in used:
-                new_open.append({"pts": [proj(xs[i], a)], "ds": [dd], "sky": int(sky), "last": (a, dd)})
+                new_open.append({"pts": [proj(xs[i], a)], "ds": [dd], "sky": int(sky), "last": (a, dd), "miss": 0})
         open_lines = new_open
     lines += open_lines
 
@@ -190,7 +197,13 @@ def render(cfg):
         aa = np.arctan2(hh - eye - dds * dds / (2 * R) * (1 - K), dds)
         visible = bool((aa < a - 0.0008).all())
         px, py = proj(x, a)
-        peaks.append({**p, "x": px, "y": py, "dist": dd, "visible": visible, "bearing": b})
+        # Prüfung: höchster Punkt der berechneten Silhouette in +-0.4° um den Gipfel
+        col = int(round((x + W / 2) / W * cols - 0.5))
+        span = max(1, int(cols * (0.4 / fov)))
+        lo_, hi_ = max(0, col - span), min(cols, col + span + 1)
+        sky_max = max(horizon_cols[lo_:hi_]) if hi_ > lo_ else a
+        peaks.append({**p, "x": px, "y": py, "dist": dd, "visible": visible, "bearing": b,
+                      "check_deg": round(math.degrees(a - sky_max), 3)})
     horizon = [proj(xs[i], a) for i, a in enumerate(horizon_cols)]
     return {"eye": eye, "W": W, "lines": out, "peaks": peaks, "f": f, "horizon": horizon}
 

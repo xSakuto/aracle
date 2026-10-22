@@ -82,3 +82,20 @@ for v in toedi glaernisch wiggis; do
 done
 python3 -I contours.py dem ../../data/panorama/kaerpf.ts
 ```
+
+## Genauigkeit (Stand Oktober 2026)
+
+- Abtastung entlang der Sichtstrahlen alle 8 m (bis 3 km), 14 m (bis 12 km) und 20 m,
+  also feiner als das 30-m-Raster. Doppelte Spaltenzahl gegenüber der Bildbreite.
+- Gratkanten nur dort, wo dahinter Gelände über mindestens 180 m bzw. 3.5 % der
+  Distanz verdeckt ist. Kurze Aussetzer bis 3 Spalten werden überbrückt.
+- Prüfung: Für jeden Gipfel auf der Horizontlinie wird verglichen, wo er laut
+  offizieller Höhe erscheinen muss und wo die berechnete Silhouette ihre Spitze hat.
+  Ergebnis: Tödi 0.008°, Bifertenstock 0.008°, Clariden 0.003°, Ruchen 0.025°,
+  Wiggis 0.027°, Vrenelisgärtli 0.049°, Gross Chärpf 0.051°.
+
+## Abstieg (Datenschutz, Impressum)
+
+`profile.py` berechnet das Geländeprofil in Luftlinie vom Vrenelisgärtli (2904 m)
+nach Glarus (472 m), 5.3 km. Die Komponente `Descent` zeigt beim Lesen die aktuelle
+Höhe auf diesem Profil.

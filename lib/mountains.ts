@@ -20,7 +20,7 @@ export const MOUNTAINS: Record<Mountain["key"], Mountain> = {
   glaernisch: { key: "glaernisch", name: "Glärnisch", peak: "Vrenelisgärtli", m: 2904, view: GLAERNISCH, from: "vom Schilt" },
   toedi: { key: "toedi", name: "Tödi", peak: "Tödi", m: 3614, view: TOEDI, from: "vom Schilt" },
   kaerpf: { key: "kaerpf", name: "Gross Chärpf", peak: "Gross Chärpf", m: 2794, view: null, from: "Höhenlinien" },
-  wiggis: { key: "wiggis", name: "Wiggis", peak: "Wiggis", m: 2282, view: WIGGIS, from: "von Ennenda" },
+  wiggis: { key: "wiggis", name: "Wiggis", peak: "Wiggis", m: 2282, view: WIGGIS, from: "von Glarus" },
 };
 
 export const PILLAR_MOUNTAIN: Record<Pillar, Mountain> = {

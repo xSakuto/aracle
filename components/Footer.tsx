@@ -42,18 +42,18 @@ export default function Footer() {
           Aracle
         </p>
         <p className="small mb-3 hidden max-w-[16rem] text-right text-muted md:block">
-          Creative &amp; Technology Studio. Ennenda, Glarus. Made in Switzerland.
+          Creative &amp; Technology Studio. Glarus. Made in Switzerland.
         </p>
       </div>
 
-      {/* Der Wiggis, wie man ihn vom Studio in Ennenda aus sieht */}
+      {/* Der Wiggis, wie man ihn aus Glarus sieht, dem Ort des Studios */}
       <div className="relative mt-10 text-ink">
         <Ridge data={WIGGIS} peak="Wiggis" label depths={[2, 1]} yMax={300} className="w-full" />
-        <p className="wrap small absolute right-0 top-0 text-muted">Blick von Ennenda, Richtung Nordwest</p>
+        <p className="wrap small absolute right-0 top-0 text-muted">Blick von Glarus, Richtung Nordwest</p>
       </div>
 
       <div className="wrap small flex flex-wrap items-center justify-between gap-4 border-t border-line py-5 text-muted">
-        <p>© {new Date().getFullYear()} Aracle, CH-8755 Ennenda</p>
+        <p>© {new Date().getFullYear()} Aracle, CH-8750 Glarus</p>
         <a href="#top" className="transition-colors hover:text-ink">Nach oben</a>
       </div>
     </footer>

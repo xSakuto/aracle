@@ -29,7 +29,7 @@ export default function ProjectPoster({
       role="img"
       aria-label={`${project.title}, ${project.category}`}
       className={`@container relative flex flex-col overflow-hidden p-6 md:p-8 ${className}`}
-      style={{ background: t.bg, color: t.ink }}
+      style={{ background: t.bg, color: t.ink, ["--curtain" as string]: t.bg }}
     >
       <div className="kicker flex justify-between opacity-70">
         <span>{project.category}</span>

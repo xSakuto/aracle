@@ -1,3 +1,5 @@
+import Descent from "@/components/alpine/Descent";
+
 export const metadata = { title: "Datenschutz · Aracle" };
 
 const sections: { n: string; title: string; body: React.ReactNode }[] = [
@@ -11,7 +13,7 @@ const sections: { n: string; title: string; body: React.ReactNode }[] = [
         <br />
         J. Nef Aracle, Media &amp; Design, Joel-Sananda Nef
         <br />
-        Dörflistrasse 18, 8755 Ennenda, Schweiz
+        Büel-Waid 12, 8750 Glarus, Schweiz
         <br />
         <a href="mailto:info@arcl.ch" className="link-under">
           info@arcl.ch
@@ -101,13 +103,14 @@ export default function DatenschutzPage() {
     <div className="inner grid grid-cols-12 gap-x-3 md:gap-x-8 gap-y-12">
       <div className="col-span-12 md:col-span-5">
         <div className="md:sticky md:top-24">
-          <h1 className="display" data-split="load">
+          <h1 className="display text-[clamp(2.5rem,0.8rem+4.4vw,5.75rem)]" data-split="load">
             Datenschutz
           </h1>
           <p className="lead mt-5 max-w-[28rem] text-muted" data-rise style={{ ["--i" as string]: 1 }}>
             Kurz gesagt: kein Tracking, keine Cookies für Besucher. Gespeichert
             wird nur, was der Betrieb und der Team-Login brauchen.
           </p>
+          <Descent className="mt-14 hidden w-[12rem] md:block" />
         </div>
       </div>
       <div className="col-span-12 flex flex-col gap-12 md:col-span-6 md:col-start-7 md:pt-4">

@@ -16,19 +16,7 @@ values
   ('noah', 'Noah', 'Web-Developer',
    'Web-Entwickler im Studio. Bringt technisches Know-how für Web- und Softwareprojekte ein und unterstützt bei der Umsetzung.',
    '#5aa9e6', null, '[{"type":"discord","url":"https://discord.gg/BgpKdzBYtD"}]',
-   false, false, 20, null),
-  ('jan-waser', 'Jan Waser', 'Creative & Photography',
-   'Creative bei Aracle. Zuständig für Grafik, Design und visuelle Gestaltung sowie die Leitung von Aracle Living.',
-   '#7c93c9', null, '[{"type":"instagram","url":"https://www.instagram.com/aracle.ch/"},{"type":"discord","url":"https://discord.gg/BgpKdzBYtD"}]',
-   false, false, 30, null),
-  ('lars', 'Lars', 'Community',
-   'Betreut die Community rund um den Zelda DE Server. Theorien, Speedruns und das Miteinander auf Discord.',
-   '#e48aa3', null, '[{"type":"discord","url":"https://discord.gg/BgpKdzBYtD"}]',
-   false, false, 40, null),
-  ('tim-mod', 'Tim', 'Community & Moderation',
-   'Hält die Community zusammen. Verantwortlich für Moderation, Support und das Miteinander auf den Aracle-Kanälen.',
-   '#d9a441', null, '[{"type":"discord","url":"https://discord.gg/BgpKdzBYtD"}]',
-   false, false, 50, null)
+   false, false, 20, null)
 on conflict (slug) do nothing;
 
 insert into public.project_members (profile_id, project_slug, role)
@@ -37,10 +25,8 @@ from (values
   ('tim-mockweiss', 'aracle-cloud-hosting', 'Developer'),
   ('joel',          'aracle-cloud-hosting', 'Director'),
   ('joel',          'highside',             'Director'),
-  ('jan-waser',     'aracle-living',        'Lead'),
   ('joel',          'swizzly',              'Director'),
   ('joel',          'sakuto',               'Director'),
-  ('lars',          'zelda-de-server',      'Community'),
   ('joel',          'zelda-de-server',      'Director'),
   ('joel',          'all-the-clients',      'Director'),
   ('joel',          'araclesmp',            'Director'),

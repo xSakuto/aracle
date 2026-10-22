@@ -6,7 +6,7 @@ import CtaBand from "@/components/CtaBand";
 export const metadata = {
   title: "Aracle Cloud · Hosting aus der Schweiz",
   description:
-    "Webhosting und Server-Lösungen auf eigener Hardware in Ennenda, Glarus. Betrieben von Aracle, mit Updates, Backups und Monitoring.",
+    "Webhosting und Server-Lösungen auf eigener Hardware im Kanton Glarus. Betrieben von Aracle, mit Updates, Backups und Monitoring.",
 };
 
 const offers = [
@@ -17,7 +17,7 @@ const offers = [
 ];
 
 const specs: [string, string][] = [
-  ["Standort", "Ennenda, Kanton Glarus, Schweiz"],
+  ["Standort", "Kanton Glarus, Schweiz"],
   ["Hardware", "Eigene Server, keine gemieteten Ressourcen"],
   ["Plattform", "Proxmox, TrueNAS, Docker"],
   ["Netzwerk", "UniFi"],

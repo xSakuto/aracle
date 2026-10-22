@@ -228,7 +228,6 @@ export const projects: Project[] = [
       { title: "Moderation", text: "Ein Ort, an dem man sich gerne austauscht." },
     ],
     team: [
-      { name: "Lars", role: "Community", slug: "lars" },
       { name: "Joel Nef", role: "Director", slug: "joel" },
     ],
     techStack: ["Discord"],
@@ -307,7 +306,7 @@ export const projects: Project[] = [
       { title: "Virtuelle Rundgänge", text: "Als Idee im Konzept vorgesehen." },
       { title: "Konzept", text: "In Planung, aktuell kein buchbares Angebot." },
     ],
-    team: [{ name: "Jan Waser", role: "Lead", slug: "jan-waser" }],
+    team: [],
     techStack: [],
     timeline: [{ date: "2025", label: "Konzeptphase" }],
     links: [],

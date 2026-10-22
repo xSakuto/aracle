@@ -4,7 +4,7 @@ import GlarusClock from "@/components/swiss/GlarusClock";
 import { SCHILT } from "@/data/panorama/schilt";
 import { meters } from "@/lib/panorama";
 
-// Variante B "Alpine Technical": berechnetes Panorama vom Schilt über Ennenda,
+// Variante B "Alpine Technical": berechnetes Panorama vom Schilt über dem Glarner Haupttal,
 // gesetzt wie ein Vermessungsblatt mit Gipfelmarken, Azimut-Skala und Schriftfeld.
 
 export const HERO_LABELS: PanoLabel[] = [
@@ -26,11 +26,11 @@ export default function HeroTechnical() {
         <dl className="kicker grid grid-cols-2 gap-4 border-b border-line pb-4 text-muted md:grid-cols-4">
           <div data-rise>
             <dt className="sr-only">Ort</dt>
-            <dd>Ennenda, Glarus</dd>
+            <dd>Glarus, Schweiz</dd>
           </div>
           <div className="hidden md:block" data-rise style={{ ["--i" as string]: 1 }}>
             <dt className="sr-only">Koordinaten</dt>
-            <dd className="nums">47.04° N, 9.08° E</dd>
+            <dd className="nums">47.04° N, 9.07° E</dd>
           </div>
           <div className="hidden md:block" data-rise style={{ ["--i" as string]: 2 }}>
             <dt className="sr-only">Studio</dt>

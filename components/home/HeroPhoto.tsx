@@ -73,11 +73,11 @@ export default function HeroPhoto() {
           <dl className="kicker grid grid-cols-2 gap-4 pt-4 text-ink/75 md:grid-cols-4">
             <div data-rise>
               <dt className="sr-only">Ort</dt>
-              <dd>Ennenda, Glarus</dd>
+              <dd>Glarus, Schweiz</dd>
             </div>
             <div className="hidden md:block" data-rise style={{ ["--i" as string]: 1 }}>
               <dt className="sr-only">Koordinaten</dt>
-              <dd className="nums">47.04° N, 9.08° E</dd>
+              <dd className="nums">47.04° N, 9.07° E</dd>
             </div>
             <div className="hidden md:block" data-rise style={{ ["--i" as string]: 2 }}>
               <dt className="sr-only">Studio</dt>

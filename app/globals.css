@@ -231,18 +231,27 @@ html.lenis, html.lenis body { height: auto; }
 }
 
 /* ---------- Panorama (berechnete Glarner Silhouetten) ---------- */
-.pano-path { vector-effect: non-scaling-stroke; stroke-dasharray: 1; stroke-dashoffset: 0; }
+.pano-path { vector-effect: non-scaling-stroke; }
 .pano-guide { stroke-opacity: 0.18; }
 .pano-fade { mask-image: linear-gradient(to bottom, #000 58%, transparent 100%); }
 .pano-dashed { background: repeating-linear-gradient(to bottom, rgb(238 243 243 / 0.45) 0 3px, transparent 3px 6px); }
 .pano-cursor { background: linear-gradient(to bottom, rgb(143 214 211 / 0.6), rgb(143 214 211 / 0)); transition: opacity 300ms var(--ease-out); }
+/* Aufdecken wie ein Plotter: ein Vorhang in Hintergrundfarbe gleitet per transform zur Seite.
+   Nur transform und opacity, damit der Browser nichts neu zeichnen muss. */
+.pano-curtain, .pano-curtain-wrap { display: none; }
 @media (prefers-reduced-motion: no-preference) {
-  .js .pano:not(.no-anim) .pano-path { stroke-dashoffset: 1; }
-  .js .pano.is-drawn .pano-path {
-    stroke-dashoffset: 0;
-    transition: stroke-dashoffset 2400ms var(--ease-in-out) var(--d, 0ms);
+  .js .pano:not(.no-anim):not(.is-done) .pano-curtain-wrap {
+    display: block; position: absolute; inset: -6% 0; overflow: hidden; pointer-events: none;
   }
-  .js .pano-scroll:not(.no-anim) .pano-path { stroke-dashoffset: calc(1 - var(--prog, 0)); transition: none; }
+  .js .pano:not(.no-anim):not(.is-done) .pano-curtain {
+    display: block; position: absolute; inset: 0 0 0 -14%;
+    background: linear-gradient(to right, transparent, var(--curtain, var(--color-bg)) 10%);
+    transform: translateX(0); will-change: transform;
+  }
+  .js .pano.is-drawn:not(.no-anim):not(.is-done) .pano-curtain { transform: translateX(102%); transition: transform 2400ms var(--ease-in-out); }
+  .js .pano.pano-scroll:not(.no-anim):not(.is-done) .pano-curtain { transform: translateX(calc(var(--prog, 0) * 102%)); transition: none; }
+  .js .pano:not(.no-anim) .pano-fadein { opacity: 0; }
+  .js .pano.is-drawn .pano-fadein { opacity: 1; transition: opacity 2200ms var(--ease-out); }
   .js .pano:not(.no-anim) .pano-label { opacity: 0; transform: translateY(6px); }
   .js .pano.is-drawn .pano-label {
     opacity: 1; transform: none;

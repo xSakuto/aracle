@@ -50,7 +50,6 @@ export default function Ridge({
         <path
           key={i}
           d={p.d}
-          pathLength={1}
           className="pano-path"
           style={{
             ["--d" as string]: `${p.sky ? 0 : 300 + (i % 10) * 60}ms`,
@@ -75,7 +74,7 @@ export default function Ridge({
   const style = { aspectRatio: `${w} / ${H}` };
   if (drawn)
     return (
-      <div className={`pano is-drawn no-anim relative ${className}`} style={style}>
+      <div className={`pano is-drawn no-anim is-done relative ${className}`} style={style}>
         {svg}
         {labelEl}
       </div>
@@ -84,6 +83,7 @@ export default function Ridge({
     <DrawOnView className={`relative ${className}`}>
       <div className="relative h-full w-full" style={style}>
         {svg}
+        <span aria-hidden className="pano-curtain-wrap"><span className="pano-curtain" /></span>
         {labelEl}
       </div>
     </DrawOnView>

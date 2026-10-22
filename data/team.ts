@@ -50,34 +50,7 @@ export const team: StaticMember[] = [
     initials: "N",
     socials: [{ type: "discord", url: DISCORD }],
   },
-  {
-    slug: "jan-waser",
-    name: "Jan Waser",
-    role: "Creative & Photography",
-    bio: "Creative bei Aracle. Zuständig für Grafik, Design und visuelle Gestaltung sowie die Leitung von Aracle Living.",
-    accent: "#7c93c9",
-    initials: "JW",
-    socials: [
-      { type: "instagram", url: "https://www.instagram.com/aracle.ch/" },
-      { type: "discord", url: DISCORD },
-    ],
-  },
-  {
-    slug: "lars",
-    name: "Lars",
-    role: "Community",
-    bio: "Betreut die Community rund um den Zelda DE Server. Theorien, Speedruns und das Miteinander auf Discord.",
-    accent: "#e48aa3",
-    initials: "L",
-    socials: [{ type: "discord", url: DISCORD }],
-  },
-  {
-    slug: "tim-mod",
-    name: "Tim",
-    role: "Community & Moderation",
-    bio: "Hält die Community zusammen. Verantwortlich für Moderation, Support und das Miteinander auf den Aracle-Kanälen.",
-    accent: "#d9a441",
-    initials: "T",
-    socials: [{ type: "discord", url: DISCORD }],
-  },
+
+
+
 ];

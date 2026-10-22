@@ -5,7 +5,7 @@ import Motion from "@/components/Motion";
 export const metadata: Metadata = {
   title: "Aracle · Creative Studio aus Glarus",
   description:
-    "Aracle ist ein Creative Studio aus Ennenda, Glarus: Video, Design, Web und Hosting, dazu eigene Marken wie Highside, Aracle Living und Aracle Cloud.",
+    "Aracle ist ein Creative Studio aus Glarus: Video, Design, Web und Hosting, dazu eigene Marken wie Highside, Aracle Living und Aracle Cloud.",
 };
 
 export const viewport: Viewport = {
