@@ -21,6 +21,10 @@ export default function RootLayout({
   return (
     <html lang="de-CH" className="[color-scheme:dark]" suppressHydrationWarning>
       <head>
+        <link rel="preconnect" href="https://api.fontshare.com" crossOrigin="" />
+        <link rel="preconnect" href="https://cdn.fontshare.com" crossOrigin="" />
+        {/* eslint-disable-next-line @next/next/no-page-custom-font */}
+        <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&display=swap" />
         <script
           dangerouslySetInnerHTML={{
             __html: "document.documentElement.classList.add('js')",

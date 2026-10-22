@@ -256,7 +256,6 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
         {/* Nächstes Projekt: grosse Fläche mit Bild oder Gipfel */}
         <Link
           href={`/projekte/${next.slug}`}
-          data-cursor="Weiter"
           className="group relative block min-h-[60svh] overflow-hidden border-t border-line focus-visible:outline-offset-[-4px]"
         >
           <div aria-hidden className="absolute inset-0">

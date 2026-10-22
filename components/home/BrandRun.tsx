@@ -34,7 +34,6 @@ export default function BrandRun({ items, total }: { items: Project[]; total: nu
           <Link
             key={p.slug}
             href={`/projekte/${p.slug}`}
-            data-cursor="Ansehen"
             className={`group flex shrink-0 flex-col ${p.coverImage ? "md:w-[46vw]" : "md:w-[30vw]"}`}
           >
             <div className="relative h-[56svh] overflow-hidden rounded-[var(--radius)] md:h-[62svh]">
@@ -79,7 +78,6 @@ export default function BrandRun({ items, total }: { items: Project[]; total: nu
 
         <Link
           href="/projekte"
-          data-cursor="Alle"
           className="group flex h-[30svh] shrink-0 flex-col justify-end rounded-[var(--radius)] border border-line p-8 transition-colors hover:border-aqua md:h-[62svh] md:w-[22vw]"
         >
           <span className="display text-[clamp(2.25rem,1rem+3vw,4.5rem)] group-hover:text-aqua">

@@ -10,7 +10,7 @@ const posterTone: Record<string, "slate" | "glacier" | "glow"> = {
 // Projektkarte für Übersicht und "Weitere Projekte": Foto oder Projektplakat.
 export default function ProjectCard({ project: p, large = false }: { project: Project; large?: boolean }) {
   return (
-    <Link href={`/projekte/${p.slug}`} data-cursor="Ansehen" className="group block">
+    <Link href={`/projekte/${p.slug}`} className="group block">
       <div className={`relative overflow-hidden rounded-[var(--radius)] ${large ? "aspect-[4/3]" : "aspect-[4/5]"}`}>
         {p.coverImage ? (
           // eslint-disable-next-line @next/next/no-img-element

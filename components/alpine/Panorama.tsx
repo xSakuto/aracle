@@ -44,6 +44,9 @@ export default function Panorama({
   yMax,
   layers = "all",
   glow = false,
+  closure = false,
+  horizonLine = true,
+  reveal = "curtain",
 }: {
   data: Pano;
   view?: PanoView;
@@ -62,6 +65,12 @@ export default function Panorama({
   layers?: "all" | "sky";
   /** leichtes Leuchten der Horizontlinie */
   glow?: boolean;
+  /** Fläche unter der Horizontlinie füllen: die Kette schliesst den Bereich darüber ab */
+  closure?: boolean;
+  /** gestrichelter mathematischer Horizont */
+  horizonLine?: boolean;
+  /** curtain: Vorhang in Grundfarbe; wipe: Linie zeichnet sich über einer leisen Vorzeichnung */
+  reveal?: "curtain" | "wipe";
 }) {
   const H = yMax ?? data.h;
   const full = { x0: 0, x1: data.w };
@@ -211,18 +220,32 @@ export default function Panorama({
       className={`pano relative w-full select-none ${draw === "scroll" ? "pano-scroll" : ""} ${className}`}
       style={{ aspectRatio: `${vw} / ${H}` }}
     >
+      {closure && (
+        <svg viewBox={`${vb.x0} 0 ${vw} ${H}`} preserveAspectRatio="xMidYMid meet" aria-hidden className="absolute inset-0 h-full w-full">
+          {byDepth.sky.map((p, i) => (
+            <path key={i} d={`${p.d}L${data.w} ${H}L0 ${H}Z`} fill="var(--color-bg)" />
+          ))}
+        </svg>
+      )}
+      {reveal === "wipe" && (
+        <svg viewBox={`${vb.x0} 0 ${vw} ${H}`} preserveAspectRatio="xMidYMid meet" aria-hidden className="absolute inset-0 h-full w-full overflow-visible" fill="none" stroke={stroke}>
+          {byDepth.sky.map((p, i) => (
+            <path key={i} d={p.d} className="pano-path" style={{ strokeOpacity: 0.28, strokeWidth: 1 }} />
+          ))}
+        </svg>
+      )}
       <svg
         viewBox={`${vb.x0} 0 ${vw} ${H}`}
         preserveAspectRatio="xMidYMid meet"
         aria-hidden
-        className={`absolute inset-0 h-full w-full overflow-visible ${fade ? "pano-fade" : ""} ${glow ? "pano-glow" : ""}`}
+        className={`absolute inset-0 h-full w-full overflow-visible ${fade ? "pano-fade" : ""} ${glow ? "pano-glow" : ""} ${reveal === "wipe" ? "pano-wipe" : ""}`}
         fill="none"
         stroke={stroke}
         strokeLinecap="round"
         strokeLinejoin="round"
       >
         {/* mathematischer Horizont */}
-        <line
+        {horizonLine && <line
           x1={vb.x0}
           x2={vb.x1}
           y1={data.horizon}
@@ -230,7 +253,7 @@ export default function Panorama({
           vectorEffect="non-scaling-stroke"
           strokeDasharray="2 6"
           className="pano-guide"
-        />
+        />}
         <g ref={(g) => { groups.current[0] = g; }}>
           {byDepth.sky.map((p) => pathEl(p, 0, 0.95, glow ? 1.4 : 1.2))}
         </g>
@@ -240,7 +263,7 @@ export default function Panorama({
           </g>
         ))}
       </svg>
-      <span aria-hidden className="pano-curtain-wrap"><span className="pano-curtain" /></span>
+      {reveal === "curtain" && <span aria-hidden className="pano-curtain-wrap"><span className="pano-curtain" /></span>}
 
       {/* Gipfelmarken und Beschriftungen als HTML, damit die Schrift nicht mitskaliert */}
       {peaks.map(({ l, i, p }) => {
@@ -248,7 +271,7 @@ export default function Panorama({
         const row = ROW_Y[l.row ?? 0];
         const side = l.side ?? "center";
         return (
-          <div key={l.peak} aria-hidden className="pano-label [text-shadow:0_1px_10px_rgb(11_17_21/0.95)]" style={{ ["--d" as string]: `${1500 + i * 140}ms` }}>
+          <div key={l.peak} aria-hidden className="pano-label pointer-events-none absolute inset-0 [text-shadow:0_1px_10px_rgb(11_17_21/0.95)]" style={{ ["--d" as string]: reveal === "wipe" ? `${Math.round(250 + pctX(pk.x) * 16)}ms` : `${1500 + i * 140}ms` }}>
             <span
               className={`absolute w-px ${pk.visible ? "bg-ink/35" : "pano-dashed"}`}
               style={{ left: `${pctX(pk.x)}%`, top: `${pctY(row)}%`, height: `${pctY(pk.y - row)}%` }}

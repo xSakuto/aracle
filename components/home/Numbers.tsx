@@ -20,7 +20,7 @@ export default function Numbers({ people, projects }: { people: number; projects
             <dd
               data-count={f.value}
               data-count-from={f.from}
-              className="nums border-t border-line pt-6 text-[clamp(4rem,2rem+6vw,8rem)] font-[600] leading-[0.9] tracking-[-0.05em]"
+              className="nums border-t border-line pt-6 font-[family-name:var(--font-display)] text-[clamp(4rem,2rem+6vw,8rem)] font-[600] leading-[0.9] tracking-[-0.05em]"
             >
               {f.value}
             </dd>
@@ -28,7 +28,7 @@ export default function Numbers({ people, projects }: { people: number; projects
           </div>
         ))}
       </dl>
-      <Link href="/history" className="link-under mt-12 inline-flex min-h-11 items-center font-semibold" data-cursor="Lesen">
+      <Link href="/history" className="link-under mt-12 inline-flex min-h-11 items-center font-semibold">
         The Aracle Journey
       </Link>
     </section>

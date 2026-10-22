@@ -98,7 +98,6 @@ export default function ProjektePage() {
           <div className="wrap">
             <Link
               href={`/projekte/${lead.slug}`}
-              data-cursor="Ansehen"
               className="group relative grid overflow-hidden rounded-[calc(var(--radius)*2)] border border-line bg-surface md:grid-cols-12"
             >
               <div className="relative aspect-[16/10] overflow-hidden md:col-span-7 md:aspect-auto md:min-h-[26rem]">

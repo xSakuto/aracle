@@ -13,26 +13,8 @@ const links = [
 ];
 
 export default function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
-  const [hidden, setHidden] = useState(false);
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
-
-  useEffect(() => {
-    let lastY = window.scrollY;
-    const onScroll = () => {
-      const y = window.scrollY;
-      setScrolled(y > 24);
-      // Beim Runterscrollen weg, beim Hochscrollen wieder da.
-      if (Math.abs(y - lastY) > 6) {
-        setHidden(y > lastY && y > 160);
-        lastY = y;
-      }
-    };
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
 
   useEffect(() => setOpen(false), [pathname]);
 
@@ -47,11 +29,8 @@ export default function Navbar() {
 
   return (
     <>
-      <header
-        className={`wrap fixed inset-x-0 top-0 z-50 flex h-14 items-center justify-between transition-[background-color,transform] duration-300 ease-[var(--ease-out)] ${
-          scrolled || open ? "bg-bg/95 backdrop-blur" : "bg-transparent"
-        } ${hidden && !open ? "-translate-y-full" : "translate-y-0"}`}
-      >
+      <header className="fixed inset-x-0 top-0 z-50 px-[calc(var(--margin)-0.75rem)] pt-3">
+        <div className={`nav-glass relative flex h-14 items-center justify-between rounded-[14px] px-3 ${open ? "is-open" : ""}`}>
         <Link
           href="/"
           aria-label="Aracle, zur Startseite"
@@ -91,10 +70,11 @@ export default function Navbar() {
           aria-expanded={open}
           aria-controls="mobile-menu"
           onClick={() => setOpen((v) => !v)}
-          className="-mr-2 flex h-11 items-center px-2 text-[0.9375rem] transition-opacity active:opacity-60 md:hidden"
+          className="flex h-11 items-center px-2 text-[0.9375rem] transition-opacity active:opacity-60 md:hidden"
         >
           {open ? "Schliessen" : "Menü"}
         </button>
+        </div>
       </header>
 
       <div

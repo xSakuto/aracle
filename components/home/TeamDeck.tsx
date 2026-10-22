@@ -13,7 +13,7 @@ export default function TeamDeck({ members }: { members: TeamMember[] }) {
             The people.
           </h2>
         </div>
-        <Link href="/team" className="link-under inline-flex min-h-11 items-center font-medium" data-cursor="Alle">
+        <Link href="/team" className="link-under inline-flex min-h-11 items-center font-medium">
           Alle mit ihren Projekten
         </Link>
       </div>
@@ -23,7 +23,6 @@ export default function TeamDeck({ members }: { members: TeamMember[] }) {
           <li key={m.id} data-reveal style={{ ["--i" as string]: i % 3 }}>
             <Link
               href={`/team#${m.slug}`}
-              data-cursor={m.name.split(" ")[0]}
               className="group block transition-transform duration-500 ease-[var(--ease-out)] hover:-translate-y-2"
             >
               <div className="overflow-hidden rounded-[var(--radius)]">
