@@ -33,6 +33,8 @@ export type Panorama = {
   fov: number;
   /** Azimut am linken Bildrand */
   az0: number;
+  /** cyl: Zylinderprojektion (Panorama), rect: rechtwinklig (Einzelansicht) */
+  proj?: "cyl" | "rect";
   /** y-Position des mathematischen Horizonts */
   horizon: number;
   paths: PanoPath[];
@@ -46,8 +48,39 @@ export type PanoView = { x0: number; x1: number };
 /** Schweizer Schreibweise: 3'614 */
 export const meters = (m: number) => m.toLocaleString("de-CH").replace(/[’’]/g, "'");
 
-export const azAt = (p: Panorama, x: number) => p.az0 + (x / p.w) * p.fov;
-export const xAt = (p: Panorama, az: number) => ((az - p.az0) / p.fov) * p.w;
+const focal = (p: Panorama) => p.w / 2 / Math.tan(((p.fov / 2) * Math.PI) / 180);
+const DEG = 180 / Math.PI;
+
+export const azAt = (p: Panorama, x: number) =>
+  p.proj === "rect"
+    ? p.az0 + p.fov / 2 + Math.atan((x - p.w / 2) / focal(p)) * DEG
+    : p.az0 + (x / p.w) * p.fov;
+export const xAt = (p: Panorama, az: number) =>
+  p.proj === "rect"
+    ? p.w / 2 + focal(p) * Math.tan((az - p.az0 - p.fov / 2) / DEG)
+    : ((az - p.az0) / p.fov) * p.w;
+
+/** Nur ausgewählte Ebenen weitergeben, damit kleine Einsätze wenig Daten tragen. */
+export function slim(p: Panorama, opts: { depths?: (0 | 1 | 2)[]; maxKm?: number; minKm?: number } = {}): Panorama {
+  const depths = opts.depths ?? [2];
+  return {
+    ...p,
+    paths: p.paths.filter(
+      (x) => (x.sky || depths.includes(x.depth)) && (opts.minKm === undefined || x.km >= opts.minKm),
+    ),
+  };
+}
+
+/** Topografische Höhenlinien in Draufsicht */
+export type ContourMap = {
+  w: number;
+  h: number;
+  /** Äquidistanz in m */
+  step: number;
+  paths: { d: string; m: number; index: boolean }[];
+  summit: { name: string; m: number; x: number; y: number };
+  extent: { lat: number; lon: number; km_w: number; km_h: number };
+};
 
 const CARDINAL: Record<number, string> = { 180: "S", 225: "SW", 270: "W", 315: "NW" };
 export const cardinal = (az: number) => CARDINAL[az];

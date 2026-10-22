@@ -230,22 +230,6 @@ html.lenis, html.lenis body { height: auto; }
   .marquee-track { transform: none !important; }
 }
 
-/* ---------- Alpine Line Art ---------- */
-.alpine-path { stroke-dasharray: 1; stroke-dashoffset: 0; stroke-linecap: round; stroke-linejoin: round; }
-.alpine-label { transform: translate(-50%, 0); }
-@media (prefers-reduced-motion: no-preference) {
-  .js .alpine-path { stroke-dashoffset: 1; }
-  .js .alpine-load.is-drawn .alpine-path {
-    stroke-dashoffset: 0;
-    transition: stroke-dashoffset 2600ms var(--ease-in-out) var(--d, 0ms);
-  }
-  .js .alpine-label { opacity: 0; transform: translate(-50%, 8px); transition: opacity 700ms var(--ease-out) var(--d, 0ms), transform 900ms var(--ease-out) var(--d, 0ms); }
-  .js .alpine.is-drawn .alpine-label { opacity: 1; transform: translate(-50%, 0); }
-  .js .topo path { stroke-dashoffset: 1; }
-  .js .topo.is-drawn path { stroke-dashoffset: 0; transition: stroke-dashoffset 3200ms var(--ease-in-out) var(--d, 0ms); }
-}
-.topo path { stroke-dasharray: 1; fill: none; vector-effect: non-scaling-stroke; }
-
 /* ---------- Panorama (berechnete Glarner Silhouetten) ---------- */
 .pano-path { vector-effect: non-scaling-stroke; stroke-dasharray: 1; stroke-dashoffset: 0; }
 .pano-guide { stroke-opacity: 0.18; }

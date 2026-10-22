@@ -1,5 +1,6 @@
 import Link from "next/link";
-import AlpineLines from "@/components/alpine/AlpineLines";
+import Panorama from "@/components/alpine/Panorama";
+import { GLAERNISCH } from "@/data/panorama/glaernisch";
 import Journey from "@/components/journey/Journey";
 import { journey } from "@/data/journey";
 
@@ -30,7 +31,19 @@ export default function HistoryPage() {
         </div>
       </header>
 
-      <AlpineLines height={180} layers={4} seed={7} className="mt-10 opacity-70" />
+      {/* Die Geschichte beginnt im Glarnerland: der Glärnisch, vom Schilt aus */}
+      <div className="mt-16 md:mt-10">
+        <Panorama
+          data={GLAERNISCH}
+          labels={[
+            { peak: "Vrenelisgärtli", title: "Glärnisch", sub: "Vrenelisgärtli", row: 0 },
+            { peak: "Ruchen", row: 1, side: "right", minor: true },
+            { peak: "Bächistock", row: 2, side: "left", minor: true },
+          ]}
+          yMax={420}
+          mobileView={{ x0: 300, x1: 1200 }}
+        />
+      </div>
 
       <div className="wrap pb-[var(--section)]">
         <Journey stages={journey} />

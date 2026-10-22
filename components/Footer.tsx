@@ -1,5 +1,6 @@
 import Link from "next/link";
-import AlpineLines from "@/components/alpine/AlpineLines";
+import Ridge from "@/components/alpine/Ridge";
+import { WIGGIS } from "@/data/panorama/wiggis";
 
 const columns: { title: string; links: [string, string][] }[] = [
   { title: "Studio", links: [["Projekte", "/projekte"], ["Leistungen", "/#leistungen"], ["Team", "/team"], ["Journey", "/history"]] },
@@ -45,7 +46,11 @@ export default function Footer() {
         </p>
       </div>
 
-      <AlpineLines height={120} layers={3} seed={7} draw="scroll" className="mt-6 opacity-70" />
+      {/* Der Wiggis, wie man ihn vom Studio in Ennenda aus sieht */}
+      <div className="relative mt-10 text-ink">
+        <Ridge data={WIGGIS} peak="Wiggis" label depths={[2, 1]} yMax={300} className="w-full" />
+        <p className="wrap small absolute right-0 top-0 text-muted">Blick von Ennenda, Richtung Nordwest</p>
+      </div>
 
       <div className="wrap small flex flex-wrap items-center justify-between gap-4 border-t border-line py-5 text-muted">
         <p>© {new Date().getFullYear()} Aracle, CH-8755 Ennenda</p>

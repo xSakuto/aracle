@@ -1,5 +1,5 @@
 import Link from "next/link";
-import AlpineLines from "@/components/alpine/AlpineLines";
+import PillarMark from "@/components/alpine/PillarMark";
 
 const pillars = [
   {
@@ -7,25 +7,25 @@ const pillars = [
     lead: "Bilder und Geschichten, die zur Marke passen.",
     items: ["Video & Content", "Design & Branding", "Social Media"],
     href: "/projekte#creative-production",
-    seed: 11,
+    mountain: "glaernisch" as const,
   },
   {
     title: "Digital Experiences",
     lead: "Websites und digitale Produkte, schnell und sauber gebaut.",
     items: ["Websites", "Webentwicklung", "Digitale Produkte"],
     href: "/projekte#digital-experiences",
-    seed: 23,
+    mountain: "toedi" as const,
   },
   {
     title: "Cloud & Infrastructure",
     lead: "Hosting und Server, die wir selbst betreiben.",
     items: ["Webhosting", "Server-Lösungen", "Wartung & Monitoring"],
     href: "/hosting",
-    seed: 37,
+    mountain: "kaerpf" as const,
   },
 ];
 
-// Leistungen in drei Säulen, je mit eigener kleiner Kammlinie.
+// Leistungen in drei Säulen, jede mit ihrem Glarner Gipfel.
 export default function Services() {
   return (
     <section id="leistungen" aria-labelledby="services-title" className="wrap scroll-mt-20 py-[var(--section)]">
@@ -51,7 +51,7 @@ export default function Services() {
             className="border-b border-line md:border-b-0 md:border-r md:px-8 md:first:pl-0 md:last:border-r-0 md:last:pr-0"
           >
             <Link href={p.href} className="group flex h-full flex-col py-8">
-              <AlpineLines height={90} layers={2} seed={p.seed} className="mb-8 opacity-80 transition-opacity group-hover:opacity-100" />
+              <PillarMark mountain={p.mountain} className="mb-8 text-ink opacity-85 transition-opacity group-hover:opacity-100" />
               <h3 className="text-[clamp(1.5rem,1rem+1.2vw,2.125rem)] font-[620] leading-[1.05] tracking-[-0.03em] transition-colors group-hover:text-aqua">
                 {p.title}
               </h3>

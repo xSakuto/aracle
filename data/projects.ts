@@ -30,6 +30,10 @@ export interface Project {
   longDescription: string;
   /** Was Aracle konkret beiträgt (Rollen, Disziplinen) */
   scope: string[];
+  /** Ziel des Projekts in ein bis zwei Sätzen */
+  goal: string;
+  /** Was zum Projekt gehört: Bausteine mit kurzer Erklärung */
+  includes: { title: string; text: string }[];
   team: { name: string; role: string; slug: string }[];
   techStack: string[];
   timeline: { date: string; label: string }[];
@@ -58,6 +62,13 @@ export const projects: Project[] = [
     longDescription:
       "Highside ist eine eigenständige Schweizer Streetwear-Marke aus der Motorrad-Szene. Sie verbindet die Kultur auf der Rennstrecke mit urbanem Street-Style. Aracle verantwortet die Marke vollständig: Idee, Branding, Content und Shop.",
     scope: ["Brand Identity", "Content Production", "Social Media", "Webshop"],
+    goal: "Eine eigenständige Schweizer Streetwear-Marke aufbauen, die die Motorrad-Kultur von der Rennstrecke in den Alltag trägt.",
+    includes: [
+      { title: "Idee und Positionierung", text: "Eine Marke aus der Motorrad-Szene, zwischen Rennstrecke und urbanem Street-Style." },
+      { title: "Branding", text: "Die visuelle Identität der Marke, von Aracle entwickelt." },
+      { title: "Content", text: "Bilder und Videos rund um Rennstrecke und Strasse, gespielt über den Kanal Swizzly." },
+      { title: "Webshop", text: "Der eigene Online-Shop auf highside.ch." },
+    ],
     team: [{ name: "Joel Nef", role: "Director", slug: "joel" }],
     techStack: [],
     timeline: [
@@ -90,6 +101,13 @@ export const projects: Project[] = [
     longDescription:
       "Aracle Cloud ist die technische Basis des Studios: Hosting, Server-Management und Infrastruktur auf eigener Hardware, verwaltet direkt aus dem Aracle-Netzwerk. Was als Homelab begann, betreibt heute die Websites, Game-Server und Dienste der eigenen Projekte.",
     scope: ["Server-Betrieb", "Webhosting", "Game-Server", "Backups & Monitoring"],
+    goal: "Eine eigene Infrastruktur betreiben, auf der alle Aracle-Projekte laufen, und sie als Hosting auch für andere nutzbar machen.",
+    includes: [
+      { title: "Eigene Hardware", text: "Server im Glarnerland statt gemieteter Ressourcen, virtualisiert mit Proxmox." },
+      { title: "Webhosting", text: "Websites und Web-Apps der eigenen Projekte." },
+      { title: "Game-Server", text: "Minecraft-Server wie AracleSMP und weitere Community-Dienste." },
+      { title: "Backups und Monitoring", text: "Speicher mit TrueNAS, Updates und Überwachung im laufenden Betrieb." },
+    ],
     team: [
       { name: "Tim Mockweiss", role: "Developer", slug: "tim-mockweiss" },
       { name: "Joel Nef", role: "Director", slug: "joel" },
@@ -119,6 +137,13 @@ export const projects: Project[] = [
     longDescription:
       "Swizzly ist der Content-Kanal rund ums Motorrad auf TikTok und Instagram. Er verbindet Community und Marke durch authentischen Content und dient gleichzeitig als Werbefläche für Highside.",
     scope: ["Kurzvideo", "Schnitt", "Social Media"],
+    goal: "Die Motorrad-Community auf TikTok und Instagram erreichen und gleichzeitig der Marke Highside eine Bühne geben.",
+    includes: [
+      { title: "Kurzvideos", text: "Motorrad-Content im Format für TikTok und Instagram." },
+      { title: "Schnitt", text: "Produktion und Schnitt der Videos." },
+      { title: "Social Media", text: "Pflege der Kanäle und Austausch mit der Community." },
+      { title: "Verbindung zu Highside", text: "Der Kanal dient auch als Werbefläche für die Marke." },
+    ],
     team: [{ name: "Joel Nef", role: "Director", slug: "joel" }],
     techStack: [],
     timeline: [{ date: "2024", label: "Erstes Motorrad-Video auf TikTok" }],
@@ -139,6 +164,12 @@ export const projects: Project[] = [
     longDescription:
       "Ein eigenes Indie-Game mit geplantem Release auf Steam. Die Entwicklung läuft, eine Wishlist-Kampagne ist gestartet. Weitere Details folgen, sobald die Steam-Seite online ist.",
     scope: ["Game Design", "Entwicklung", "Kampagne"],
+    goal: "Ein eigenes Indie-Game entwickeln und auf Steam veröffentlichen.",
+    includes: [
+      { title: "Game Design", text: "Konzept und Spielmechanik." },
+      { title: "Entwicklung", text: "Umsetzung des Spiels, aktuell in Arbeit." },
+      { title: "Wishlist-Kampagne", text: "Erste Kampagne, damit das Spiel vor dem Release gefunden wird." },
+    ],
     team: [{ name: "Joel Nef", role: "Director", slug: "joel" }],
     techStack: [],
     timeline: [
@@ -162,6 +193,12 @@ export const projects: Project[] = [
     longDescription:
       "Sakuto ist der Kanal, aus dem Aracle hervorgegangen ist. Nintendo-Content, Videoessays und Streams, mit Fokus auf Community-Aufbau und sorgfältig produzierte Unterhaltung.",
     scope: ["Videoessays", "Streaming", "Schnitt"],
+    goal: "Mit sorgfältig produzierten Videos eine Community rund um Nintendo aufbauen.",
+    includes: [
+      { title: "Videoessays", text: "Längere, recherchierte Videos zu Nintendo-Themen." },
+      { title: "Streams", text: "Live-Formate für die Community." },
+      { title: "Schnitt", text: "Produktion und Schnitt der Videos." },
+    ],
     team: [{ name: "Joel Nef", role: "Director", slug: "joel" }],
     techStack: [],
     timeline: [
@@ -184,6 +221,12 @@ export const projects: Project[] = [
     longDescription:
       "Die grösste deutschsprachige The-Legend-of-Zelda-Community auf Discord. Im Fokus stehen Theorien, Speedruns und Nostalgie. Aracle übernimmt die technische Pflege und das Community-Management.",
     scope: ["Community-Management", "Discord-Setup", "Moderation"],
+    goal: "Deutschsprachigen Fans von The Legend of Zelda einen gemeinsamen Ort geben.",
+    includes: [
+      { title: "Discord-Setup", text: "Aufbau und technische Pflege des Servers." },
+      { title: "Community-Management", text: "Themen wie Theorien, Speedruns und Nostalgie." },
+      { title: "Moderation", text: "Ein Ort, an dem man sich gerne austauscht." },
+    ],
     team: [
       { name: "Lars", role: "Community", slug: "lars" },
       { name: "Joel Nef", role: "Director", slug: "joel" },
@@ -206,6 +249,13 @@ export const projects: Project[] = [
     longDescription:
       "Ein Vanilla+ Modpack für Minecraft: performance-optimiert und vollständig vanilla-kompatibel. Veröffentlicht auf Modrinth und Grundlage des Aracle-Minecraft-Servers.",
     scope: ["Modpack-Kuration", "Performance-Tuning", "Server-Betrieb"],
+    goal: "Minecraft spürbar schneller machen, ohne das Vanilla-Gefühl zu verändern.",
+    includes: [
+      { title: "Modpack-Kuration", text: "Auswahl von Mods, die vanilla-kompatibel bleiben." },
+      { title: "Performance-Tuning", text: "Optimiert auf flüssiges Spielen." },
+      { title: "Veröffentlichung", text: "Verfügbar auf Modrinth." },
+      { title: "Server-Basis", text: "Grundlage des Aracle-Minecraft-Servers." },
+    ],
     team: [{ name: "Joel Nef", role: "Director", slug: "joel" }],
     techStack: ["Minecraft", "Modrinth"],
     timeline: [{ date: "2023", label: "Erste Version auf Modrinth" }],
@@ -225,6 +275,12 @@ export const projects: Project[] = [
     longDescription:
       "Ein Vanilla+ Multiplayer-Server mit zusätzlichen Addons, gedacht als Langzeitprojekt für Freunde und ausgewählte Mitglieder. Betrieben auf Aracle Cloud.",
     scope: ["Server-Betrieb", "Community"],
+    goal: "Einen beständigen Ort schaffen, an dem Freunde und Mitglieder langfristig zusammen spielen.",
+    includes: [
+      { title: "Vanilla+", text: "Minecraft mit zusätzlichen Addons, nah am Original." },
+      { title: "Server-Betrieb", text: "Läuft auf Aracle Cloud." },
+      { title: "Community", text: "Für Freunde und ausgewählte Mitglieder." },
+    ],
     team: [{ name: "Joel Nef", role: "Director", slug: "joel" }],
     techStack: ["Minecraft", "Aracle Cloud"],
     timeline: [{ date: "2025", label: "Start des Servers" }],
@@ -245,6 +301,12 @@ export const projects: Project[] = [
     longDescription:
       "Aracle Living ist ein Konzept, das den gestalterischen Anspruch des Studios auf Immobilien überträgt: Fotografie und virtuelle Rundgänge. Das Projekt ist in Planung und wird aktuell nicht als Dienstleistung angeboten.",
     scope: ["Fotografie", "Konzept"],
+    goal: "Prüfen, wie sich der gestalterische Anspruch des Studios auf Immobilien übertragen lässt.",
+    includes: [
+      { title: "Fotografie", text: "Erste Testaufnahmen von Innenräumen." },
+      { title: "Virtuelle Rundgänge", text: "Als Idee im Konzept vorgesehen." },
+      { title: "Konzept", text: "In Planung, aktuell kein buchbares Angebot." },
+    ],
     team: [{ name: "Jan Waser", role: "Lead", slug: "jan-waser" }],
     techStack: [],
     timeline: [{ date: "2025", label: "Konzeptphase" }],
@@ -267,6 +329,12 @@ export const projects: Project[] = [
     longDescription:
       "3D-Modelling für GTA V, von MLO-Maps bis zu Fahrzeuglackierungen. Eine Zusammenarbeit von Joel Nef und Tim Mockweiss, aktuell pausiert.",
     scope: ["3D-Modelling", "Texturen"],
+    goal: "3D-Inhalte für die GTA-V-Community gestalten.",
+    includes: [
+      { title: "MLO-Maps", text: "Begehbare Innenräume für die Spielwelt." },
+      { title: "Fahrzeuglackierungen", text: "Eigene Designs für Fahrzeuge." },
+      { title: "Texturen", text: "Oberflächen und Details der Modelle." },
+    ],
     team: [
       { name: "Joel Nef", role: "Director", slug: "joel" },
       { name: "Tim Mockweiss", role: "3D", slug: "tim-mockweiss" },
@@ -288,6 +356,12 @@ export const projects: Project[] = [
     longDescription:
       "Eine Community für technischen Support und Coding-Fragen, geführt von Yao Kaiser, mit Joel als Mitwirkendem. 2023 offiziell eingestellt.",
     scope: ["Community", "Support"],
+    goal: "Einen Ort für Fragen rund um Coding und technischen Support bieten.",
+    includes: [
+      { title: "Community", text: "Austausch unter Entwicklerinnen und Entwicklern." },
+      { title: "Support", text: "Hilfe bei technischen Fragen." },
+      { title: "Abschluss", text: "2023 offiziell eingestellt." },
+    ],
     team: [{ name: "Yao Kaiser", role: "Lead", slug: "yao-kaiser" }],
     techStack: [],
     timeline: [

@@ -1,5 +1,5 @@
 import InquiryForm from "@/components/InquiryForm";
-import Topo from "@/components/alpine/Topo";
+import Contours from "@/components/alpine/Contours";
 
 export const metadata = {
   title: "Kontakt · Aracle",
@@ -16,7 +16,9 @@ export default async function KontaktPage({ searchParams }: { searchParams: Prom
   const { typ } = await searchParams;
   return (
     <div className="relative overflow-hidden">
-      <Topo className="pointer-events-none absolute -left-[30%] top-[40%] h-[70svh] w-[75%] opacity-50" seed={5} />
+      <div aria-hidden className="pointer-events-none absolute -left-[22%] top-[38%] w-[70%] text-ink opacity-30 max-md:hidden">
+        <Contours />
+      </div>
       <div className="wrap relative grid gap-14 pb-[var(--section)] pt-28 md:grid-cols-12 md:gap-8 md:pt-36">
         <div className="md:col-span-5">
           <p className="kicker text-aqua" data-rise>Kontakt</p>

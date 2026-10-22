@@ -86,6 +86,7 @@ def render(cfg):
     cols = cfg.get("cols", 1200)
     min_gap = cfg.get("min_gap", 0.0025)  # rad: wie viel Gelände dahinter verdeckt sein muss
     crests_per_col = []
+    horizon_cols = []
     xs = []
     for i in range(cols):
         x = -W / 2 + (i + 0.5) * W / cols
@@ -97,6 +98,7 @@ def render(cfg):
         ang = np.arctan2(h - eye - drop, d)
         # sichtbare Grate: lokale Maxima, die über dem bisherigen Maximum liegen
         runmax = np.maximum.accumulate(ang)
+        horizon_cols.append(float(runmax[-1]))
         prev = np.concatenate([[-9], runmax[:-1]])
         vis = ang >= prev
         crest = []
@@ -189,7 +191,8 @@ def render(cfg):
         visible = bool((aa < a - 0.0008).all())
         px, py = proj(x, a)
         peaks.append({**p, "x": px, "y": py, "dist": dd, "visible": visible, "bearing": b})
-    return {"eye": eye, "W": W, "lines": out, "peaks": peaks, "f": f}
+    horizon = [proj(xs[i], a) for i, a in enumerate(horizon_cols)]
+    return {"eye": eye, "W": W, "lines": out, "peaks": peaks, "f": f, "horizon": horizon}
 
 
 if __name__ == "__main__":

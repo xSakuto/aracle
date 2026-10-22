@@ -123,21 +123,33 @@ export default function Panorama({
     // Nähere Ebenen verschieben sich beim Scrollen und mit der Maus etwas mehr.
     // Die Horizontlinie bleibt fix, damit die Gipfelmarken exakt sitzen.
     let raf = 0;
+    // Nur schreiben, wenn sich etwas sichtbar ändert: spart Neuzeichnen grosser SVGs
+    let lastKey = "";
+    let lastProg = -1;
     const loop = () => {
       raf = requestAnimationFrame(loop);
       if (!inView) return;
       const r = el.getBoundingClientRect();
       const p = 1 - (r.top + r.height / 2) / (innerHeight / 2 + r.height / 2);
       mouse.x += (mouse.tx - mouse.x) * 0.06;
-      groups.current.forEach((g, i) => {
-        if (!g) return;
-        const k = [0, 0.25, 0.6, 1][i]; // sky, fern, mittel, nah
-        g.setAttribute("transform", `translate(${(mouse.x * 10 * k).toFixed(2)} ${(-p * 22 * k).toFixed(2)})`);
-      });
+      const mx = Math.round(mouse.x * 10 * 4) / 4;
+      const py = Math.round(-p * 22 * 4) / 4;
+      const key = `${mx}|${py}`;
+      if (key !== lastKey) {
+        lastKey = key;
+        groups.current.forEach((g, i) => {
+          if (!g) return;
+          const k = [0, 0.25, 0.6, 1][i]; // Horizont, fern, mittel, nah
+          g.setAttribute("transform", `translate(${(mx * k).toFixed(2)} ${(py * k).toFixed(2)})`);
+        });
+      }
       if (draw === "scroll") {
-        const prog = Math.min(1, Math.max(0, (innerHeight - r.top) / (innerHeight * 0.8)));
-        el.style.setProperty("--prog", prog.toFixed(3));
-        if (prog > 0.6) el.classList.add("is-drawn");
+        const prog = Math.round(Math.min(1, Math.max(0, (innerHeight - r.top) / (innerHeight * 0.8))) * 200) / 200;
+        if (prog !== lastProg) {
+          lastProg = prog;
+          el.style.setProperty("--prog", String(prog));
+          if (prog > 0.6) el.classList.add("is-drawn");
+        }
       }
     };
     loop();
@@ -155,9 +167,13 @@ export default function Panorama({
   const ticks = useMemo(() => {
     if (!scale) return [];
     const out: { az: number; x: number; major: boolean }[] = [];
-    const a0 = Math.ceil(azAt(data, vb.x0) / 5) * 5;
+    // Skalenteilung passend zum sichtbaren Bildwinkel
+    const span = azAt(data, vb.x1) - azAt(data, vb.x0);
+    const step = span > 60 ? 5 : span > 20 ? 2 : 1;
+    const majorEvery = span > 60 ? 15 : span > 20 ? 10 : 5;
+    const a0 = Math.ceil(azAt(data, vb.x0) / step) * step;
     const a1 = azAt(data, vb.x1);
-    for (let a = a0; a <= a1; a += 5) out.push({ az: a, x: xAt(data, a), major: a % 15 === 0 });
+    for (let a = a0; a <= a1; a += step) out.push({ az: a, x: xAt(data, a), major: a % majorEvery === 0 });
     return out;
   }, [scale, data, vb.x0, vb.x1]);
 

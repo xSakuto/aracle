@@ -1,6 +1,6 @@
 import Link from "next/link";
 import PageIntro from "@/components/PageIntro";
-import AlpineLines from "@/components/alpine/AlpineLines";
+import Contours from "@/components/alpine/Contours";
 import CtaBand from "@/components/CtaBand";
 
 export const metadata = {
@@ -63,7 +63,12 @@ export default function HostingPage() {
         </dl>
       </section>
 
-      <AlpineLines height={120} layers={3} seed={37} draw="scroll" className="opacity-60" />
+      {/* Cloud & Infrastructure hat den Gross Chärpf: Höhenlinien statt Silhouette */}
+      <div aria-hidden className="relative h-[clamp(14rem,30vw,26rem)] overflow-hidden border-y border-line text-ink">
+        <div className="absolute left-1/2 top-1/2 w-[max(100%,64rem)] -translate-x-1/2 -translate-y-[52%] opacity-70">
+          <Contours />
+        </div>
+      </div>
 
       <section aria-labelledby="spec-title" className="wrap grid gap-10 py-[var(--section)] md:grid-cols-12">
         <div className="md:col-span-4">
