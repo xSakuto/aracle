@@ -1,6 +1,6 @@
 import TeamDirectory from "@/components/TeamDirectory";
 import CtaBand from "@/components/CtaBand";
-import { projects } from "@/data/projects";
+import { projectHref, projects } from "@/data/projects";
 import { getTeam } from "@/lib/team";
 
 export const revalidate = 60;
@@ -28,7 +28,7 @@ export default async function TeamPage() {
           </div>
           <TeamDirectory
             members={team}
-            projects={projects.map((p) => ({ slug: p.slug, title: p.title }))}
+            projects={projects.map((p) => ({ slug: p.slug, title: p.title, href: projectHref(p) }))}
           />
         </div>
       </div>

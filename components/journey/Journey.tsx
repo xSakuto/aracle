@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import type { JourneyStage } from "@/data/journey";
+import { getProject, projectHref } from "@/data/projects";
 
 /**
  * The Aracle Journey: eine Weglinie, die sich beim Scrollen durch die Stationen zieht.
@@ -199,7 +200,7 @@ export default function Journey({ stages }: { stages: JourneyStage[] }) {
                       <div className={`flex flex-wrap items-center gap-x-3 gap-y-1 ${left ? "" : "md:justify-end"}`}>
                         <h3 className="text-[1.125rem] font-semibold tracking-[-0.015em]">
                           {it.project ? (
-                            <Link href={`/projekte/${it.project}`} className="transition-colors hover:text-aqua">
+                            <Link href={projectHref(getProject(it.project) ?? { slug: it.project })} className="transition-colors hover:text-aqua">
                               {it.name}
                             </Link>
                           ) : (

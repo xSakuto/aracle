@@ -3,7 +3,7 @@ import { KAERPF } from "@/data/panorama/kaerpf";
 import { meters } from "@/lib/panorama";
 
 /**
- * Höhenlinien des Gross Chärpf aus dem SRTM-Modell, wie auf einer Landeskarte:
+ * Höhenlinien des Kärpf aus dem SRTM-Modell, wie auf einer Landeskarte:
  * Äquidistanz 50 m, Zählkurven alle 250 m kräftiger.
  */
 export default function Contours({

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Contours from "@/components/alpine/Contours";
 
-// Schluss: Einladung zur Zusammenarbeit, auf den echten Höhenlinien des Gross Chärpf.
+// Schluss: Einladung zur Zusammenarbeit, auf den echten Höhenlinien des Kärpf.
 export default function Outro() {
   return (
     <section aria-labelledby="outro-title" className="relative overflow-hidden border-t border-line">

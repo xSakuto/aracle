@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import ProfileForm from "@/components/dashboard/ProfileForm";
 import { projects } from "@/data/projects";
-import { FULL_COLUMNS, requireAdmin, toProfile } from "@/lib/session";
+import { requireAdmin, toProfile, withProfileColumns } from "@/lib/session";
 import { deleteMember, saveMember } from "../../actions";
 
 export default async function EditMemberPage({
@@ -16,11 +16,11 @@ export default async function EditMemberPage({
   const { id } = await params;
   const { neu, fehler } = await searchParams;
   const [{ data: row }, { data: members }] = await Promise.all([
-    supabase.from("profiles").select(FULL_COLUMNS).eq("id", id).maybeSingle(),
+    withProfileColumns((cols) => supabase.from("profiles").select(cols).eq("id", id).maybeSingle()),
     supabase.from("project_members").select("profile_id, project_slug, role").eq("profile_id", id),
   ]);
   if (!row) notFound();
-  const profile = toProfile(row as Parameters<typeof toProfile>[0], members ?? []);
+  const profile = toProfile(row as unknown as Parameters<typeof toProfile>[0], members ?? []);
   const isMe = profile.id === me.id;
 
   return (

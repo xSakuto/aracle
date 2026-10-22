@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { projects } from "@/data/projects";
 import { cleanSocials } from "@/data/socials";
-import { requireAdmin, requireMember } from "@/lib/session";
+import { missingColumn, requireAdmin, requireMember } from "@/lib/session";
 
 export type SaveState = { ok?: boolean; error?: string; at?: number };
 
@@ -44,7 +44,36 @@ function ownFields(form: FormData) {
     accent: HEX.test(accent) ? accent : "#00ffff",
     photo_url: photo && (photo.startsWith("https://") || photo.startsWith("/")) ? photo : null,
     socials: cleanSocials(parseJson(form, "socials")),
+    ...extraFields(form),
   };
+}
+
+const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+// Zitat und öffentliche Kontaktadresse. Neue Spalten, siehe supabase/2026-10-profile-quote.sql.
+function extraFields(form: FormData) {
+  const mail = text(form, "contact_email", 200).toLowerCase();
+  return {
+    quote: text(form, "quote", 200),
+    contact_email: EMAIL.test(mail) ? mail : null,
+  };
+}
+
+const PENDING_DB = "Gespeichert. Zitat und Kontakt-Mail erscheinen erst, wenn das Datenbank-Update (supabase/2026-10-profile-quote.sql) ausgeführt ist.";
+
+// Speichert, und ohne die neuen Spalten in der Datenbank den Rest trotzdem.
+async function updateProfile(
+  supabase: Awaited<ReturnType<typeof requireMember>>["supabase"],
+  id: string,
+  fields: Record<string, unknown>,
+) {
+  const res = await supabase.from("profiles").update(fields).eq("id", id);
+  if (res.error && missingColumn(res.error)) {
+    const { quote: _q, contact_email: _c, ...rest } = fields; // eslint-disable-line @typescript-eslint/no-unused-vars
+    const retry = await supabase.from("profiles").update(rest).eq("id", id);
+    return { error: retry.error, pending: !retry.error };
+  }
+  return { error: res.error, pending: false };
 }
 
 function refreshPublic() {
@@ -57,11 +86,11 @@ export async function saveOwnProfile(_prev: SaveState, form: FormData): Promise<
   const fields = ownFields(form);
   if (!fields.name) return { error: "Der Name darf nicht leer sein." };
 
-  const { error } = await supabase.from("profiles").update(fields).eq("id", me.id);
+  const { error, pending } = await updateProfile(supabase, me.id, fields);
   if (error) return { error: `Speichern fehlgeschlagen: ${error.message}` };
   refreshPublic();
   revalidatePath("/dashboard");
-  return { ok: true, at: Date.now() };
+  return pending ? { error: PENDING_DB } : { ok: true, at: Date.now() };
 }
 
 export async function saveMember(_prev: SaveState, form: FormData): Promise<SaveState> {
@@ -74,9 +103,7 @@ export async function saveMember(_prev: SaveState, form: FormData): Promise<Save
     return { error: "Die E-Mail-Adresse ist ungültig." };
   }
 
-  const { error } = await supabase
-    .from("profiles")
-    .update({
+  const { error, pending } = await updateProfile(supabase, id, {
       ...fields,
       role: text(form, "role", 80),
       email: email || null,
@@ -85,8 +112,7 @@ export async function saveMember(_prev: SaveState, form: FormData): Promise<Save
       is_admin: id === me.id ? true : form.get("is_admin") === "on",
       visible: form.get("visible") === "on",
       sort: Number.parseInt(text(form, "sort", 6), 10) || 100,
-    })
-    .eq("id", id);
+    });
   if (error) {
     const dup = /duplicate|unique/i.test(error.message);
     return { error: dup ? "Diese E-Mail ist schon einem anderen Profil zugeordnet." : `Speichern fehlgeschlagen: ${error.message}` };
@@ -105,7 +131,7 @@ export async function saveMember(_prev: SaveState, form: FormData): Promise<Save
 
   refreshPublic();
   revalidatePath("/dashboard", "layout");
-  return { ok: true, at: Date.now() };
+  return pending ? { error: PENDING_DB } : { ok: true, at: Date.now() };
 }
 
 export async function createMember(_prev: SaveState, form: FormData): Promise<SaveState> {

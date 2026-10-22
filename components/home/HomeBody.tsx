@@ -1,6 +1,6 @@
 import Manifesto from "@/components/home/Manifesto";
 import BrandRun from "@/components/home/BrandRun";
-import Services from "@/components/home/Services";
+import WorkGrid from "@/components/home/WorkGrid";
 import TeamDeck from "@/components/home/TeamDeck";
 import Numbers from "@/components/home/Numbers";
 import Outro from "@/components/home/Outro";
@@ -14,7 +14,7 @@ export default async function HomeBody() {
     <>
       <Manifesto />
       <BrandRun items={featuredProjects} total={projects.length} />
-      <Services />
+      <WorkGrid items={projects.filter((p) => !p.featured)} total={projects.length} />
       <TeamDeck members={team} />
       <Numbers people={team.length} projects={projects.length} />
       <Outro />

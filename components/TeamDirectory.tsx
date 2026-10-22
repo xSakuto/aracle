@@ -3,11 +3,10 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import Portrait from "@/components/Portrait";
-import SocialIcon from "@/components/SocialIcon";
-import { SOCIAL_LABELS } from "@/data/socials";
+import ContactLinks from "@/components/ContactLinks";
 import type { TeamMember } from "@/lib/team";
 
-type ProjectRef = { slug: string; title: string };
+type ProjectRef = { slug: string; title: string; href: string };
 
 // Team als Register auf dem Raster: Porträt, Name und Rolle, kurze Bio,
 // Projekte als ruhige Liste. Der Filter blendet nicht aus, er nimmt zurück,
@@ -22,6 +21,10 @@ export default function TeamDirectory({
   const [filter, setFilter] = useState<string | null>(null);
   const titleOf = useMemo(
     () => Object.fromEntries(projects.map((p) => [p.slug, p.title])),
+    [projects],
+  );
+  const hrefOf = useMemo(
+    () => Object.fromEntries(projects.map((p) => [p.slug, p.href])),
     [projects],
   );
   // Nur Projekte zeigen, an denen jemand beteiligt ist, in der Reihenfolge der Projektliste.
@@ -79,24 +82,11 @@ export default function TeamDirectory({
                 <p className="mt-2 text-muted">{m.role}</p>
                 <p className="mt-6 hidden max-w-[44ch] text-ink/80 sm:block">{m.bio}</p>
 
-                {m.socials.length > 0 && (
-                  <ul className="-ml-2.5 mt-auto flex flex-wrap pt-6">
-                    {m.socials.map((s) => (
-                      <li key={s.type + s.url}>
-                        <a
-                          href={s.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          aria-label={`${m.name} auf ${SOCIAL_LABELS[s.type]}`}
-                          title={SOCIAL_LABELS[s.type]}
-                          className="grid h-10 w-10 place-items-center text-muted transition-[color,transform] duration-200 hover:text-aqua active:scale-90"
-                        >
-                          <SocialIcon type={s.type} className="h-[18px] w-[18px]" />
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
+                {m.quote && (
+                  <blockquote className="mt-6 max-w-[40ch] border-l border-aqua pl-4 text-ink/90">«{m.quote}»</blockquote>
                 )}
+
+                <ContactLinks name={m.name} socials={m.socials} email={m.contactEmail} className="mt-auto pt-6" />
               </div>
 
               <p className="col-span-2 -mt-2 max-w-[44ch] text-ink/80 sm:hidden">{m.bio}</p>
@@ -108,7 +98,7 @@ export default function TeamDirectory({
                     {m.projects.map((p) => (
                       <li key={p.slug}>
                         <Link
-                          href={`/projekte/${p.slug}`}
+                          href={hrefOf[p.slug] ?? `/projekte/${p.slug}`}
                           className={`seg-host relative flex min-h-10 items-center justify-between gap-4 border-t border-line/70 text-[0.9375rem] transition-colors hover:text-aqua ${
                             filter === p.slug ? "is-current text-ink" : ""
                           }`}

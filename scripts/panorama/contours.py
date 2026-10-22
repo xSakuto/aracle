@@ -1,4 +1,4 @@
-"""Topografische Höhenlinien (Draufsicht) um den Gross Chärpf aus dem SRTM-Modell."""
+"""Topografische Höhenlinien (Draufsicht) um den Kärpf aus dem SRTM-Modell."""
 import sys, json, math
 import numpy as np
 from scipy.ndimage import gaussian_filter
@@ -8,7 +8,7 @@ sys.argv = ['x', sys.argv[1], sys.argv[2]]
 here = __file__.rsplit('/', 1)[0]
 exec(open(f'{here}/pano.py').read().split('if __name__')[0])
 
-LAT, LON, M = 46.91667, 9.09333, 2794  # Gross Chärpf
+LAT, LON, M = 46.91667, 9.09333, 2794  # Kärpf
 HALF_LAT, HALF_LON = 0.027, 0.05        # rund 3 x 3.8 km
 STEP = 50                                # Äquidistanz 50 m, Zählkurven alle 250 m
 
@@ -64,7 +64,7 @@ for level in range(1500, 2800, STEP):
 px = ((LON - 8.0) * 3600 - c0) * sx * scale
 py = ((48.0 - LAT) * 3600 - r0) * scale
 out = {"w": W, "h": round(Hh), "step": STEP, "paths": paths,
-       "summit": {"name": "Gross Chärpf", "m": M, "x": round(px, 1), "y": round(py, 1)},
+       "summit": {"name": "Kärpf", "m": M, "x": round(px, 1), "y": round(py, 1)},
        "extent": {"lat": LAT, "lon": LON, "km_w": round(2 * HALF_LON * 111.32 * sx, 2), "km_h": round(2 * HALF_LAT * 111.32, 2)}}
 with open(sys.argv[2], "w") as f:
     f.write("// Automatisch erzeugt aus SRTM-Höhendaten, siehe scripts/panorama/README.md.\n")

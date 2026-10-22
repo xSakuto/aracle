@@ -6,7 +6,7 @@ import { SCHILT } from "@/data/panorama/schilt";
 // Die Kette schliesst das Bild nach unten ab; nur die Gipfel tragen Namen und Höhen.
 
 export const HERO_LABELS: PanoLabel[] = [
-  { peak: "Gross Chärpf", row: 1 },
+  { peak: "Kärpf", row: 1 },
   { peak: "Tödi", row: 0 },
   { peak: "Vrenelisgärtli", title: "Glärnisch", row: 0 },
   { peak: "Ruchen", row: 1, side: "right", minor: true },

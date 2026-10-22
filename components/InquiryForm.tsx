@@ -7,7 +7,16 @@ import { BUDGETS, PROJECT_TYPES } from "@/data/inquiry";
 
 const ORDER: InquiryField[] = ["type", "name", "email", "company", "description", "budget"];
 
-export default function InquiryForm({ defaultType }: { defaultType?: string }) {
+export default function InquiryForm({
+  defaultType,
+  compact = false,
+  placeholder,
+}: {
+  defaultType?: string;
+  /** Kurzform für Landing Pages: Typ fest, nur Name, Mail und Nachricht */
+  compact?: boolean;
+  placeholder?: string;
+}) {
   const [state, action, pending] = useActionState<InquiryState, FormData>(sendInquiry, { status: "idle" });
   const [started] = useState(() => Date.now());
   const [len, setLen] = useState(0);
@@ -77,7 +86,9 @@ export default function InquiryForm({ defaultType }: { defaultType?: string }) {
         </div>
       )}
 
-      <fieldset>
+      {compact && <input type="hidden" name="type" value={defaultType ?? "other"} />}
+
+      {!compact && <fieldset>
         <legend className="form-label">Worum geht es?</legend>
         <div className="mt-3 flex flex-wrap gap-2" role="radiogroup" aria-describedby={errors.type ? "type-error" : undefined}>
           {PROJECT_TYPES.map((t, i) => (
@@ -95,7 +106,7 @@ export default function InquiryForm({ defaultType }: { defaultType?: string }) {
           ))}
         </div>
         {err("type")}
-      </fieldset>
+      </fieldset>}
 
       <div className="grid gap-7 sm:grid-cols-2">
         <div>
@@ -110,16 +121,16 @@ export default function InquiryForm({ defaultType }: { defaultType?: string }) {
         </div>
       </div>
 
-      <div>
+      {!compact && <div>
         <label htmlFor="f-company" className="form-label">
           Unternehmen <span className="text-muted">(optional)</span>
         </label>
         <input id="f-company" name="company" data-field="company" autoComplete="organization" defaultValue={values.company} className="form-input" placeholder="Firma oder Organisation" />
-      </div>
+      </div>}
 
       <div>
         <div className="flex items-baseline justify-between">
-          <label htmlFor="f-desc" className="form-label">Projektbeschreibung</label>
+          <label htmlFor="f-desc" className="form-label">{compact ? "Nachricht" : "Projektbeschreibung"}</label>
           <span className="small nums text-muted" aria-hidden>{len} / 4000</span>
         </div>
         <textarea
@@ -127,18 +138,18 @@ export default function InquiryForm({ defaultType }: { defaultType?: string }) {
           name="description"
           data-field="description"
           required
-          rows={6}
+          rows={compact ? 4 : 6}
           maxLength={4000}
           defaultValue={values.description}
           onChange={(e) => setLen(e.target.value.length)}
-          className="form-input min-h-[10rem] resize-y"
-          placeholder="Was soll entstehen, für wen, und bis wann?"
+          className={`form-input resize-y ${compact ? "min-h-[7rem]" : "min-h-[10rem]"}`}
+          placeholder={placeholder ?? "Was soll entstehen, für wen, und bis wann?"}
           {...aria("description")}
         />
         {err("description")}
       </div>
 
-      <div>
+      {!compact && <div>
         <label htmlFor="f-budget" className="form-label">
           Budgetrahmen <span className="text-muted">(optional)</span>
         </label>
@@ -149,7 +160,7 @@ export default function InquiryForm({ defaultType }: { defaultType?: string }) {
           ))}
         </select>
         {err("budget")}
-      </div>
+      </div>}
 
       <div className="flex flex-col gap-4 border-t border-line pt-6 sm:flex-row sm:items-center sm:justify-between">
         <p className="small max-w-[24rem] text-muted">

@@ -3,6 +3,7 @@ import { projects } from "@/data/projects";
 import { cleanSocials, type Social } from "@/data/socials";
 import { supabaseConfigured } from "@/lib/supabase/config";
 import { createPublicClient } from "@/lib/supabase/server";
+import { withProfileColumns } from "@/lib/session";
 export { initials } from "@/lib/initials";
 
 export interface MemberProject {
@@ -22,10 +23,15 @@ export interface TeamMember {
   sort: number;
   socials: Social[];
   projects: MemberProject[];
+  /** Persönliches Zitat, leer wenn keins gesetzt */
+  quote: string;
+  /** Öffentliche Kontaktadresse */
+  contactEmail?: string;
 }
 
-export const PUBLIC_PROFILE_COLUMNS =
+const LEGACY_PUBLIC_COLUMNS =
   "id, slug, name, role, bio, accent, photo_url, socials, is_lead, visible, sort";
+export const PUBLIC_PROFILE_COLUMNS = `${LEGACY_PUBLIC_COLUMNS}, quote, contact_email`;
 
 function staticMembers(): TeamMember[] {
   return staticTeam.map((m, i) => ({
@@ -39,6 +45,8 @@ function staticMembers(): TeamMember[] {
     lead: Boolean(m.lead),
     sort: i * 10,
     socials: m.socials,
+    quote: m.quote ?? "",
+    contactEmail: m.email,
     projects: projects.flatMap((p) =>
       p.team
         .filter((t) => t.slug === m.slug)
@@ -58,6 +66,8 @@ type ProfileRow = {
   socials: unknown;
   is_lead: boolean;
   sort: number;
+  quote?: string | null;
+  contact_email?: string | null;
 };
 
 export function rowToMember(
@@ -75,6 +85,8 @@ export function rowToMember(
     lead: row.is_lead,
     sort: row.sort,
     socials: cleanSocials(row.socials),
+    quote: row.quote ?? "",
+    contactEmail: row.contact_email ?? undefined,
     projects: memberships
       .filter((m) => m.profile_id === row.id)
       .map((m) => ({ slug: m.project_slug, role: m.role })),
@@ -91,11 +103,11 @@ export async function getTeam(): Promise<TeamMember[]> {
   try {
     const db = createPublicClient();
     const [profiles, members] = await Promise.all([
-      db.from("profiles").select(PUBLIC_PROFILE_COLUMNS).eq("visible", true),
+      withProfileColumns((cols) => db.from("profiles").select(cols).eq("visible", true), PUBLIC_PROFILE_COLUMNS, LEGACY_PUBLIC_COLUMNS),
       db.from("project_members").select("profile_id, project_slug, role"),
     ]);
     if (profiles.error || members.error) throw profiles.error ?? members.error;
-    return (profiles.data as ProfileRow[])
+    return (profiles.data as unknown as ProfileRow[])
       .map((r) => rowToMember(r, members.data ?? []))
       .sort(bySort);
   } catch (err) {

@@ -11,6 +11,10 @@ export interface StaticMember {
   initials: string;
   photo?: string;
   lead?: boolean;
+  /** Persönliches Zitat, nur echte Aussagen der Person */
+  quote?: string;
+  /** Öffentliche Kontaktadresse */
+  email?: string;
   socials: Social[];
 }
 
@@ -26,6 +30,7 @@ export const team: StaticMember[] = [
     initials: "JN",
     photo: "/Brand_assets/images/heros/joel.jpg",
     lead: true,
+    email: "j.nef@aracle.ch",
     socials: [
       { type: "x", url: "https://x.com/AracleCH" },
       { type: "discord", url: DISCORD },
@@ -50,7 +55,4 @@ export const team: StaticMember[] = [
     initials: "N",
     socials: [{ type: "discord", url: DISCORD }],
   },
-
-
-
 ];

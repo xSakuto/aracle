@@ -40,15 +40,19 @@ export interface Project {
   links: { label: string; url: string }[];
   gallery?: GalleryItem[];
   featured?: boolean;
+  /** Eigene Landing Page statt der Projektseite */
+  landing?: string;
   /** Startjahr */
   year: string;
 }
 
 const H = "/Brand_assets/images/heros";
+const STEAM = "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/3438570";
 
 export const projects: Project[] = [
   {
     slug: "aracle-cloud-hosting",
+    landing: "/hosting",
     year: "2022",
     title: "Aracle Cloud",
     tagline: "Own hardware. Swiss hosting.",
@@ -86,6 +90,7 @@ export const projects: Project[] = [
   },
   {
     slug: "highside",
+    landing: "/highside",
     year: "2024",
     title: "Highside",
     tagline: "Swiss biker streetwear. Built for the curve.",
@@ -154,33 +159,40 @@ export const projects: Project[] = [
     slug: "beer-game",
     year: "2025",
     title: "Beer Game",
-    tagline: "An indie game in the making.",
+    tagline: "A tiny online tavern for up to four.",
     pillar: "Digital Experiences",
     category: "Game Dev",
     status: "In Entwicklung",
     owner: "Joel Nef",
+    // Grafiken direkt von der Steam-Seite (BEER, App 3438570)
+    coverImage: `${STEAM}/d024f1f8cd35164bd168559cc037a8983a2334ca/capsule_616x353.jpg`,
     shortDescription:
-      "Indie-Game für Steam, aktuell in Entwicklung.",
+      "Kleine Online-Taverne für bis zu vier Leute. Free to Play, bald auf Steam.",
     longDescription:
-      "Ein eigenes Indie-Game mit geplantem Release auf Steam. Die Entwicklung läuft, eine Wishlist-Kampagne ist gestartet. Weitere Details folgen, sobald die Steam-Seite online ist.",
-    scope: ["Game Design", "Entwicklung", "Kampagne"],
-    goal: "Ein eigenes Indie-Game entwickeln und auf Steam veröffentlichen.",
+      "Ihr seid Fässer und Bierkrüge mit Wackelaugen. Bier zapfen, anstossen, Roulette, Blackjack, Würfel und Darts spielen und euch Bierdeckel an den Kopf werfen. BEER erscheint als Free-to-Play-Spiel auf Steam, entwickelt und veröffentlicht von Aracle.",
+    scope: ["Game Design", "Entwicklung", "Steam-Seite"],
+    goal: "Ein eigenes kleines Online-Spiel für Freunde entwickeln und auf Steam veröffentlichen.",
     includes: [
-      { title: "Game Design", text: "Konzept und Spielmechanik." },
-      { title: "Entwicklung", text: "Umsetzung des Spiels, aktuell in Arbeit." },
-      { title: "Wishlist-Kampagne", text: "Erste Kampagne, damit das Spiel vor dem Release gefunden wird." },
+      { title: "Online für bis zu vier", text: "Eine kleine Taverne, in der man sich mit Freunden trifft." },
+      { title: "Minispiele", text: "Roulette, Blackjack, Würfel und Darts." },
+      { title: "Steam", text: "Free to Play, Release noch offen." },
     ],
     team: [{ name: "Joel Nef", role: "Director", slug: "joel" }],
     techStack: [],
     timeline: [
       { date: "2025", label: "Start der Entwicklung" },
-      { date: "2025", label: "Wishlist-Kampagne gestartet" },
+      { date: "2025", label: "Steam-Seite und Wishlist-Kampagne" },
     ],
-    links: [],
+    links: [{ label: "BEER auf Steam", url: "https://store.steampowered.com/app/3438570/BEER/" }],
+    gallery: [
+      { kind: "photo", src: `${STEAM}/48eb3cf7ccce60b595cfff2c1ef7276b9f36577d/page_bg_raw.jpg`, alt: "Hintergrundgrafik von BEER", width: 1438, height: 810 },
+      { kind: "photo", src: "https://shared.fastly.steamstatic.com/community_assets/images/apps/3438570/f0f9748dfe6288dd476a861f66ec17b619f20a26.jpg", alt: "Community-Grafik von BEER", width: 1438, height: 810 },
+    ],
     featured: true,
   },
   {
     slug: "rexusmods",
+    landing: "/rexusmods",
     year: "2021",
     title: "RexusMods",
     tagline: "Mods for GTA V. Now taking flight.",
@@ -322,6 +334,7 @@ export const projects: Project[] = [
   },
   {
     slug: "araclesmp",
+    landing: "/smp",
     year: "2025",
     title: "AracleSMP",
     tagline: "A long-term server for friends.",
@@ -375,6 +388,9 @@ export const projects: Project[] = [
 ];
 
 export const featuredProjects = projects.filter((p) => p.featured);
+
+/** Wohin ein Projekt verlinkt: eigene Landing Page, sonst die Projektseite. */
+export const projectHref = (p: Pick<Project, "slug" | "landing">) => p.landing ?? `/projekte/${p.slug}`;
 export const getProject = (slug: string) => projects.find((p) => p.slug === slug);
 
 export const STATUS_ORDER: ProjectStatus[] = ["Aktiv", "In Entwicklung", "Konzept", "Pausiert", "Eingestellt"];

@@ -76,7 +76,7 @@ export default function ProductMockup({
     <div
       role="img"
       aria-label={caption ? `Platzhalter: ${caption}` : "Platzhalter-Grafik"}
-      className={`relative flex items-center justify-center overflow-hidden bg-[#1a1512] text-glow ${className}`}
+      className={`mockup relative flex items-center justify-center overflow-hidden bg-[#1a1512] text-glow ${className}`}
     >
       <svg viewBox="0 0 460 380" className="h-[78%] w-[78%]" aria-hidden>
         {motif === "tee" && <Tee />}

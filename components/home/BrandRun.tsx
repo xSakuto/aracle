@@ -1,6 +1,6 @@
 import Link from "next/link";
 import ProjectPoster from "@/components/visuals/ProjectPoster";
-import type { Project } from "@/data/projects";
+import { projectHref, type Project } from "@/data/projects";
 
 const posterTone: Record<string, "slate" | "glacier" | "glow"> = {
   highside: "glow",
@@ -33,7 +33,7 @@ export default function BrandRun({ items, total }: { items: Project[]; total: nu
         {items.map((p) => (
           <Link
             key={p.slug}
-            href={`/projekte/${p.slug}`}
+            href={projectHref(p)}
             className={`group flex shrink-0 flex-col ${p.coverImage ? "md:w-[46vw]" : "md:w-[30vw]"}`}
           >
             <div className="relative h-[56svh] overflow-hidden rounded-[var(--radius)] md:h-[62svh]">
@@ -76,15 +76,6 @@ export default function BrandRun({ items, total }: { items: Project[]; total: nu
           </Link>
         ))}
 
-        <Link
-          href="/projekte"
-          className="group flex h-[30svh] shrink-0 flex-col justify-end rounded-[var(--radius)] border border-line p-8 transition-colors hover:border-aqua md:h-[62svh] md:w-[22vw]"
-        >
-          <span className="display text-[clamp(2.25rem,1rem+3vw,4.5rem)] group-hover:text-aqua">
-            All {total} projects
-          </span>
-          <span className="mt-3 text-muted">Von Streetwear bis Server</span>
-        </Link>
       </div>
     </section>
     </div>

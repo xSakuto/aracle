@@ -3,7 +3,7 @@ import Panorama from "@/components/alpine/Panorama";
 import PillarMark from "@/components/alpine/PillarMark";
 import ProjectPoster from "@/components/visuals/ProjectPoster";
 import { TOEDI } from "@/data/panorama/toedi";
-import { PILLARS, featuredProjects, projects, type Pillar } from "@/data/projects";
+import { PILLARS, featuredProjects, projectHref, projects, type Pillar } from "@/data/projects";
 import { PILLAR_MOUNTAIN } from "@/lib/mountains";
 
 export const metadata = {
@@ -113,7 +113,7 @@ export default function ProjektePage() {
             const wide = i === 0 || i === 3;
             return (
               <li key={p.slug} data-reveal style={{ ["--i" as string]: i % 2 }} className={wide ? "md:col-span-7" : "md:col-span-5"}>
-                <Link href={`/projekte/${p.slug}`} className="group block">
+                <Link href={projectHref(p)} className="group block">
                   <div className="relative aspect-[4/3] overflow-hidden rounded-[var(--radius)] md:aspect-auto md:h-[min(38rem,62svh)]">
                     {p.coverImage ? (
                       // eslint-disable-next-line @next/next/no-img-element
@@ -178,7 +178,7 @@ export default function ProjektePage() {
                 {group.map((p) => (
                   <li key={p.slug}>
                     <Link
-                      href={`/projekte/${p.slug}`}
+                      href={projectHref(p)}
                       className="seg-host group relative grid grid-cols-[1fr_auto] items-baseline gap-x-6 gap-y-1 border-t border-line py-5 sm:grid-cols-9"
                     >
                       <span aria-hidden className="seg seg-top" />

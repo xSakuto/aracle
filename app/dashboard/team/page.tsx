@@ -2,7 +2,7 @@ import Link from "next/link";
 import AddMember from "@/components/dashboard/AddMember";
 import Portrait from "@/components/Portrait";
 import { projects } from "@/data/projects";
-import { FULL_COLUMNS, requireAdmin, toProfile, type FullProfile } from "@/lib/session";
+import { requireAdmin, toProfile, withProfileColumns, type FullProfile } from "@/lib/session";
 
 export default async function TeamAdminPage({
   searchParams,
@@ -12,10 +12,10 @@ export default async function TeamAdminPage({
   const { supabase } = await requireAdmin();
   const { geloescht } = await searchParams;
   const [{ data: rows }, { data: members }] = await Promise.all([
-    supabase.from("profiles").select(FULL_COLUMNS).order("is_lead", { ascending: false }).order("sort").order("name"),
+    withProfileColumns((cols) => supabase.from("profiles").select(cols).order("is_lead", { ascending: false }).order("sort").order("name")),
     supabase.from("project_members").select("profile_id, project_slug, role"),
   ]);
-  const team: FullProfile[] = (rows ?? []).map((r) => toProfile(r as Parameters<typeof toProfile>[0], members ?? []));
+  const team: FullProfile[] = (rows ?? []).map((r) => toProfile(r as unknown as Parameters<typeof toProfile>[0], members ?? []));
   const titleOf = Object.fromEntries(projects.map((p) => [p.slug, p.title]));
 
   return (

@@ -55,6 +55,8 @@ export default function ProfileForm({
   const [name, setName] = useState(profile.name);
   const [role, setRole] = useState(profile.role);
   const [bio, setBio] = useState(profile.bio);
+  const [quote, setQuote] = useState(profile.quote);
+  const [contactEmail, setContactEmail] = useState(profile.contact_email ?? "");
   const [accent, setAccent] = useState(profile.accent);
   const [photo, setPhoto] = useState(profile.photo_url ?? "");
   const [socials, setSocials] = useState<Social[]>(profile.socials);
@@ -167,6 +169,39 @@ export default function ProfileForm({
               className="dash-input"
             />
             <p className="dash-help mt-1 text-right nums">{bio.length} / 400</p>
+          </div>
+
+          <div>
+            <label htmlFor="quote" className="dash-label">Persönliches Zitat</label>
+            <textarea
+              id="quote"
+              name="quote"
+              maxLength={200}
+              rows={2}
+              value={quote}
+              onChange={(e) => setQuote(e.target.value)}
+              placeholder="Ein Satz, der zu dir passt. Ohne Anführungszeichen."
+              className="dash-input !min-h-0"
+            />
+            <p className="dash-help mt-1 flex justify-between gap-4">
+              <span>Erscheint auf der Startseite und unter Team.</span>
+              <span className="nums">{quote.length} / 200</span>
+            </p>
+          </div>
+
+          <div>
+            <label htmlFor="contact_email" className="dash-label">Öffentliche E-Mail</label>
+            <input
+              id="contact_email"
+              name="contact_email"
+              type="email"
+              autoComplete="off"
+              value={contactEmail}
+              onChange={(e) => setContactEmail(e.target.value)}
+              placeholder="vorname@aracle.ch"
+              className="dash-input"
+            />
+            <p className="dash-help mt-1">Wird öffentlich angezeigt. Leer lassen, wenn du keine willst. Dein Login bleibt privat.</p>
           </div>
 
           <div>

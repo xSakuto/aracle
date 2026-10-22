@@ -16,6 +16,8 @@ create table if not exists public.profiles (
   accent      text not null default '#00ffff',
   photo_url   text,
   socials     jsonb not null default '[]'::jsonb,
+  quote       text not null default '' check (char_length(quote) <= 200),
+  contact_email text check (contact_email is null or char_length(contact_email) <= 200),
   is_lead     boolean not null default false,
   is_admin    boolean not null default false,
   visible     boolean not null default true,
@@ -175,7 +177,7 @@ create policy "admin verwaltet zuordnungen" on public.project_members
 revoke select on public.profiles from anon;
 grant select (
   id, slug, name, role, bio, accent, photo_url, socials,
-  is_lead, visible, sort
+  quote, contact_email, is_lead, visible, sort
 ) on public.profiles to anon;
 
 -- ─────────────────────────────────────────────
@@ -231,7 +233,7 @@ create table if not exists public.inquiries (
   name          text not null check (char_length(name) between 2 and 120),
   email         text not null check (char_length(email) between 5 and 200),
   company       text check (company is null or char_length(company) <= 160),
-  project_type  text not null check (project_type in ('web','brand','video','hosting','other')),
+  project_type  text not null check (project_type in ('web','brand','video','hosting','smp','other')),
   description   text not null check (char_length(description) between 20 and 4000),
   budget        text check (budget is null or budget in ('lt2k','2k-5k','5k-10k','10k-plus','open')),
   status        text not null default 'neu' check (status in ('neu','in_bearbeitung','erledigt'))
