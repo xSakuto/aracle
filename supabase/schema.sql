@@ -238,3 +238,7 @@ create policy "admin löscht anfragen" on public.inquiries
 
 revoke select, update, delete on public.inquiries from anon;
 grant insert on public.inquiries to anon;
+
+-- Trigger-Funktionen laufen nur über ihre Trigger; kein Aufruf über die API.
+revoke execute on function public.link_profile_on_signup() from public, anon, authenticated;
+revoke execute on function public.protect_profile_columns() from public, anon, authenticated;
