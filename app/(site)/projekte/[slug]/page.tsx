@@ -88,7 +88,8 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
   const nextMt = PILLAR_MOUNTAIN[next.pillar];
 
   return (
-    <article>
+    // key: beim Wechsel zwischen Projekten neu aufbauen (zerlegte Titel, Animationen)
+    <article key={p.slug}>
       <ProjectHero p={p} />
 
       {/* Inhalt als Blatt, das sich über den Kopf schiebt */}

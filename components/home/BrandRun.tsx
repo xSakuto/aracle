@@ -10,7 +10,10 @@ const posterTone: Record<string, "slate" | "glacier" | "glow"> = {
 // Selected work: Die Projekte laufen horizontal vorbei, während der Abschnitt steht.
 // Auf dem Handy liegen sie untereinander. Daten kommen direkt aus data/projects.ts.
 export default function BrandRun({ items, total }: { items: Project[]; total: number }) {
+  // Der äussere Rahmen gehört React allein. GSAP legt beim Fixieren einen Hilfscontainer
+  // um die Section; ohne diesen Rahmen stürzt React beim Seitenwechsel ab (removeChild).
   return (
+    <div>
     <section aria-labelledby="work-title" data-hscroll className="relative overflow-hidden">
       <div
         data-hscroll-track
@@ -86,5 +89,6 @@ export default function BrandRun({ items, total }: { items: Project[]; total: nu
         </Link>
       </div>
     </section>
+    </div>
   );
 }
