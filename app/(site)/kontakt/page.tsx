@@ -7,7 +7,7 @@ export const metadata = {
 };
 
 const direct: { label: string; value: string; href: string }[] = [
-  { label: "E-Mail", value: "info@arcl.ch", href: "mailto:info@arcl.ch" },
+  { label: "E-Mail", value: "info@aracle.ch", href: "mailto:info@aracle.ch" },
   { label: "Discord", value: "Aracle Community", href: "https://discord.gg/BgpKdzBYtD" },
   { label: "Instagram", value: "@aracle.ch", href: "https://www.instagram.com/aracle.ch/" },
 ];

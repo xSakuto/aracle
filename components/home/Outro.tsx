@@ -24,7 +24,7 @@ export default function Outro() {
         </p>
         <div className="mt-9 flex flex-wrap justify-center gap-3">
           <Link href="/kontakt" className="btn">Projekt anfragen</Link>
-          <a href="mailto:info@arcl.ch" className="btn-quiet">info@arcl.ch</a>
+          <a href="mailto:info@aracle.ch" className="btn-quiet">info@aracle.ch</a>
         </div>
       </div>
     </section>

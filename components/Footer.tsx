@@ -5,7 +5,7 @@ import { WIGGIS } from "@/data/panorama/wiggis";
 const columns: { title: string; links: [string, string][] }[] = [
   { title: "Studio", links: [["Projekte", "/projekte"], ["Leistungen", "/#leistungen"], ["Team", "/team"], ["Journey", "/history"]] },
   { title: "Marken", links: [["Highside", "/projekte/highside"], ["Aracle Cloud", "/hosting"], ["Swizzly", "/projekte/swizzly"], ["Beer Game", "/projekte/beer-game"]] },
-  { title: "Kontakt", links: [["Projekt anfragen", "/kontakt"], ["info@arcl.ch", "mailto:info@arcl.ch"], ["Discord", "https://discord.gg/BgpKdzBYtD"], ["Instagram", "https://www.instagram.com/aracle.ch/"]] },
+  { title: "Kontakt", links: [["Projekt anfragen", "/kontakt"], ["info@aracle.ch", "mailto:info@aracle.ch"], ["Discord", "https://discord.gg/BgpKdzBYtD"], ["Instagram", "https://www.instagram.com/aracle.ch/"]] },
   { title: "Intern", links: [["Team-Login", "/login"], ["Impressum", "/impressum"], ["Datenschutz", "/datenschutz"]] },
 ];
 

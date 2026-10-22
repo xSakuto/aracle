@@ -25,8 +25,8 @@ const rows: [string, React.ReactNode][] = [
   ],
   [
     "Kontakt",
-    <a href="mailto:info@arcl.ch" className="link-under">
-      info@arcl.ch
+    <a href="mailto:info@aracle.ch" className="link-under">
+      info@aracle.ch
     </a>,
   ],
   [

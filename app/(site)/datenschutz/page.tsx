@@ -15,8 +15,8 @@ const sections: { n: string; title: string; body: React.ReactNode }[] = [
         <br />
         Büel-Waid 12, 8750 Glarus, Schweiz
         <br />
-        <a href="mailto:info@arcl.ch" className="link-under">
-          info@arcl.ch
+        <a href="mailto:info@aracle.ch" className="link-under">
+          info@aracle.ch
         </a>
       </>
     ),
@@ -83,8 +83,8 @@ const sections: { n: string; title: string; body: React.ReactNode }[] = [
         </ul>
         <span className="mt-3 block">
           Anfragen an:{" "}
-          <a href="mailto:info@arcl.ch" className="link-under">
-            info@arcl.ch
+          <a href="mailto:info@aracle.ch" className="link-under">
+            info@aracle.ch
           </a>
         </span>
       </>

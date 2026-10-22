@@ -37,7 +37,7 @@ auch auf einem anderen Gerät eingeben kann. Zum Beispiel:
 
 Hinweis: Der eingebaute Mailversand von Supabase schafft nur wenige Mails pro Stunde.
 Für den Alltag reicht das bei einem kleinen Team. Wenn nicht, unter
-*Authentication > SMTP* einen eigenen Absender eintragen (z.B. info@arcl.ch).
+*Authentication > SMTP* einen eigenen Absender eintragen (no-reply@aracle.ch über smtp.resend.com).
 
 ## 4. Vercel
 
@@ -64,19 +64,19 @@ Projekte und Rollen vergibt nur ein Admin. Was jemand selbst ändern darf
 
 Das Formular unter `/kontakt` meldet nur dann Erfolg, wenn die Anfrage wirklich
 angekommen ist. Ohne Einrichtung zeigt es einen ehrlichen Hinweis und bietet an,
-die Angaben als E-Mail an info@arcl.ch zu öffnen.
+die Angaben als E-Mail an info@aracle.ch zu öffnen.
 
 Zwei Wege, einzeln oder zusammen:
 
 - **Supabase** (sobald Schritt 1 bis 4 erledigt sind): Anfragen landen in der Tabelle
   `inquiries`. Admins sehen sie im Team-Bereich unter *Anfragen* und setzen dort den Status.
-- **E-Mail über Resend**: Konto auf resend.com, Domain arcl.ch verifizieren, API-Key erstellen.
+- **E-Mail über Resend**: Konto auf resend.com, Domain aracle.ch verifizieren, API-Key erstellen.
   Dann in Vercel setzen:
 
 ```
 RESEND_API_KEY=re_...
-INQUIRY_FROM=Aracle Website <anfragen@arcl.ch>
-INQUIRY_TO=info@arcl.ch
+INQUIRY_FROM=Aracle Website <no-reply@aracle.ch>
+INQUIRY_TO=info@aracle.ch
 ```
 
 Antworten auf die Benachrichtigung gehen direkt an die anfragende Person (Reply-To).

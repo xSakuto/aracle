@@ -37,7 +37,7 @@ function mailtoFor(v: Record<string, string>) {
   ]
     .filter((l) => l !== "")
     .join("\n");
-  return `mailto:info@arcl.ch?subject=${encodeURIComponent(`Projektanfrage: ${typeLabel(v.type)}`)}&body=${encodeURIComponent(body)}`;
+  return `mailto:info@aracle.ch?subject=${encodeURIComponent(`Projektanfrage: ${typeLabel(v.type)}`)}&body=${encodeURIComponent(body)}`;
 }
 
 async function notifyByMail(v: Record<string, string>) {
