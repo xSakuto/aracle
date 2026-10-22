@@ -44,7 +44,6 @@ from (values
   ('joel',          'zelda-de-server',      'Director'),
   ('joel',          'all-the-clients',      'Director'),
   ('joel',          'araclesmp',            'Director'),
-  ('joel',          'noreply',              'Director'),
   ('joel',          'rexusmods',            'Director'),
   ('tim-mockweiss', 'rexusmods',            '3D'),
   ('joel',          'beer-game',            'Director')

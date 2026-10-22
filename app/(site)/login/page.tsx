@@ -25,7 +25,7 @@ export default async function LoginPage({
   }
 
   return (
-    <div data-shape="word" className="wrap pb-16 pt-28">
+    <div className="wrap pb-16 pt-28">
     <div className="inner grid min-h-[70svh] grid-cols-12 items-center gap-x-3 md:gap-x-8 gap-y-12">
       <div className="col-span-12 md:col-span-6">
         <h1 className="display" data-split="load">

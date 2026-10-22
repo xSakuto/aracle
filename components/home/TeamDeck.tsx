@@ -2,7 +2,7 @@ import Link from "next/link";
 import Portrait from "@/components/Portrait";
 import type { TeamMember } from "@/lib/team";
 
-// Üses Team: ruhiges Raster, beim Überfahren hebt sich eine Karte.
+// Das Team: ruhiges Raster, beim Überfahren hebt sich eine Karte.
 export default function TeamDeck({ members }: { members: TeamMember[] }) {
   return (
     <section aria-labelledby="team-title" className="wrap py-[var(--section)]">
@@ -10,10 +10,10 @@ export default function TeamDeck({ members }: { members: TeamMember[] }) {
         <div>
           <p className="kicker text-aqua">Team</p>
           <h2 id="team-title" className="display mt-4" data-split>
-            Üses Team
+            The people.
           </h2>
         </div>
-        <Link href="/team" className="link-under inline-flex min-h-11 items-center font-medium" data-cursor="Alli">
+        <Link href="/team" className="link-under inline-flex min-h-11 items-center font-medium" data-cursor="Alle">
           Alle mit ihren Projekten
         </Link>
       </div>

@@ -9,7 +9,10 @@ export default function Numbers({ people, projects }: { people: number; projects
   ];
   return (
     <section aria-labelledby="numbers-title" className="wrap py-[var(--section)]">
-      <h2 id="numbers-title" className="kicker text-aqua">Vom Minecraft-Server zum Studio</h2>
+      <p className="kicker text-aqua">Seit 2017</p>
+      <h2 id="numbers-title" className="head mt-4 max-w-[18ch]" data-split>
+        From a Minecraft server to a studio.
+      </h2>
       <dl className="mt-10 grid gap-10 md:grid-cols-3 md:gap-8">
         {facts.map((f) => (
           <div key={f.label} data-reveal>
@@ -26,7 +29,7 @@ export default function Numbers({ people, projects }: { people: number; projects
         ))}
       </dl>
       <Link href="/history" className="link-under mt-12 inline-flex min-h-11 items-center font-semibold" data-cursor="Lesen">
-        Die ganze Geschichte
+        The Aracle Journey
       </Link>
     </section>
   );

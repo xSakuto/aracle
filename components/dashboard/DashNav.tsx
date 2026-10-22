@@ -8,7 +8,10 @@ export default function DashNav({ admin }: { admin: boolean }) {
   const items = [
     { href: "/dashboard", label: "Mein Profil", active: pathname === "/dashboard" },
     ...(admin
-      ? [{ href: "/dashboard/team", label: "Team verwalten", active: pathname.startsWith("/dashboard/team") }]
+      ? [
+          { href: "/dashboard/anfragen", label: "Anfragen", active: pathname.startsWith("/dashboard/anfragen") },
+          { href: "/dashboard/team", label: "Team verwalten", active: pathname.startsWith("/dashboard/team") },
+        ]
       : []),
   ];
   return (

@@ -229,3 +229,94 @@ html.lenis, html.lenis body { height: auto; }
   .scrub-word { opacity: 1 !important; }
   .marquee-track { transform: none !important; }
 }
+
+/* ---------- Alpine Line Art ---------- */
+.alpine-path { stroke-dasharray: 1; stroke-dashoffset: 0; stroke-linecap: round; stroke-linejoin: round; }
+.alpine-label { transform: translate(-50%, 0); }
+@media (prefers-reduced-motion: no-preference) {
+  .js .alpine-path { stroke-dashoffset: 1; }
+  .js .alpine-load.is-drawn .alpine-path {
+    stroke-dashoffset: 0;
+    transition: stroke-dashoffset 2600ms var(--ease-in-out) var(--d, 0ms);
+  }
+  .js .alpine-label { opacity: 0; transform: translate(-50%, 8px); transition: opacity 700ms var(--ease-out) var(--d, 0ms), transform 900ms var(--ease-out) var(--d, 0ms); }
+  .js .alpine.is-drawn .alpine-label { opacity: 1; transform: translate(-50%, 0); }
+  .js .topo path { stroke-dashoffset: 1; }
+  .js .topo.is-drawn path { stroke-dashoffset: 0; transition: stroke-dashoffset 3200ms var(--ease-in-out) var(--d, 0ms); }
+}
+.topo path { stroke-dasharray: 1; fill: none; vector-effect: non-scaling-stroke; }
+
+/* Feines 12er-Raster (Swiss Style), nur als leiser Hintergrund */
+.swiss-grid {
+  --cols: 12;
+  margin-inline: var(--margin);
+  border-right: 1px solid color-mix(in oklab, var(--color-line) 55%, transparent);
+  background-image: linear-gradient(to right, color-mix(in oklab, var(--color-line) 55%, transparent) 1px, transparent 1px);
+  background-size: calc(100% / var(--cols)) 100%;
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 18%, #000 72%, transparent);
+  mask-image: linear-gradient(to bottom, transparent, #000 18%, #000 72%, transparent);
+}
+@media (max-width: 767px) { .swiss-grid { --cols: 4; } }
+
+/* Platzhalter-Mockups (Highside) */
+.mock-word { fill: currentColor; font-family: var(--font-sans); font-weight: 800; font-stretch: 125%; font-size: 30px; letter-spacing: 0.04em; }
+.mock-word-xl { font-size: 64px; }
+.mock-small { fill: currentColor; fill-opacity: 0.7; font-family: var(--font-sans); font-weight: 600; font-size: 11px; letter-spacing: 0.18em; }
+
+/* ---------- The Aracle Journey ---------- */
+.journey-base { stroke: var(--color-ink); stroke-opacity: 0.18; stroke-width: 1; stroke-dasharray: 2 7; stroke-linecap: round; }
+.journey-progress { stroke: var(--color-aqua); stroke-width: 1.75; stroke-linecap: round; }
+.journey-walker-dot { fill: var(--color-aqua); }
+.journey-walker-halo { fill: var(--color-aqua); fill-opacity: 0.14; }
+.journey-node {
+  width: 13px; height: 13px; border-radius: 999px;
+  background: var(--color-bg); border: 1px solid color-mix(in oklab, var(--color-ink) 35%, transparent);
+  transition: background-color 400ms ease, border-color 400ms ease, scale 500ms var(--ease-out), box-shadow 500ms ease;
+}
+.journey-year {
+  font-size: clamp(3.25rem, 1.6rem + 5vw, 7rem); font-weight: 620; line-height: 0.9; letter-spacing: -0.05em;
+  color: color-mix(in oklab, var(--color-ink) 30%, transparent);
+  transition: color 500ms ease;
+}
+.journey-stage [class*="journey-item"], .journey-stage h2 { transition: opacity 600ms var(--ease-out), transform 700ms var(--ease-out); }
+.journey-stage[data-state="reached"] .journey-node,
+.journey-stage[data-state="current"] .journey-node { background: var(--color-aqua); border-color: var(--color-aqua); }
+.journey-stage[data-state="current"] .journey-node { scale: 1.35; box-shadow: 0 0 0 6px color-mix(in oklab, var(--color-aqua) 18%, transparent); }
+.journey-stage[data-state="reached"] .journey-year { color: color-mix(in oklab, var(--color-ink) 70%, transparent); }
+.journey-stage[data-state="current"] .journey-year { color: var(--color-aqua); }
+@media (prefers-reduced-motion: no-preference) {
+  .js .journey-stage[data-state="ahead"] h2,
+  .js .journey-stage[data-state="ahead"] .journey-item { opacity: 0.35; transform: translateY(10px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .journey-walker { display: none; }
+}
+
+/* ---------- Formulare (Kontakt) ---------- */
+@layer components {
+  .form-label { display: block; margin-bottom: 0.5rem; font-size: 0.9375rem; font-weight: 500; }
+  .form-input {
+    width: 100%; min-height: 3rem; padding: 0.75rem 0;
+    background: transparent; color: var(--color-ink);
+    border: 0; border-bottom: 1px solid var(--color-line); border-radius: 0;
+    font-size: max(1rem, 1.0625rem);
+    transition: border-color 200ms ease;
+  }
+  .form-input::placeholder { color: #66757b; }
+  .form-input:hover { border-bottom-color: #3a4852; }
+  .form-input:focus-visible { outline: none; border-bottom-color: var(--color-aqua); box-shadow: 0 1px 0 0 var(--color-aqua); }
+  .form-input[aria-invalid="true"] { border-bottom-color: var(--color-danger); }
+  textarea.form-input { padding: 0.75rem; border: 1px solid var(--color-line); border-radius: var(--radius); }
+  textarea.form-input:focus-visible { border-color: var(--color-aqua); box-shadow: 0 0 0 1px var(--color-aqua); }
+  .form-select { appearance: none; background-color: var(--color-bg); padding-right: 2rem; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M3 4.5 6 7.5 9 4.5' fill='none' stroke='%239aa8ad' stroke-width='1.5'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 0.25rem center; background-size: 12px; }
+  .choice { cursor: pointer; }
+  .choice-pill {
+    display: inline-flex; align-items: center; min-height: 2.5rem; padding: 0 1rem;
+    border: 1px solid var(--color-line); border-radius: 999px; font-size: 0.9375rem;
+    transition: background-color 180ms ease, border-color 180ms ease, color 180ms ease, transform 120ms var(--ease-out);
+  }
+  .choice:hover .choice-pill { border-color: #3a4852; }
+  .choice:active .choice-pill { transform: scale(0.97); }
+  .peer:checked + .choice-pill { background: var(--color-aqua); border-color: var(--color-aqua); color: var(--color-accent-ink); }
+  .peer:focus-visible + .choice-pill { outline: 2px solid var(--color-aqua); outline-offset: 2px; }
+}

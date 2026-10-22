@@ -18,7 +18,7 @@ export default function Choreo() {
   // Lenis einmal starten
   useEffect(() => {
     if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    lenis = new Lenis({ lerp: 0.085, wheelMultiplier: 1, smoothWheel: true });
+    lenis = new Lenis({ lerp: 0.085, wheelMultiplier: 1, smoothWheel: true, anchors: { offset: -64 } });
     lenis.on("scroll", ScrollTrigger.update);
     const raf = (time: number) => lenis?.raf(time * 1000);
     gsap.ticker.add(raf);
@@ -32,7 +32,10 @@ export default function Choreo() {
 
   // Pro Seite die Bewegungen aufbauen
   useEffect(() => {
-    lenis?.scrollTo(0, { immediate: true });
+    // Bei Sprungmarken (z.B. /#leistungen) dorthin, sonst nach oben
+    const hash = location.hash ? document.querySelector<HTMLElement>(decodeURIComponent(location.hash)) : null;
+    if (hash) window.setTimeout(() => lenis?.scrollTo(hash, { offset: -64, immediate: true }), 60);
+    else lenis?.scrollTo(0, { immediate: true });
     const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
     const wide = matchMedia("(min-width: 768px)").matches;
     const splits: SplitText[] = [];

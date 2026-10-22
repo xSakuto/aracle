@@ -199,3 +199,42 @@ create policy "avatars löschen" on storage.objects
       )
     )
   );
+
+-- ─────────────────────────────────────────────
+-- Projektanfragen aus dem Kontaktformular
+-- ─────────────────────────────────────────────
+
+create table if not exists public.inquiries (
+  id            uuid primary key default gen_random_uuid(),
+  created_at    timestamptz not null default now(),
+  name          text not null check (char_length(name) between 2 and 120),
+  email         text not null check (char_length(email) between 5 and 200),
+  company       text check (company is null or char_length(company) <= 160),
+  project_type  text not null check (project_type in ('web','brand','video','hosting','other')),
+  description   text not null check (char_length(description) between 20 and 4000),
+  budget        text check (budget is null or budget in ('lt2k','2k-5k','5k-10k','10k-plus','open')),
+  status        text not null default 'neu' check (status in ('neu','in_bearbeitung','erledigt'))
+);
+
+alter table public.inquiries enable row level security;
+
+-- Besucher:innen dürfen nur neue Anfragen anlegen, nichts lesen.
+drop policy if exists "anfrage senden" on public.inquiries;
+create policy "anfrage senden" on public.inquiries
+  for insert to anon, authenticated
+  with check (status = 'neu');
+
+drop policy if exists "admin liest anfragen" on public.inquiries;
+create policy "admin liest anfragen" on public.inquiries
+  for select using (public.is_admin());
+
+drop policy if exists "admin bearbeitet anfragen" on public.inquiries;
+create policy "admin bearbeitet anfragen" on public.inquiries
+  for update using (public.is_admin()) with check (public.is_admin());
+
+drop policy if exists "admin löscht anfragen" on public.inquiries;
+create policy "admin löscht anfragen" on public.inquiries
+  for delete using (public.is_admin());
+
+revoke select, update, delete on public.inquiries from anon;
+grant insert on public.inquiries to anon;

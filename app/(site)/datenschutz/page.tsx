@@ -56,6 +56,11 @@ const sections: { n: string; title: string; body: React.ReactNode }[] = [
     body: "Für Besucherinnen und Besucher setzt diese Website keine Cookies, kein Tracking und keine Analyse-Tools ein. Es werden keine Nutzungsprofile erstellt. Schriften werden von unserem eigenen Server geladen, nicht von Google.",
   },
   {
+    n: "§ 5a",
+    title: "Kontaktformular",
+    body: "Wenn du uns über das Kontaktformular schreibst, speichern wir Name, E-Mail-Adresse, optional dein Unternehmen, Projekttyp, Beschreibung und optional den Budgetrahmen. Wir verwenden diese Angaben ausschliesslich, um deine Anfrage zu bearbeiten. Gespeichert werden sie bei Supabase Inc.; für die Benachrichtigung per E-Mail kann der Versanddienst Resend Inc. eingesetzt werden. Anfragen löschen wir, sobald sie nicht mehr benötigt werden, oder auf Wunsch sofort.",
+  },
+  {
     n: "§ 6",
     title: "Team-Login",
     body: "Der Login-Bereich ist nur für Mitglieder des Aracle-Teams. Für die Anmeldung wird ein technisch notwendiges Cookie gesetzt, das die Sitzung speichert. Login, Teamprofile und Profilbilder werden bei Supabase Inc. gespeichert, einem Anbieter für Datenbanken und Authentifizierung. Gespeichert werden E-Mail-Adresse, Name, Rolle, Kurzbeschreibung, Profilbild und selbst angegebene Social-Media-Links. Diese Angaben (ausser der E-Mail-Adresse) erscheinen auf der Teamseite. Teammitglieder können ihre Angaben jederzeit selbst ändern oder die Löschung verlangen.",
@@ -92,7 +97,7 @@ const sections: { n: string; title: string; body: React.ReactNode }[] = [
 
 export default function DatenschutzPage() {
   return (
-    <div data-shape="wave" className="wrap pb-[var(--section)] pt-28 md:pt-36">
+    <div className="wrap pb-[var(--section)] pt-28 md:pt-36">
     <div className="inner grid grid-cols-12 gap-x-3 md:gap-x-8 gap-y-12">
       <div className="col-span-12 md:col-span-5">
         <div className="md:sticky md:top-24">

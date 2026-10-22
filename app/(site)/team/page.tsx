@@ -14,15 +14,16 @@ export default async function TeamPage() {
   const team = await getTeam();
   return (
     <>
-      <div data-shape="helix" className="wrap pb-[var(--section)] pt-28 md:pt-36">
+      <div className="wrap pb-[var(--section)] pt-28 md:pt-36">
         <div className="inner">
-          <div className="text-center">
-            <h1 className="display" data-split="load">
-              Das Team.
-            </h1>
-            <p className="lead mx-auto mt-5 max-w-[36rem] text-muted" data-rise style={{ ["--i" as string]: 1 }}>
-              Ein kleines Studio aus Glarus. Jede und jeder führt eigene Bereiche,
-              und alle packen dort mit an, wo es gerade brennt.
+          <div className="grid gap-8 md:grid-cols-12 md:items-end">
+            <div className="md:col-span-8">
+              <p className="kicker text-aqua" data-rise>Team</p>
+              <h1 className="mega mt-5" data-split="load">The people.</h1>
+            </div>
+            <p className="text-ink/80 md:col-span-4" data-rise style={{ ["--i" as string]: 2 }}>
+              Ein kleines Studio aus dem Glarnerland. Jede und jeder führt eigene
+              Bereiche und packt dort mit an, wo es gerade nötig ist.
             </p>
           </div>
           <TeamDirectory

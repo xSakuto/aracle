@@ -6,10 +6,10 @@ import { useEffect, useState } from "react";
 
 const links = [
   { href: "/projekte", label: "Projekte" },
-  { href: "/living", label: "Living" },
+  { href: "/#leistungen", label: "Leistungen" },
   { href: "/hosting", label: "Hosting" },
   { href: "/team", label: "Team" },
-  { href: "/history", label: "Story" },
+  { href: "/history", label: "Journey" },
 ];
 
 export default function Navbar() {
@@ -43,13 +43,13 @@ export default function Navbar() {
     };
   }, [open]);
 
-  const isActive = (href: string) => pathname.startsWith(href);
+  const isActive = (href: string) => !href.includes("#") && pathname.startsWith(href);
 
   return (
     <>
       <header
         className={`wrap fixed inset-x-0 top-0 z-50 flex h-14 items-center justify-between transition-[background-color,transform] duration-300 ease-[var(--ease-out)] ${
-          scrolled || open ? "bg-black" : "bg-transparent"
+          scrolled || open ? "bg-bg/95 backdrop-blur" : "bg-transparent"
         } ${hidden && !open ? "-translate-y-full" : "translate-y-0"}`}
       >
         <Link
@@ -99,7 +99,7 @@ export default function Navbar() {
 
       <div
         id="mobile-menu"
-        className={`wrap fixed inset-0 z-40 flex flex-col justify-between overscroll-contain bg-black pb-8 pt-24 transition-[opacity,visibility] duration-300 md:hidden ${
+        className={`wrap fixed inset-0 z-40 flex flex-col justify-between overscroll-contain bg-bg pb-8 pt-24 transition-[opacity,visibility] duration-300 md:hidden ${
           open ? "visible opacity-100" : "pointer-events-none invisible opacity-0"
         }`}
         aria-hidden={!open}

@@ -37,9 +37,9 @@ export default function TeamDirectory({
 
   return (
     <>
-      <div className="mt-10 flex flex-col items-center" role="group" aria-label="Nach Projekt filtern">
+      <div className="mt-12 flex flex-col border-t border-line pt-6" role="group" aria-label="Nach Projekt filtern">
         <p className="small text-muted">Wer arbeitet woran?</p>
-        <div className="mt-3 flex max-w-[52rem] flex-wrap justify-center gap-2">
+        <div className="mt-3 flex flex-wrap gap-2">
           <button type="button" aria-pressed={filter === null} onClick={() => setFilter(null)} className={pill(filter === null)}>
             Alle
           </button>
