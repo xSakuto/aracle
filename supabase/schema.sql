@@ -88,6 +88,27 @@ create trigger on_auth_user_created
   after insert on auth.users
   for each row execute function public.link_profile_on_signup();
 
+-- Umgekehrt: Trägt ein Admin eine E-Mail ein, die schon ein Konto hat
+-- (Login vor dem Eintrag), wird das Profil sofort verknüpft.
+create or replace function public.link_existing_user_on_profile_email()
+returns trigger
+language plpgsql
+security definer
+set search_path = public
+as $$
+begin
+  if new.user_id is null and new.email is not null then
+    select u.id into new.user_id from auth.users u where lower(u.email) = lower(new.email) limit 1;
+  end if;
+  return new;
+end;
+$$;
+
+drop trigger if exists link_existing_user on public.profiles;
+create trigger link_existing_user
+  before insert or update of email on public.profiles
+  for each row execute function public.link_existing_user_on_profile_email();
+
 -- Normale Mitglieder dürfen nur ihre eigenen Inhalte ändern.
 -- Rolle, Rechte, Reihenfolge, Slug und E-Mail bleiben Admin-Sache.
 create or replace function public.protect_profile_columns()
@@ -242,3 +263,4 @@ grant insert on public.inquiries to anon;
 -- Trigger-Funktionen laufen nur über ihre Trigger; kein Aufruf über die API.
 revoke execute on function public.link_profile_on_signup() from public, anon, authenticated;
 revoke execute on function public.protect_profile_columns() from public, anon, authenticated;
+revoke execute on function public.link_existing_user_on_profile_email() from public, anon, authenticated;
