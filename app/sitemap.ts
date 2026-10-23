@@ -21,6 +21,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     page("/smp", 0.7),
     page("/zelda-de", 0.8),
     page("/zelda-de/regelwerk", 0.6),
+    page("/news", 0.7, "weekly"),
     page("/team", 0.7),
     page("/apply", 0.6),
     page("/history", 0.5),
