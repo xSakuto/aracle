@@ -21,6 +21,7 @@ export default async function NewNewsPage() {
           action={saveNews}
           emojis={emojis}
           defaultSignature={signature}
+          canEditSignature={me.is_lead}
           post={{
             id: "",
             topic: "aracle",
@@ -29,6 +30,7 @@ export default async function NewNewsPage() {
             body: "",
             signature,
             useEmbed: false,
+            imageUrl: "",
             published: false,
             publishLocal: isoToZurichLocal(new Date().toISOString()),
           }}

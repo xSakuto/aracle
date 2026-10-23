@@ -22,6 +22,11 @@ export default function NewsFeed({ posts }: { posts: NewsPost[] }) {
               {p.template !== "update" && (
                 <p className="mt-1 text-[0.8125rem] text-muted">{templateOf(p.template).label}</p>
               )}
+              {p.author && (
+                <p className="mt-4 text-[0.8125rem] text-muted">
+                  Von <span className="text-ink/90">{p.author.name}</span>
+                </p>
+              )}
             </div>
 
             <article className="min-w-0 md:col-span-9 md:max-w-[46rem]">
@@ -29,6 +34,15 @@ export default function NewsFeed({ posts }: { posts: NewsPost[] }) {
                 <Inline text={p.title} />
               </h2>
               {p.body && <Markdown text={p.body} />}
+              {p.imageUrl && (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={p.imageUrl}
+                  alt=""
+                  loading="lazy"
+                  className="mt-6 max-h-[32rem] w-auto max-w-full rounded-[var(--radius)] object-contain"
+                />
+              )}
               {p.signature && (
                 <p className="mt-6 text-ink/85">
                   Cheers,
