@@ -23,7 +23,7 @@ export default async function NewsAdminPage({
     .select(NEWS_COLUMNS)
     .order("publish_at", { ascending: false })
     .limit(100);
-  const rows = (data ?? []) as NewsRow[];
+  const rows = (data ?? []) as unknown as NewsRow[];
   const missing = error && (error.code === "42P01" || error.code === "PGRST205" || /news_posts/.test(error.message));
 
   return (

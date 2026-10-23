@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import type { SaveState } from "@/app/dashboard/actions";
-import { asTemplate, asTopic, defaultSignature } from "@/data/news";
+import { asHttpsUrl, asTemplate, asTopic, defaultSignature } from "@/data/news";
 import { getDiscordEmojis } from "@/lib/discord-emojis";
 import { convertShortcodes } from "@/lib/emoji";
 import { requireAdmin } from "@/lib/session";
@@ -62,6 +62,7 @@ export async function saveNews(_prev: SaveState, form: FormData): Promise<SaveSt
     body,
     signature: signature || null,
     use_embed: form.get("use_embed") === "on",
+    image_url: asHttpsUrl(form.get("image_url")),
     published: form.get("published") === "on",
     publish_at: zurichLocalToIso(text(form, "publish_at", 16)) ?? new Date().toISOString(),
   };

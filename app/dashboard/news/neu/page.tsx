@@ -30,6 +30,7 @@ export default async function NewNewsPage() {
             body: "",
             signature,
             useEmbed: false,
+            imageUrl: "",
             published: false,
             publishLocal: isoToZurichLocal(new Date().toISOString()),
           }}
