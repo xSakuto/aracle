@@ -439,6 +439,7 @@ html.lenis, html.lenis body { height: auto; }
 .theme-rexus   { --color-aqua: #ff4b3e; --color-accent-ink: #180403; }  /* Rot */
 .theme-highside{ --color-aqua: #00ffff; --color-accent-ink: #001414; }  /* Highside-Cyan */
 .theme-smp     { --color-aqua: #7ccf4a; --color-accent-ink: #0c1a05; }  /* Gras */
+.theme-beer    { --color-aqua: #e0943a; --color-accent-ink: #1c0f03; }  /* Bernstein, Bierschaum-Kupfer */
 [class*="theme-"] ::selection { background: var(--color-aqua); color: var(--color-accent-ink); }
 [class*="theme-"] :focus-visible { outline-color: var(--color-aqua); }
 
