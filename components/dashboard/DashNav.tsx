@@ -10,6 +10,7 @@ export default function DashNav({ admin }: { admin: boolean }) {
     ...(admin
       ? [
           { href: "/dashboard/news", label: "News", active: pathname.startsWith("/dashboard/news") },
+          { href: "/dashboard/bot", label: "Discord-Bot", active: pathname.startsWith("/dashboard/bot") },
           { href: "/dashboard/anfragen", label: "Anfragen", active: pathname.startsWith("/dashboard/anfragen") },
           { href: "/dashboard/team", label: "Team verwalten", active: pathname.startsWith("/dashboard/team") },
         ]
