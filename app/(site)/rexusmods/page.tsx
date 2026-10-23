@@ -1,12 +1,40 @@
 import Link from "next/link";
 import Hud from "@/components/visuals/Hud";
 import { getProject } from "@/data/projects";
+import { SITE_URL } from "@/lib/site";
+
+const TITLE = "RexusMods · Mods für GTA V und Flugsimulatoren";
+const DESCRIPTION =
+  "RexusMods: Gebäude, Lackierungen und Fahrzeuge für GTA V und FiveM, neu auch Add-ons für Flugsimulatoren. Von Joel Nef und Tim Mockweiss.";
 
 export const metadata = {
-  alternates: { canonical: "/rexusmods" }, openGraph: { images: [{ url: "/og/rexusmods.jpg", width: 1200, height: 630 }] },
-  title: "RexusMods · Mods für GTA V und Flugsimulatoren",
-  description: "RexusMods: Gebäude, Lackierungen und Fahrzeuge für GTA V und FiveM, neu auch Add-ons für Flugsimulatoren. Von Joel Nef und Tim Mockweiss.",
+  title: TITLE,
+  description: DESCRIPTION,
+  keywords: ["RexusMods", "GTA V Mods", "FiveM Gebäude", "FiveM Lackierung", "GTA 5 Mods Schweiz", "Flight Simulator Add-ons", "Joel Nef", "Tim Mockweiss"],
+  alternates: { canonical: "/rexusmods" },
+  openGraph: {
+    title: TITLE,
+    description: DESCRIPTION,
+    url: "/rexusmods",
+    siteName: "RexusMods",
+    images: [{ url: "/og/rexusmods.jpg", width: 1200, height: 630, alt: "RexusMods, Mods für GTA V und Flugsimulatoren" }],
+  },
 };
+
+const faq: { q: string; a: string }[] = [
+  {
+    q: "Was ist RexusMods?",
+    a: "Das 3D- und Mod-Projekt von Joel Nef und Tim Mockweiss: Gebäude, Lackierungen und Fahrzeuge für GTA V und FiveM, neu auch Add-ons für Flugsimulatoren.",
+  },
+  {
+    q: "Wo kann ich die Mods herunterladen?",
+    a: "Direkt auf dieser Seite bei den jeweiligen Arbeiten, oder auf gta5-mods.com, zum Beispiel für den Sprinter Schweizer Post.",
+  },
+  {
+    q: "Für welche Plattform sind die Mods?",
+    a: "Hauptsächlich für FiveM-Server auf Basis von GTA V. Seit 2026 kommen Add-ons für Flugsimulatoren dazu.",
+  },
+];
 
 const IMG = "/images/rexusmods";
 
@@ -60,8 +88,41 @@ const works: Work[] = [
 // RexusMods als eigene Landing Page: Rot, Cockpit-HUD als Bühne, darunter die Arbeiten.
 export default function RexusModsPage() {
   const p = getProject("rexusmods");
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": `${SITE_URL}/rexusmods`,
+        url: `${SITE_URL}/rexusmods`,
+        name: TITLE,
+        description: DESCRIPTION,
+        inLanguage: "de",
+        isPartOf: { "@id": `${SITE_URL}/#website` },
+        mainEntity: { "@id": `${SITE_URL}/rexusmods#org` },
+        publisher: { "@id": `${SITE_URL}/#org` },
+      },
+      {
+        "@type": "Organization",
+        "@id": `${SITE_URL}/rexusmods#org`,
+        name: "RexusMods",
+        url: `${SITE_URL}/rexusmods`,
+        logo: `${SITE_URL}/images/rexusmods/rexusmods-logo.png`,
+        foundingDate: "2021",
+        parentOrganization: { "@id": `${SITE_URL}/#org` },
+        sameAs: ["https://www.gta5-mods.com/de/vehicles/mercedes-benz-sprinter-schweizer-post-rexusmods"],
+      },
+      {
+        "@type": "FAQPage",
+        mainEntity: faq.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })),
+      },
+    ],
+  };
+
   return (
     <div className="theme-rexus">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+
       <header className="relative flex min-h-[86svh] flex-col overflow-hidden">
         <div aria-hidden className="pointer-events-none absolute inset-0 text-aqua">
           <Hud className="absolute left-1/2 top-[46%] w-[max(100%,64rem)] -translate-x-1/2 -translate-y-1/2 opacity-60" />
@@ -152,6 +213,21 @@ export default function RexusModsPage() {
             <p className="mt-4 max-w-[40ch] text-ink/75">Add-ons für Flugsimulatoren. Details folgen, sobald es etwas zu zeigen gibt.</p>
           </div>
         </div>
+      </section>
+
+      <section aria-labelledby="faq-title" className="wrap grid gap-10 border-t border-line py-[var(--section)] md:grid-cols-12">
+        <div className="md:col-span-4">
+          <h2 id="faq-title" className="head">Häufige Fragen.</h2>
+          <p className="mt-4 text-ink/80">Kurz beantwortet, für alle, die neu dazukommen.</p>
+        </div>
+        <dl className="border-b border-line md:col-span-7 md:col-start-6">
+          {faq.map((f) => (
+            <div key={f.q} className="border-t border-line py-6">
+              <dt className="font-semibold tracking-[-0.015em]">{f.q}</dt>
+              <dd className="mt-2 text-ink/80">{f.a}</dd>
+            </div>
+          ))}
+        </dl>
       </section>
 
       <section aria-label="Team und Kontakt" className="border-t border-line">

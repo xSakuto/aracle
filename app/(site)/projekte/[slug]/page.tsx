@@ -2,8 +2,9 @@ import { notFound, redirect } from "next/navigation";
 import Link from "next/link";
 import ProductMockup from "@/components/visuals/ProductMockup";
 import ProjectPoster from "@/components/visuals/ProjectPoster";
-import { getProject, neighbours, projectHref, projects, type GalleryItem, type ProjectStatus } from "@/data/projects";
+import { getProject, neighbours, projectHref, projects, type GalleryItem, type Project, type ProjectStatus } from "@/data/projects";
 import { getTeam } from "@/lib/team";
+import { SITE_URL } from "@/lib/site";
 
 export const revalidate = 60;
 
@@ -19,7 +20,59 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     title: p.title,
     alternates: { canonical: `/projekte/${p.slug}` },
     description: p.shortDescription,
-    openGraph: { title: `${p.title} · Aracle`, url: `/projekte/${p.slug}`, description: p.shortDescription, images: p.coverImage ? [p.coverImage] : undefined },
+    keywords: [p.title, p.category, p.pillar, "Aracle", "Glarus"],
+    openGraph: {
+      title: `${p.title} · Aracle`,
+      description: p.shortDescription,
+      url: `/projekte/${p.slug}`,
+      siteName: "Aracle",
+      images: p.coverImage ? [{ url: p.coverImage, width: 1600, height: 1067, alt: p.title }] : undefined,
+    },
+  };
+}
+
+// Schema.org-Typ je nach Projektart: Software, Spiel oder einfach ein Werk.
+const schemaType: Record<string, string> = {
+  milvia: "SoftwareApplication",
+  "beer-game": "VideoGame",
+  "all-the-clients": "SoftwareApplication",
+};
+
+function projectJsonLd(p: Project) {
+  const url = `${SITE_URL}/projekte/${p.slug}`;
+  const type = schemaType[p.slug] ?? "CreativeWork";
+  const entity: Record<string, unknown> = {
+    "@type": type,
+    "@id": `${url}#entity`,
+    name: p.title,
+    description: p.shortDescription,
+    url,
+    ...(p.coverImage ? { image: `${SITE_URL}${p.coverImage}` } : {}),
+    dateCreated: p.year,
+    creator: { "@id": `${SITE_URL}/#org` },
+  };
+  if (type === "SoftwareApplication") {
+    entity.applicationCategory = p.slug === "milvia" ? "LifestyleApplication" : "GameApplication";
+  }
+  if (type === "VideoGame") {
+    entity.genre = p.category;
+  }
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": url,
+        url,
+        name: `${p.title} · Aracle`,
+        description: p.shortDescription,
+        inLanguage: "de",
+        isPartOf: { "@id": `${SITE_URL}/#website` },
+        mainEntity: { "@id": `${url}#entity` },
+        publisher: { "@id": `${SITE_URL}/#org` },
+      },
+      entity,
+    ],
   };
 }
 
@@ -107,6 +160,8 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
   return (
     // key: beim Wechsel zwischen Projekten neu aufbauen (zerlegte Titel)
     <article key={p.slug} className="wrap pb-[var(--section)] pt-28 md:pt-36">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(projectJsonLd(p)) }} />
+
       <nav aria-label="Brotkrumen" className="small text-muted" data-rise>
         <Link href="/projekte" className="transition-colors hover:text-ink">Projekte</Link>
         <span aria-hidden className="mx-2">/</span>

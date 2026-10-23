@@ -2,12 +2,40 @@ import Link from "next/link";
 import CopyValue from "@/components/brand/CopyValue";
 import ApplyForm from "@/components/smp/ApplyForm";
 import PixelGround from "@/components/smp/PixelGround";
+import { SITE_URL } from "@/lib/site";
+
+const TITLE = "AracleSMP · Vanilla+ Minecraft-Server";
+const DESCRIPTION =
+  "AracleSMP ist ein Langzeit-Server für Freunde und Mitglieder. Vanilla+, Minecraft 1.21.10. Bewirb dich, um mitzuspielen.";
 
 export const metadata = {
+  title: TITLE,
+  description: DESCRIPTION,
+  keywords: ["AracleSMP", "Minecraft Server Schweiz", "Vanilla+ Server", "Minecraft Server Freunde", "All the Clients Modpack", "Minecraft 1.21.10"],
   alternates: { canonical: "/smp" },
-  title: "AracleSMP · Vanilla+ Minecraft-Server",
-  description: "AracleSMP ist ein Langzeit-Server für Freunde und Mitglieder. Vanilla+, Minecraft 1.21.10. Bewirb dich, um mitzuspielen.",
+  openGraph: {
+    title: TITLE,
+    description: DESCRIPTION,
+    url: "/smp",
+    siteName: "AracleSMP",
+    images: [{ url: "/og/smp.jpg", width: 1200, height: 630, alt: "AracleSMP, Vanilla+ Minecraft-Server" }],
+  },
 };
+
+const faq: { q: string; a: string }[] = [
+  {
+    q: "Was ist AracleSMP?",
+    a: "Ein Vanilla+ Minecraft-Server für Freunde und Mitglieder, Minecraft 1.21.10, langfristig betrieben auf eigener Hardware von Aracle Cloud.",
+  },
+  {
+    q: "Wie trete ich bei?",
+    a: "Über das Bewerbungsformular auf dieser Seite. Wir melden uns per E-Mail oder Discord, danach wirst du freigeschaltet.",
+  },
+  {
+    q: "Welches Modpack läuft auf dem Server?",
+    a: "All the Clients, ein eigenes performance-optimiertes und vanilla-kompatibles Modpack von Aracle, veröffentlicht auf Modrinth.",
+  },
+];
 
 const facts = [
   { title: "Vanilla+", text: "Minecraft nah am Original, mit ein paar Addons, die das Spiel besser machen, nicht anders." },
@@ -23,8 +51,39 @@ const steps = [
 
 // AracleSMP: eigene Landing Page im Minecraft-Stil, mit Bewerbung statt offener Tür.
 export default function SmpPage() {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": `${SITE_URL}/smp`,
+        url: `${SITE_URL}/smp`,
+        name: TITLE,
+        description: DESCRIPTION,
+        inLanguage: "de",
+        isPartOf: { "@id": `${SITE_URL}/#website` },
+        mainEntity: { "@id": `${SITE_URL}/smp#org` },
+        publisher: { "@id": `${SITE_URL}/#org` },
+      },
+      {
+        "@type": "Organization",
+        "@id": `${SITE_URL}/smp#org`,
+        name: "AracleSMP",
+        url: `${SITE_URL}/smp`,
+        logo: `${SITE_URL}/images/smp/vanilla-logo.png`,
+        foundingDate: "2025",
+        parentOrganization: { "@id": `${SITE_URL}/#org` },
+      },
+      {
+        "@type": "FAQPage",
+        mainEntity: faq.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })),
+      },
+    ],
+  };
+
   return (
     <div className="theme-smp">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&display=swap" precedence="default" />
 
       <header className="relative overflow-hidden bg-[linear-gradient(to_bottom,#0b1115,#10202a_70%,#16303a)]">
@@ -84,6 +143,21 @@ export default function SmpPage() {
             <ApplyForm />
           </div>
         </div>
+      </section>
+
+      <section aria-labelledby="faq-title" className="wrap grid gap-10 border-t border-line py-[var(--section)] md:grid-cols-12">
+        <div className="md:col-span-4">
+          <h2 id="faq-title" className="mc-title text-[clamp(1.75rem,1rem+2vw,2.5rem)] leading-[1.1]">Häufige Fragen.</h2>
+          <p className="mt-4 text-ink/80">Kurz beantwortet, für alle, die neu dazukommen.</p>
+        </div>
+        <dl className="border-b border-line md:col-span-7 md:col-start-6">
+          {faq.map((f) => (
+            <div key={f.q} className="border-t border-line py-6">
+              <dt className="font-semibold tracking-[-0.015em]">{f.q}</dt>
+              <dd className="mt-2 text-ink/80">{f.a}</dd>
+            </div>
+          ))}
+        </dl>
       </section>
     </div>
   );
