@@ -18,10 +18,10 @@ const preview = [
 export default function HighsidePage() {
   return (
     <div className="theme-highside hs bg-[#060708]">
-      {/* Schriften der Marke: gotisch für den Namen, Poppins für alles andere */}
+      {/* Poppins für Text; der Schriftzug kommt aus Angel Wish, selbst gehostet */}
       <link
         rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Poppins:wght@400;500;600;800&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;800&display=swap"
         precedence="default"
       />
 

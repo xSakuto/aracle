@@ -1,5 +1,14 @@
 @import "tailwindcss";
 
+/* Helvetica Neue selbst gehostet, damit sie auch unter Windows und Android erscheint */
+@font-face { font-family: "Helvetica Neue Aracle"; src: url("/fonts/helvetica-neue-300.woff2") format("woff2"); font-weight: 300; font-style: normal; font-display: swap; }
+@font-face { font-family: "Helvetica Neue Aracle"; src: url("/fonts/helvetica-neue-400.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "Helvetica Neue Aracle"; src: url("/fonts/helvetica-neue-400-italic.woff2") format("woff2"); font-weight: 400; font-style: italic; font-display: swap; }
+@font-face { font-family: "Helvetica Neue Aracle"; src: url("/fonts/helvetica-neue-500.woff2") format("woff2"); font-weight: 500 600; font-style: normal; font-display: swap; }
+@font-face { font-family: "Helvetica Neue Aracle"; src: url("/fonts/helvetica-neue-700.woff2") format("woff2"); font-weight: 700 900; font-style: normal; font-display: swap; }
+/* Highside: Angel Wish für den Schriftzug */
+@font-face { font-family: "Angel Wish"; src: url("/fonts/angel-wish.woff2") format("woff2"); font-display: swap; }
+
 /* Aracle aus dem Glarnerland: Nachtschiefer als Grund, Gletscherblau vom
    Klöntalersee als Akzent, Alpenglühen sparsam, Schweizer Rot nur fürs Kreuz. */
 @theme {
@@ -17,8 +26,8 @@
   --color-danger: #ff8a7a;
 
   /* Satoshi für Titel und grosse Zahlen, Helvetica für Text und Bedienung */
-  --font-display: "Satoshi", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  --font-sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-display: "Satoshi", "Helvetica Neue Aracle", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-sans: "Helvetica Neue Aracle", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 :root {
@@ -216,7 +225,7 @@ html.lenis, html.lenis body { height: auto; }
 .scrub-word { opacity: 0.16; transition: opacity 120ms linear; }
 
 /* Geteilte Zeichen für Titel-Animationen */
-.split-line { overflow: hidden; display: block; padding-bottom: 0.06em; margin-bottom: -0.06em; }
+.split-line { overflow: hidden; display: block; padding-bottom: 0.2em; margin-bottom: -0.2em; padding-right: 0.06em; margin-right: -0.06em; }
 .split-line > div { white-space: nowrap; }
 
 @media (prefers-reduced-motion: reduce) {
@@ -442,7 +451,7 @@ html.lenis, html.lenis body { height: auto; }
 
 /* ---------- Highside ---------- */
 .hs { color: #f4f6f6; }
-.hs-black { font-family: "UnifrakturMaguntia", "Old English Text MT", serif; font-weight: 400; letter-spacing: 0; }
+.hs-black { font-family: "Angel Wish", "Old English Text MT", serif; font-weight: 400; letter-spacing: 0; }
 .hs-sans { font-family: "Poppins", var(--font-sans); }
 .hs-sys { font-family: "Poppins", var(--font-sans); font-size: 0.8125rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; }
 .hs-scan { background: repeating-linear-gradient(to bottom, rgb(255 255 255 / 0.035) 0 1px, transparent 1px 3px); mix-blend-mode: overlay; }

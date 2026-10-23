@@ -1,72 +1,44 @@
-"use client";
-
 import Link from "next/link";
-import { useState } from "react";
 import ContactLinks from "@/components/ContactLinks";
 import Portrait from "@/components/Portrait";
 import type { TeamMember } from "@/lib/team";
 
-// Personenregister: links Porträt und Zitat, rechts die Namen auf Haarlinien,
-// mit Kontakten direkt in der Zeile. Zeiger oder Fokus bestimmt, wer im Bild steht.
-export default function PeopleIndex({ members }: { members: TeamMember[] }) {
-  const [active, setActive] = useState(0);
-  const current = members[active];
-
+// Team als Karten: Name und Rolle liegen unten auf dem Bild, darunter Zitat,
+// Projekte und Kontakte. Kein Einblenden per Script, damit nichts unsichtbar bleibt.
+export default function PeopleIndex({ members, titles }: { members: TeamMember[]; titles: Record<string, string> }) {
   return (
-    <div className="mt-12 grid gap-8 md:mt-16 md:grid-cols-12">
-      <div className="hidden md:col-span-4 md:block">
-        <div aria-hidden className="relative overflow-hidden rounded-[var(--radius)]">
-          {members.map((m, i) => (
-            <div
-              key={m.id}
-              className={`transition-opacity duration-500 ease-[var(--ease-out)] ${i === 0 ? "relative" : "absolute inset-0"} ${
-                i === active ? "opacity-100" : "opacity-0"
-              }`}
-            >
-              <Portrait name={m.name} photo={m.photo} accent={m.accent} sizes="30vw" />
-            </div>
-          ))}
-        </div>
-        {current?.quote && (
-          <blockquote key={current.id} className="people-quote mt-6 border-l border-aqua pl-4">
-            <p className="text-[1.0625rem] leading-snug text-ink/90">«{current.quote}»</p>
-            <footer className="small mt-2 text-muted">{current.name}</footer>
-          </blockquote>
-        )}
-      </div>
-
-      <ul className="border-b border-line md:col-span-7 md:col-start-6 md:self-start" onMouseLeave={() => setActive(0)}>
-        {members.map((m, i) => (
-          <li
-            key={m.id}
-            data-reveal
-            style={{ ["--i" as string]: i }}
-            onMouseEnter={() => setActive(i)}
-            onFocus={() => setActive(i)}
-            className={`seg-host relative grid grid-cols-[3.5rem_1fr] gap-x-4 border-t border-line py-5 md:grid-cols-[1fr_auto] md:items-center md:gap-8 md:py-7 ${
-              i === active ? "is-on" : ""
-            }`}
-          >
-            <span aria-hidden className="seg seg-top" />
-            <span className="row-span-2 self-start overflow-hidden rounded-[4px] md:hidden">
-              <Portrait name={m.name} photo={m.photo} accent={m.accent} sizes="56px" small />
-            </span>
-            <div className="min-w-0">
-              <Link
-                href={`/team#${m.slug}`}
-                className={`block font-[family-name:var(--font-display)] text-[clamp(1.75rem,1rem+2.4vw,3.25rem)] font-[600] leading-[1] tracking-[-0.035em] transition-colors duration-300 hover:text-aqua ${
-                  i === active ? "text-ink" : "text-ink md:text-ink/45"
-                }`}
-              >
+    <ul className="mt-12 grid gap-x-5 gap-y-12 sm:grid-cols-2 lg:grid-cols-3 md:mt-16">
+      {members.map((m) => (
+        <li key={m.id} className="flex flex-col">
+          <Link href={`/team#${m.slug}`} className="group relative block overflow-hidden rounded-[var(--radius)]">
+            <Portrait
+              name={m.name}
+              photo={m.photo}
+              accent={m.accent}
+              sizes="(min-width: 1024px) 30vw, (min-width: 640px) 45vw, 90vw"
+              className="transition-transform duration-700 ease-[var(--ease-out)] group-hover:scale-[1.03]"
+            />
+            <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[#0b1115]/95 via-[#0b1115]/55 to-transparent" />
+            <div className="absolute inset-x-0 bottom-0 p-5">
+              <p className="font-[family-name:var(--font-display)] text-[clamp(1.75rem,1.2rem+1.4vw,2.5rem)] font-bold leading-[1] tracking-[-0.03em] transition-colors group-hover:text-aqua">
                 {m.name}
-              </Link>
-              <p className="small mt-2 text-muted">{m.role}</p>
-              {m.quote && <p className="small mt-3 max-w-[40ch] text-ink/75 md:hidden">«{m.quote}»</p>}
+              </p>
+              <p className="mt-1.5 text-[0.9375rem] text-ink/80">{m.role}</p>
             </div>
-            <ContactLinks name={m.name} socials={m.socials} email={m.contactEmail} className="col-start-2 mt-2 md:col-start-auto md:mt-0 md:justify-end" />
-          </li>
-        ))}
-      </ul>
-    </div>
+          </Link>
+
+          <div className="flex flex-1 flex-col pt-4">
+            {m.quote && <p className="max-w-[36ch] text-ink/85">«{m.quote}»</p>}
+            {m.projects.length > 0 && (
+              <p className="small mt-3 text-muted">
+                {m.projects.slice(0, 4).map((p) => titles[p.slug] ?? p.slug).join(", ")}
+                {m.projects.length > 4 && ` und ${m.projects.length - 4} weitere`}
+              </p>
+            )}
+            <ContactLinks name={m.name} socials={m.socials} email={m.contactEmail} className="mt-auto pt-3" />
+          </div>
+        </li>
+      ))}
+    </ul>
   );
 }

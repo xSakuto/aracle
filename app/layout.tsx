@@ -25,6 +25,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://cdn.fontshare.com" crossOrigin="" />
         {/* eslint-disable-next-line @next/next/no-page-custom-font */}
         <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&display=swap" />
+        <link rel="preload" href="/fonts/helvetica-neue-400.woff2" as="font" type="font/woff2" crossOrigin="" />
         <script
           dangerouslySetInnerHTML={{
             __html: "document.documentElement.classList.add('js')",

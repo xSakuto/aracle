@@ -46,7 +46,7 @@ export default function Panorama({
   glow = false,
   closure = false,
   horizonLine = true,
-  reveal = "curtain",
+  reveal = "wipe",
 }: {
   data: Pano;
   view?: PanoView;

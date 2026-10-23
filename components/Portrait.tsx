@@ -70,14 +70,14 @@ export default function Portrait({
         <span
           aria-hidden
           data-initials={initials(name)}
-          className="portrait-initials relative p-[7%] font-[family-name:var(--font-display)] text-[12cqi] font-bold leading-none tracking-[-0.03em]"
+          className="portrait-initials relative p-[7%] font-[family-name:var(--font-display)] text-[clamp(1.25rem,12cqi,3.25rem)] font-bold leading-none tracking-[-0.03em]"
           style={{ color: `color-mix(in oklab, ${accent} 35%, #9aa8ad)` }}
         />
       )}
-      <div aria-hidden className="relative mt-auto" style={{ color: `color-mix(in oklab, ${accent} 30%, #c9d3d5)` }}>
+      <div aria-hidden className="relative my-auto pb-[18%]" style={{ color: `color-mix(in oklab, ${accent} 30%, #c9d3d5)` }}>
         <Ridge data={pk.view} peak={pk.peak} depths={[2, 1]} yMax={yMax} x0={x0} x1={x0 + w} drawn className="w-full" />
         {!small && (
-          <p className="nums absolute right-[7%] top-0 text-[max(0.625rem,4.5cqi)] text-ink/60">
+          <p className="nums absolute right-[7%] top-0 text-[clamp(0.625rem,4cqi,0.8125rem)] text-ink/60">
             {pk.name} {meters(pk.m)} m
           </p>
         )}

@@ -88,9 +88,13 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
             <ul key="l">
               {p.links.map((l) => (
                 <li key={l.url}>
-                  <a href={l.url} target="_blank" rel="noopener noreferrer" className="link-under">
-                    {l.label} <span aria-hidden>↗</span>
-                  </a>
+                  {l.url.startsWith("/") ? (
+                    <Link href={l.url} className="link-under">{l.label}</Link>
+                  ) : (
+                    <a href={l.url} target="_blank" rel="noopener noreferrer" className="link-under">
+                      {l.label} <span aria-hidden>↗</span>
+                    </a>
+                  )}
                 </li>
               ))}
             </ul>,

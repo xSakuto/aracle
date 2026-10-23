@@ -1,8 +1,9 @@
 import Link from "next/link";
 import PeopleIndex from "@/components/home/PeopleIndex";
+import { projects } from "@/data/projects";
 import type { TeamMember } from "@/lib/team";
 
-// Das Team als Register: Namen gross auf Haarlinien, ein Porträt daneben.
+// Das Team als Karten mit Namen auf dem Bild.
 export default function TeamDeck({ members }: { members: TeamMember[] }) {
   return (
     <section aria-labelledby="team-title" className="wrap py-[var(--section)]">
@@ -17,7 +18,7 @@ export default function TeamDeck({ members }: { members: TeamMember[] }) {
           Alle mit ihren Projekten
         </Link>
       </div>
-      <PeopleIndex members={members} />
+      <PeopleIndex members={members} titles={Object.fromEntries(projects.map((p) => [p.slug, p.title]))} />
     </section>
   );
 }

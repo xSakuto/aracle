@@ -5,10 +5,10 @@ import Contours from "@/components/alpine/Contours";
 export default function Outro() {
   return (
     <section aria-labelledby="outro-title" className="relative overflow-hidden border-t border-line">
+      {/* Höhenlinien über die ganze Breite, Gipfel rechts der Mitte */}
       <div
         aria-hidden
-        className="pointer-events-none absolute top-1/2 w-[max(115%,72rem)] -translate-y-1/2 text-ink opacity-70"
-        style={{ left: "calc(84% - 0.502 * max(115%, 72rem))" }}
+        className="pointer-events-none absolute left-[56%] top-1/2 w-[max(150%,96rem)] -translate-x-1/2 -translate-y-1/2 text-ink opacity-70"
       >
         <Contours label={false} />
       </div>

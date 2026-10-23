@@ -200,6 +200,7 @@ export const projects: Project[] = [
     category: "3D, Mods",
     status: "Aktiv",
     owner: "Joel Nef & Tim Mockweiss",
+    coverImage: "/images/rexusmods/ambulanz-glarus-front.webp",
     shortDescription:
       "Modifikationen für GTA V, neu erweitert um Add-ons für Flugsimulatoren.",
     longDescription:
@@ -207,8 +208,8 @@ export const projects: Project[] = [
     scope: ["3D-Modelling", "Texturen", "Flugsimulator-Add-ons"],
     goal: "Mods für GTA V weiterführen und das Projekt um Add-ons für Flugsimulatoren erweitern.",
     includes: [
-      { title: "MLO-Maps", text: "Begehbare Innenräume für die Spielwelt von GTA V." },
-      { title: "Fahrzeuglackierungen", text: "Eigene Designs für Fahrzeuge." },
+      { title: "Gebäude", text: "Eigene Gebäude für FiveM, etwa Jagd- und Forstschutz." },
+      { title: "Lackierungen", text: "Rettungsdienst Glarus, Weazel News, Sprinter Schweizer Post." },
       { title: "Flugsimulator-Add-ons", text: "Neuer Bereich, aktuell in Arbeit." },
     ],
     team: [
@@ -220,7 +221,7 @@ export const projects: Project[] = [
       { date: "2021", label: "Start mit Mods für GTA V" },
       { date: "2026", label: "Wieder aktiv, Erweiterung um Flugsimulator-Add-ons" },
     ],
-    links: [],
+    links: [{ label: "Sprinter Schweizer Post auf GTA5-Mods", url: "https://www.gta5-mods.com/de/vehicles/mercedes-benz-sprinter-schweizer-post-rexusmods" }],
   },
   {
     slug: "sakuto",
@@ -275,7 +276,7 @@ export const projects: Project[] = [
     ],
     techStack: ["Discord"],
     timeline: [{ date: "2022", label: "Gründung der Community" }],
-    links: [],
+    links: [{ label: "Regelwerk", url: "/zelda-de/regelwerk" }],
   },
   {
     slug: "all-the-clients",
@@ -301,7 +302,7 @@ export const projects: Project[] = [
     team: [{ name: "Joel Nef", role: "Director", slug: "joel" }],
     techStack: ["Minecraft", "Modrinth"],
     timeline: [{ date: "2023", label: "Erste Version auf Modrinth" }],
-    links: [{ label: "Modrinth", url: "https://modrinth.com" }],
+    links: [{ label: "All the Clients auf Modrinth", url: "https://modrinth.com/modpack/mc-atc" }],
   },
   {
     slug: "aracle-living",

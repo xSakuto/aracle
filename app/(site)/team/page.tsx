@@ -36,6 +36,7 @@ export default async function TeamPage() {
         title="Du willst mitmachen?"
         text="Du kannst etwas richtig gut, Video, Design, Code oder Community, und hast Lust auf echte Projekte? Schreib uns."
         action="Bewerbung schicken"
+        href="/apply"
       />
     </>
   );

@@ -19,5 +19,6 @@ export type ProjectTypeKey = (typeof PROJECT_TYPES)[number]["key"];
 export type BudgetKey = (typeof BUDGETS)[number]["key"];
 
 // "smp" kommt nur von der AracleSMP-Seite und erscheint nicht im Kontaktformular.
-export const typeLabel = (k: string) => (k === "smp" ? "AracleSMP-Bewerbung" : PROJECT_TYPES.find((t) => t.key === k)?.label ?? k);
+export const typeLabel = (k: string) =>
+  k === "smp" ? "AracleSMP-Bewerbung" : k === "apply" ? "Bewerbung Team" : PROJECT_TYPES.find((t) => t.key === k)?.label ?? k;
 export const budgetLabel = (k: string | null | undefined) => (k ? BUDGETS.find((b) => b.key === k)?.label ?? k : "Keine Angabe");
