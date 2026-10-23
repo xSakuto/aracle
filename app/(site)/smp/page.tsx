@@ -2,6 +2,7 @@ import Link from "next/link";
 import CopyValue from "@/components/brand/CopyValue";
 import ApplyForm from "@/components/smp/ApplyForm";
 import PixelGround from "@/components/smp/PixelGround";
+import { SMP_DISCORD_INVITE } from "@/data/smp";
 import { SITE_URL } from "@/lib/site";
 
 const TITLE = "AracleSMP · Vanilla+ Minecraft-Server";
@@ -29,7 +30,7 @@ const faq: { q: string; a: string }[] = [
   },
   {
     q: "Wie trete ich bei?",
-    a: "Über das Bewerbungsformular auf dieser Seite. Wir melden uns per E-Mail oder Discord, danach wirst du freigeschaltet.",
+    a: "Über unseren Discord. Dort verknüpfst du deinen Minecraft-Account, danach kannst du direkt auf play.aracle.ch mitspielen.",
   },
   {
     q: "Welches Modpack läuft auf dem Server?",
@@ -44,9 +45,9 @@ const facts = [
 ];
 
 const steps = [
-  ["Bewerben", "Füll das Formular unten aus. Dauert eine Minute."],
-  ["Kennenlernen", "Wir melden uns per E-Mail oder Discord."],
-  ["Mitspielen", "Du wirst freigeschaltet und verbindest dich mit play.aracle.ch."],
+  ["Discord beitreten", "Tritt unserem Discord-Server bei. Das ist der Treffpunkt der Community."],
+  ["Minecraft-Account verknüpfen", "Verknüpfe dort deinen Minecraft-Account mit deinem Discord-Profil."],
+  ["Mitspielen", "Sobald verknüpft, verbindest du dich direkt mit play.aracle.ch."],
 ];
 
 // AracleSMP: eigene Landing Page im Minecraft-Stil, mit Bewerbung statt offener Tür.
@@ -103,7 +104,13 @@ export default function SmpPage() {
               <span className="mc-label !mb-0 text-muted">Server</span>
               <CopyValue value="play.aracle.ch" label="Server-Adresse" />
             </div>
-            <a href="#bewerben" className="mc-btn">Jetzt bewerben</a>
+            {SMP_DISCORD_INVITE ? (
+              <a href={SMP_DISCORD_INVITE} target="_blank" rel="noopener noreferrer" className="mc-btn">
+                Discord beitreten <span aria-hidden>↗</span>
+              </a>
+            ) : (
+              <a href="#bewerben" className="mc-btn">Zum Discord</a>
+            )}
           </div>
         </div>
         <PixelGround className="relative block h-[clamp(48px,7vw,96px)] w-full" />
@@ -127,6 +134,7 @@ export default function SmpPage() {
         <div className="wrap grid gap-12 py-[var(--section)] md:grid-cols-12">
           <div className="md:col-span-4">
             <h2 id="bewerben-title" className="mc-title text-[clamp(2rem,1rem+2.6vw,3.25rem)] leading-[1]">Join the server.</h2>
+            <p className="mt-4 text-ink/80">Der Server läuft über Discord: dort verknüpfst du deinen Minecraft-Account und spielst sofort mit.</p>
             <ol className="mt-8 border-b border-line">
               {steps.map(([k, v], i) => (
                 <li key={k} className="grid grid-cols-[2.5rem_1fr] gap-x-3 border-t border-line py-4">
@@ -138,8 +146,18 @@ export default function SmpPage() {
                 </li>
               ))}
             </ol>
+            {SMP_DISCORD_INVITE && (
+              <a href={SMP_DISCORD_INVITE} target="_blank" rel="noopener noreferrer" className="mc-btn mt-8 inline-flex">
+                Discord beitreten <span aria-hidden>↗</span>
+              </a>
+            )}
           </div>
           <div className="md:col-span-7 md:col-start-6">
+            {!SMP_DISCORD_INVITE && (
+              <p className="small mb-4 text-muted">
+                Noch kein öffentlicher Einladungslink. Schreib uns kurz, dann schicken wir dir die Einladung zum Discord.
+              </p>
+            )}
             <ApplyForm />
           </div>
         </div>

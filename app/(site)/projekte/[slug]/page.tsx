@@ -2,7 +2,7 @@ import { notFound, redirect } from "next/navigation";
 import Link from "next/link";
 import ProductMockup from "@/components/visuals/ProductMockup";
 import ProjectPoster from "@/components/visuals/ProjectPoster";
-import { getProject, neighbours, projectHref, projects, type GalleryItem, type Project, type ProjectStatus } from "@/data/projects";
+import { getProject, projects, type GalleryItem, type Project, type ProjectStatus } from "@/data/projects";
 import { getTeam } from "@/lib/team";
 import { SITE_URL } from "@/lib/site";
 
@@ -108,7 +108,6 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
 
   const team = await getTeam();
   const people = team.flatMap((m) => m.projects.filter((x) => x.slug === slug).map(() => m));
-  const { next } = neighbours(slug);
   const gallery = (p.gallery ?? []).filter((g) => !(g.kind === "photo" && g.src === p.coverImage));
 
   const facts: [string, React.ReactNode][] = [
@@ -218,15 +217,15 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
       )}
 
       <Link
-        href={projectHref(next)}
+        href="/projekte"
         className="seg-host group relative mt-[var(--section)] flex items-baseline justify-between gap-6 border-t border-line pt-6"
       >
         <span aria-hidden className="seg seg-top" />
-        <span>
-          <span className="small block text-muted">Nächstes Projekt</span>
-          <span className="head mt-2 block transition-colors group-hover:text-aqua">{next.title}</span>
+        <span aria-hidden className="text-[1.75rem] transition-transform duration-500 group-hover:-translate-x-1.5">←</span>
+        <span className="text-right">
+          <span className="small block text-muted">Übersicht</span>
+          <span className="head mt-2 block transition-colors group-hover:text-aqua">Zurück zu den Projekten</span>
         </span>
-        <span aria-hidden className="text-[1.75rem] transition-transform duration-500 group-hover:translate-x-1.5">→</span>
       </Link>
     </article>
   );

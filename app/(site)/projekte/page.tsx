@@ -6,14 +6,14 @@ import { PILLARS, projects, type Pillar } from "@/data/projects";
 export const metadata = {
   alternates: { canonical: "/projekte" },
   title: "Projekte",
-  description: "Eigene Marken und Projekte aus dem Aracle Studio: Creative Production, Digital Experiences, Cloud & Infrastructure.",
+  description: "Eigene Marken und Projekte aus dem Aracle Studio: Marken & Produkte, Kanäle, Communitys & Server, Cloud & Hosting.",
 };
 
 const pillarText: Record<Pillar, string> = {
-  "Creative Production": "Marken, Content und Bildsprache.",
-  "Digital Experiences": "Websites, Apps, Games und digitale Produkte.",
-  "Cloud & Infrastructure": "Hosting und Server auf eigener Hardware.",
-  "Community & Gaming": "Communities und Server, mit denen alles begann.",
+  "Marken & Produkte": "Eigene Marken, Apps und Spiele.",
+  "Kanäle": "Content-Kanäle und Creator.",
+  "Communitys & Server": "Discord-Communities und Minecraft-Server.",
+  "Cloud & Hosting": "Hosting auf eigener Hardware.",
 };
 
 const posterTone: Record<string, "slate" | "glacier" | "glow"> = {
@@ -32,7 +32,29 @@ export default function ProjektePage() {
     <>
       {/* Hero: der Tödi, höchster Glarner Gipfel, als Hintergrund */}
       <header className="relative flex min-h-[92svh] flex-col overflow-hidden">
-        <div aria-hidden className="swiss-grid pointer-events-none absolute inset-0" />
+        <div aria-hidden className="pointer-events-none absolute inset-0">
+          <picture>
+            <source type="image/webp" srcSet="/images/hero/kloentalersee-1280.webp 1280w, /images/hero/kloentalersee-2560.webp 2560w" sizes="100vw" />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/images/hero/kloentalersee-1280.jpg"
+              srcSet="/images/hero/kloentalersee-1280.jpg 1280w, /images/hero/kloentalersee-2560.jpg 2560w"
+              sizes="100vw"
+              alt=""
+              width={2560}
+              height={1440}
+              fetchPriority="high"
+              data-parallax="0.06"
+              className="h-[110%] w-full object-cover object-[55%_45%] opacity-70"
+            />
+          </picture>
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_62%_40%,rgb(143_214_211/0.26),transparent_70%)] mix-blend-screen" />
+          <div className="absolute inset-0 bg-[#0b1115]/30 mix-blend-multiply" />
+          <div className="absolute inset-0 bg-gradient-to-r from-bg/80 via-bg/25 to-transparent" />
+          <div className="absolute inset-x-0 bottom-0 h-[34%] bg-gradient-to-t from-bg to-transparent" />
+          <div className="absolute inset-x-0 top-0 h-48 bg-gradient-to-b from-bg/80 to-transparent" />
+        </div>
+        <div aria-hidden className="swiss-grid pointer-events-none absolute inset-0 opacity-60" />
         <div
           aria-hidden
           className="pointer-events-none absolute left-1/2 top-[58%] h-[70vmax] w-[70vmax] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(closest-side,rgb(143_214_211/0.10),transparent)]"

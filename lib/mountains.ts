@@ -24,8 +24,8 @@ export const MOUNTAINS: Record<Mountain["key"], Mountain> = {
 };
 
 export const PILLAR_MOUNTAIN: Record<Pillar, Mountain> = {
-  "Creative Production": MOUNTAINS.glaernisch,
-  "Digital Experiences": MOUNTAINS.toedi,
-  "Cloud & Infrastructure": MOUNTAINS.kaerpf,
-  "Community & Gaming": MOUNTAINS.wiggis,
+  "Marken & Produkte": MOUNTAINS.glaernisch,
+  "Kanäle": MOUNTAINS.toedi,
+  "Cloud & Hosting": MOUNTAINS.kaerpf,
+  "Communitys & Server": MOUNTAINS.wiggis,
 };
