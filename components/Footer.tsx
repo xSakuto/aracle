@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Ridge from "@/components/alpine/Ridge";
 import SwissFlag from "@/components/swiss/SwissFlag";
+import VisitorCounter from "@/components/VisitorCounter";
 import { WIGGIS } from "@/data/panorama/wiggis";
 
 const columns: { title: string; links: [string, string][] }[] = [
@@ -55,6 +56,7 @@ export default function Footer() {
 
       <div className="wrap small mt-24 flex flex-wrap items-center justify-between gap-x-8 gap-y-3 py-6 text-muted md:mt-40">
         <p>© {new Date().getFullYear()} Aracle, CH-8750 Glarus</p>
+        <VisitorCounter />
         <p className="inline-flex items-center gap-[0.45em] text-ink/85">
           Made in Switzerland
           <SwissFlag className="h-[1em] w-[1em]" />

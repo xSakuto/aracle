@@ -174,7 +174,7 @@ export const projects: Project[] = [
     category: "Content, Social Media",
     status: "Aktiv",
     owner: "Joel Nef",
-    coverImage: "/images/swizzly/helmet.webp",
+    coverImage: "/images/swizzly/ktm-mountain.webp",
     shortDescription:
       "Motorrad, Entertainment und RS-Content auf YouTube, TikTok und Instagram.",
     longDescription:

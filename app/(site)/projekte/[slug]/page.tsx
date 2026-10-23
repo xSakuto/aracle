@@ -156,40 +156,58 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
       : []),
   ];
 
+  const primaryLink = p.links.find((l) => !l.url.startsWith("/")) ?? p.links[0];
+
   return (
     // key: beim Wechsel zwischen Projekten neu aufbauen (zerlegte Titel)
-    <article key={p.slug} className="wrap pb-[var(--section)] pt-28 md:pt-36">
+    <article key={p.slug} className="pb-[var(--section)]">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(projectJsonLd(p)) }} />
 
-      <nav aria-label="Brotkrumen" className="small text-muted" data-rise>
-        <Link href="/projekte" className="transition-colors hover:text-ink">Projekte</Link>
-        <span aria-hidden className="mx-2">/</span>
-        <span>{p.category}</span>
-      </nav>
+      {/* Hero: grosses Hintergrundbild, wie bei den eigenen Landing Pages, damit alle "kleinen" Projektseiten gleich aufgebaut sind */}
+      <header className="relative flex min-h-[64svh] flex-col overflow-hidden md:min-h-[74svh]">
+        <div aria-hidden className="absolute inset-0">
+          {p.coverImage ? (
+            <>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={p.coverImage}
+                alt=""
+                width={1600}
+                height={1067}
+                fetchPriority="high"
+                data-parallax="0.06"
+                className="h-[112%] w-full object-cover"
+              />
+              <div className="absolute inset-0 bg-[#0b1115]/30 mix-blend-multiply" />
+            </>
+          ) : (
+            <ProjectPoster project={p} tone={posterTone[p.slug] ?? "slate"} size="lg" className="h-full w-full" />
+          )}
+          <div className="absolute inset-0 bg-[linear-gradient(to_top,var(--color-bg)_12%,rgb(11_17_21/0.55)_55%,rgb(11_17_21/0.25))]" />
+          <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-bg/70 to-transparent" />
+        </div>
 
-      <header className="mt-6 grid gap-6 md:grid-cols-12 md:items-end">
-        <h1 className="mega md:col-span-8" data-split="load">{p.title}</h1>
-        <p className="lead text-ink/85 md:col-span-4" data-rise style={{ ["--i" as string]: 2 }}>{p.tagline}</p>
+        <div className="wrap relative mt-auto pb-10 pt-28 md:pb-14 md:pt-36">
+          <nav aria-label="Brotkrumen" className="small text-muted" data-rise>
+            <Link href="/projekte" className="transition-colors hover:text-ink">Projekte</Link>
+            <span aria-hidden className="mx-2">/</span>
+            <span>{p.category}</span>
+          </nav>
+
+          <h1 className="mega mt-6" data-split="load">{p.title}</h1>
+
+          <div className="mt-6 flex flex-col gap-6 md:flex-row md:items-end md:justify-between" data-rise style={{ ["--i" as string]: 2 }}>
+            <p className="lead max-w-[38ch] text-ink/90">{p.tagline}</p>
+            {primaryLink && (
+              <a href={primaryLink.url} target="_blank" rel="noopener noreferrer" className="btn self-start md:self-auto">
+                {primaryLink.label} <span aria-hidden>↗</span>
+              </a>
+            )}
+          </div>
+        </div>
       </header>
 
-      <div className="mt-10 overflow-hidden rounded-[var(--radius)] md:mt-14">
-        {p.coverImage ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={p.coverImage}
-            alt={p.title}
-            width={1600}
-            height={1067}
-            fetchPriority="high"
-            data-clip
-            className="aspect-[4/3] w-full object-cover sm:aspect-[21/9]"
-          />
-        ) : (
-          <ProjectPoster project={p} tone={posterTone[p.slug] ?? "slate"} size="lg" className="aspect-[4/3] w-full sm:aspect-[21/9]" />
-        )}
-      </div>
-
-      <div className="mt-12 grid gap-10 md:mt-16 md:grid-cols-12">
+      <div className="wrap mt-12 grid gap-10 md:mt-16 md:grid-cols-12">
         <p className="lead max-w-[38ch] text-ink/90 md:col-span-7">{p.longDescription}</p>
         <dl className="border-b border-line md:col-span-4 md:col-start-9">
           {facts.map(([k, v]) => (
@@ -202,7 +220,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
       </div>
 
       {gallery.length > 0 && (
-        <section aria-label="Einblicke" className="mt-[calc(var(--section)*0.7)]">
+        <section aria-label="Einblicke" className="wrap mt-[calc(var(--section)*0.7)]">
           {gallery.every((g) => g.kind === "placeholder") && (
             <p className="small mb-4 text-muted">Platzhalter, Produktbilder folgen</p>
           )}
@@ -218,7 +236,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
 
       <Link
         href="/projekte"
-        className="seg-host group relative mt-[var(--section)] flex items-baseline justify-between gap-6 border-t border-line pt-6"
+        className="seg-host group wrap relative mt-[var(--section)] flex items-baseline justify-between gap-6 border-t border-line pt-6"
       >
         <span aria-hidden className="seg seg-top" />
         <span aria-hidden className="text-[1.75rem] transition-transform duration-500 group-hover:-translate-x-1.5">←</span>
