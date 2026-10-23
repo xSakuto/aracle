@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { projects } from "@/data/projects";
 import { cleanSocials } from "@/data/socials";
 import { missingColumn, requireAdmin, requireMember } from "@/lib/session";
+import { siteUrl } from "@/lib/site-url";
 
 export type SaveState = { ok?: boolean; error?: string; at?: number };
 
@@ -168,6 +169,36 @@ export async function createMember(_prev: SaveState, form: FormData): Promise<Sa
   }
   revalidatePath("/dashboard/team");
   redirect(`/dashboard/team/${data.id}?neu=1`);
+}
+
+// Discord zusätzlich zum bestehenden Login verknüpfen (Profil ist schon per E-Mail eingeloggt).
+export async function linkDiscord() {
+  const { supabase } = await requireMember();
+  const { data, error } = await supabase.auth.linkIdentity({
+    provider: "discord",
+    options: { redirectTo: `${await siteUrl()}/auth/callback?weiter=%2Fdashboard` },
+  });
+  if (error || !data?.url) {
+    redirect(`/dashboard?fehler=${error && /manual linking/i.test(error.message) ? "discord-manual" : "discord-link"}`);
+  }
+  redirect(data.url);
+}
+
+// Discord-Verknüpfung wieder entfernen (Login per E-Mail bleibt bestehen).
+export async function unlinkDiscord() {
+  const { supabase } = await requireMember();
+  const { data } = await supabase.auth.getUserIdentities();
+  const discord = data?.identities.find((i) => i.provider === "discord");
+  if (discord) {
+    const { error } = await supabase.auth.unlinkIdentity(discord);
+    if (error) redirect("/dashboard?fehler=discord-unlink");
+    await supabase
+      .from("profiles")
+      .update({ discord_id: null, discord_username: null })
+      .eq("user_id", (await supabase.auth.getUser()).data.user?.id ?? "");
+  }
+  revalidatePath("/dashboard");
+  redirect("/dashboard");
 }
 
 export async function deleteMember(form: FormData) {

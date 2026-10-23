@@ -1,9 +1,9 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { headers } from "next/headers";
 import { supabaseConfigured } from "@/lib/supabase/config";
 import { createSessionClient } from "@/lib/supabase/server";
+import { siteUrl } from "@/lib/site-url";
 
 export type LoginState = {
   step: "email" | "code";
@@ -15,14 +15,6 @@ export type LoginState = {
 function safeNext(value: FormDataEntryValue | null) {
   const v = String(value ?? "");
   return v.startsWith("/dashboard") ? v : "/dashboard";
-}
-
-async function siteUrl() {
-  if (process.env.NEXT_PUBLIC_SITE_URL) return process.env.NEXT_PUBLIC_SITE_URL;
-  const h = await headers();
-  const host = h.get("x-forwarded-host") ?? h.get("host");
-  const proto = h.get("x-forwarded-proto") ?? "https";
-  return `${proto}://${host}`;
 }
 
 export async function requestCode(
