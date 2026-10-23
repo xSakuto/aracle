@@ -9,6 +9,7 @@ export default function DashNav({ admin }: { admin: boolean }) {
     { href: "/dashboard", label: "Mein Profil", active: pathname === "/dashboard" },
     ...(admin
       ? [
+          { href: "/dashboard/news", label: "News", active: pathname.startsWith("/dashboard/news") },
           { href: "/dashboard/anfragen", label: "Anfragen", active: pathname.startsWith("/dashboard/anfragen") },
           { href: "/dashboard/team", label: "Team verwalten", active: pathname.startsWith("/dashboard/team") },
         ]
