@@ -47,9 +47,24 @@ export default function BrandRun({ items, total }: { items: Project[]; total: nu
                     height={1067}
                     loading="lazy"
                     data-hscroll-img
-                    className="absolute inset-0 h-full w-[116%] max-w-none object-cover transition-transform duration-700 ease-[var(--ease-out)] group-hover:scale-[1.03] md:-left-[8%]"
+                    className="absolute inset-0 h-full w-[116%] max-w-none object-cover grayscale-[0.3] saturate-[0.85] transition-transform duration-700 ease-[var(--ease-out)] group-hover:scale-[1.03] md:-left-[8%]"
                   />
-                  <div aria-hidden className="absolute inset-0 bg-[#0b1115]/15" />
+                  <div aria-hidden className="absolute inset-0 bg-[linear-gradient(155deg,rgb(143_214_211/0.9),transparent_62%)] mix-blend-multiply opacity-40" />
+                  <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-[#0b1418]/90 via-[#0b1418]/15 to-transparent" />
+                  {p.markTile ?? p.mark ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={p.markTile ?? p.mark}
+                      alt=""
+                      aria-hidden
+                      loading="lazy"
+                      className="absolute bottom-5 left-5 h-12 w-auto max-w-[50%] bg-transparent object-contain object-left drop-shadow-[0_4px_14px_rgb(0_0_0/0.55)] md:bottom-6 md:left-6 md:h-16"
+                    />
+                  ) : (
+                    <p className="absolute bottom-5 left-5 right-5 font-[family-name:var(--font-display)] text-[1.5rem] font-bold leading-[1.05] tracking-[-0.025em] text-white drop-shadow-[0_2px_6px_rgb(0_0_0/0.6)] md:bottom-6 md:left-6">
+                      {p.title}
+                    </p>
+                  )}
                 </>
               ) : (
                 <ProjectPoster
@@ -59,7 +74,7 @@ export default function BrandRun({ items, total }: { items: Project[]; total: nu
                 />
               )}
               {p.status !== "Aktiv" && (
-                <span className="absolute bottom-4 left-4 rounded-full bg-bg/80 px-3 py-1 text-[0.75rem] font-medium backdrop-blur">
+                <span className="absolute right-4 top-4 rounded-full bg-bg/80 px-3 py-1 text-[0.75rem] font-medium backdrop-blur">
                   {p.status}
                 </span>
               )}

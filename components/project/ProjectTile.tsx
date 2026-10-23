@@ -38,14 +38,14 @@ export default function ProjectTile({
             />
             <div aria-hidden className="absolute inset-0 bg-[linear-gradient(155deg,rgb(143_214_211/0.9),transparent_62%)] mix-blend-multiply opacity-40" />
             <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-[#0b1418]/90 via-[#0b1418]/15 to-transparent" />
-            {p.mark ? (
+            {p.markTile ?? p.mark ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img
-                src={p.mark}
+                src={p.markTile ?? p.mark}
                 alt=""
                 aria-hidden
                 loading="lazy"
-                className="absolute bottom-3 left-3 h-7 w-auto max-w-[45%] object-contain object-left drop-shadow-[0_3px_10px_rgb(0_0_0/0.55)] md:bottom-4 md:left-4 md:h-8"
+                className="absolute bottom-3 left-3 h-9 w-auto max-w-[55%] bg-transparent object-contain object-left drop-shadow-[0_3px_10px_rgb(0_0_0/0.55)] md:bottom-4 md:left-4 md:h-11"
               />
             ) : (
               <p className="absolute bottom-3 left-3 right-3 font-[family-name:var(--font-display)] text-[1.0625rem] font-bold leading-[1.05] tracking-[-0.025em] text-white drop-shadow-[0_2px_6px_rgb(0_0_0/0.6)] md:bottom-4 md:left-4">

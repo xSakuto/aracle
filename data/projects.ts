@@ -42,6 +42,8 @@ export interface Project {
   featured?: boolean;
   /** Kleines Logo für Listen und Credits (quadratisch oder breit, transparent) */
   mark?: string;
+  /** Weisse/helle Logo-Variante fürs Überlagern auf Fotos (Kacheln, Selected work). Fällt sonst auf `mark` zurück. */
+  markTile?: string;
   /** Eigene Landing Page statt der Projektseite */
   landing?: string;
   /** Startjahr */
@@ -55,6 +57,7 @@ export const projects: Project[] = [
   {
     slug: "aracle-cloud-hosting",
     mark: "/images/cloud/aracle-cloud-logo.png",
+    markTile: "/images/cloud/aracle-cloud-logo-white.png",
     landing: "/hosting",
     year: "2022",
     title: "Aracle Cloud",
@@ -94,6 +97,7 @@ export const projects: Project[] = [
   {
     slug: "highside",
     mark: "/images/highside/highside-h.png",
+    markTile: "/images/highside/highside-logo-white.png",
     landing: "/highside",
     year: "2024",
     title: "Highside",
@@ -135,6 +139,7 @@ export const projects: Project[] = [
   {
     slug: "milvia",
     mark: "/images/milvia/milvia-mark.png",
+    markTile: "/images/milvia/milvia-mark-white.png",
     coverImage: "/images/milvia/forest.webp",
     year: "2026",
     title: "Milvia",
@@ -169,6 +174,7 @@ export const projects: Project[] = [
     category: "Content, Social Media",
     status: "Aktiv",
     owner: "Joel Nef",
+    coverImage: "/images/swizzly/helmet.webp",
     shortDescription:
       "Motorrad, Entertainment und RS-Content auf YouTube, TikTok und Instagram.",
     longDescription:
@@ -194,6 +200,7 @@ export const projects: Project[] = [
   {
     slug: "beer-game",
     mark: "/images/beer/beer-logo.png",
+    markTile: "/images/beer/beer-logo.png",
     year: "2025",
     title: "Beer Game",
     tagline: "A tiny online tavern for up to four.",
@@ -229,6 +236,7 @@ export const projects: Project[] = [
   {
     slug: "rexusmods",
     mark: "/images/rexusmods/rexusmods-logo.png",
+    markTile: "/images/rexusmods/rexusmods-logo-white.png",
     landing: "/rexusmods",
     year: "2021",
     title: "RexusMods",
@@ -263,6 +271,7 @@ export const projects: Project[] = [
   {
     slug: "sakuto",
     mark: "/images/sakuto/sakuto-white.png",
+    markTile: "/images/sakuto/sakuto-white-trim.png",
     year: "2021",
     title: "Sakuto",
     tagline: "Video essays, streams and Nintendo culture.",
@@ -294,6 +303,7 @@ export const projects: Project[] = [
     slug: "zelda-de-server",
     landing: "/zelda-de",
     mark: "/images/zelda/zelda-de-logo.png",
+    markTile: "/images/zelda/zelda-de-logo-trim.png",
     year: "2022",
     title: "Zelda DE",
     tagline: "A community for Hyrule, in German.",
@@ -323,6 +333,7 @@ export const projects: Project[] = [
   {
     slug: "all-the-clients",
     mark: "/images/atc/atc-logo.png",
+    markTile: "/images/atc/atc-logo-tile.png",
     coverImage: "/images/atc/atc-world.webp",
     year: "2023",
     title: "All the Clients",
@@ -380,6 +391,7 @@ export const projects: Project[] = [
   {
     slug: "araclesmp",
     mark: "/images/smp/vanilla-logo.png",
+    markTile: "/images/smp/vanilla-logo-tile.png",
     coverImage: "/images/smp/smp-world.webp",
     landing: "/smp",
     year: "2025",
