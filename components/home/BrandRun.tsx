@@ -58,7 +58,7 @@ export default function BrandRun({ items, total }: { items: Project[]; total: nu
                       alt=""
                       aria-hidden
                       loading="lazy"
-                      className="absolute bottom-5 left-5 h-12 w-auto max-w-[50%] bg-transparent object-contain object-left drop-shadow-[0_4px_14px_rgb(0_0_0/0.55)] md:bottom-6 md:left-6 md:h-16"
+                      className="absolute bottom-5 left-5 h-auto max-h-[42%] w-[40%] bg-transparent object-contain object-left-bottom drop-shadow-[0_6px_18px_rgb(0_0_0/0.6)] md:bottom-6 md:left-6"
                     />
                   ) : (
                     <p className="absolute bottom-5 left-5 right-5 font-[family-name:var(--font-display)] text-[1.5rem] font-bold leading-[1.05] tracking-[-0.025em] text-white drop-shadow-[0_2px_6px_rgb(0_0_0/0.6)] md:bottom-6 md:left-6">

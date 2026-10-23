@@ -45,7 +45,7 @@ export default function ProjectTile({
                 alt=""
                 aria-hidden
                 loading="lazy"
-                className="absolute bottom-3 left-3 h-9 w-auto max-w-[55%] bg-transparent object-contain object-left drop-shadow-[0_3px_10px_rgb(0_0_0/0.55)] md:bottom-4 md:left-4 md:h-11"
+                className="absolute bottom-3 left-3 h-auto max-h-[44%] w-[40%] bg-transparent object-contain object-left-bottom drop-shadow-[0_4px_14px_rgb(0_0_0/0.6)] md:bottom-4 md:left-4"
               />
             ) : (
               <p className="absolute bottom-3 left-3 right-3 font-[family-name:var(--font-display)] text-[1.0625rem] font-bold leading-[1.05] tracking-[-0.025em] text-white drop-shadow-[0_2px_6px_rgb(0_0_0/0.6)] md:bottom-4 md:left-4">
