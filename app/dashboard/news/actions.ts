@@ -3,20 +3,14 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import type { SaveState } from "@/app/dashboard/actions";
-import { asHttpsUrl, asTemplate, asTopic, cleanItems, cleanLinks } from "@/data/news";
+import { asTemplate, asTopic } from "@/data/news";
+import { getDiscordEmojis } from "@/lib/discord-emojis";
+import { convertShortcodes } from "@/lib/emoji";
 import { requireAdmin } from "@/lib/session";
 import { zurichLocalToIso } from "@/lib/zurich-time";
 
 function text(form: FormData, key: string, max: number) {
   return String(form.get(key) ?? "").trim().slice(0, max);
-}
-
-function parseJson(form: FormData, key: string): unknown {
-  try {
-    return JSON.parse(String(form.get(key) ?? "[]"));
-  } catch {
-    return [];
-  }
 }
 
 function refresh() {
@@ -26,30 +20,38 @@ function refresh() {
 }
 
 const TABLE_MISSING =
-  "Die Tabelle für News gibt es noch nicht. Führ supabase/2026-10-news.sql im Supabase SQL-Editor aus.";
+  "Die Tabelle für News gibt es noch nicht. Führ supabase/2026-10-news.sql und 2026-10-news-v2.sql im Supabase SQL-Editor aus.";
 
 function dbError(err: { code?: string; message: string }) {
-  if (err.code === "42P01" || err.code === "PGRST205" || /news_posts/.test(err.message) && /does not exist|schema cache/i.test(err.message)) {
+  if (err.code === "42P01" || err.code === "PGRST205" || err.code === "42703" || /news_posts/.test(err.message) && /does not exist|schema cache/i.test(err.message)) {
     return TABLE_MISSING;
   }
   return `Speichern fehlgeschlagen: ${err.message}`;
 }
 
 export async function saveNews(_prev: SaveState, form: FormData): Promise<SaveState> {
-  const { supabase, me } = await requireAdmin();
+  const { supabase } = await requireAdmin();
   const id = text(form, "id", 64);
-  const title = text(form, "title", 140);
-  if (title.length < 3) return { error: "Der Titel braucht mindestens 3 Zeichen." };
 
-  const template = asTemplate(form.get("template"));
+  // Kürzel wie :tools: und Server-Emojis werden hier zu dem, was Discord anzeigt.
+  const emojis = await getDiscordEmojis(supabase);
+  const convert = (s: string) => convertShortcodes(s, emojis);
+
+  const title = convert(text(form, "title", 600));
+  const body = convert(text(form, "body", 8000));
+  const signature = convert(text(form, "signature", 160));
+  if (title.length < 3) return { error: "Der Titel braucht mindestens 3 Zeichen." };
+  if (title.length > 300) return { error: "Der Titel ist zu lang (höchstens 300 Zeichen, Emojis zählen mit)." };
+  if (body.length > 4000) return { error: `Der Text ist zu lang: ${body.length} von 4000 Zeichen (Emojis zählen mit).` };
+  if (signature.length > 80) return { error: "Die Signatur ist zu lang." };
+
   const fields = {
     topic: asTopic(form.get("topic")),
-    template,
+    template: asTemplate(form.get("template")),
     title,
-    body: text(form, "body", 4000),
-    items: template === "changelog" ? cleanItems(parseJson(form, "items")) : [],
-    links: cleanLinks(parseJson(form, "links")),
-    image_url: asHttpsUrl(form.get("image_url")),
+    body,
+    signature: signature || null,
+    use_embed: form.get("use_embed") === "on",
     published: form.get("published") === "on",
     publish_at: zurichLocalToIso(text(form, "publish_at", 16)) ?? new Date().toISOString(),
   };
@@ -61,9 +63,11 @@ export async function saveNews(_prev: SaveState, form: FormData): Promise<SaveSt
     return { ok: true, at: Date.now() };
   }
 
+  const { data: me } = await supabase.auth.getUser();
+  const { data: author } = await supabase.from("profiles").select("id").eq("user_id", me.user?.id ?? "").maybeSingle();
   const { data, error } = await supabase
     .from("news_posts")
-    .insert({ ...fields, author_id: me.id })
+    .insert({ ...fields, author_id: author?.id ?? null })
     .select("id")
     .single();
   if (error) return { error: dbError(error) };

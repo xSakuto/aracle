@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import NewsForm from "@/components/dashboard/NewsForm";
+import { defaultSignature } from "@/data/news";
+import { getDiscordEmojis } from "@/lib/discord-emojis";
 import { NEWS_COLUMNS, rowToPost, type NewsRow } from "@/lib/news";
 import { requireAdmin } from "@/lib/session";
 import { isoToZurichLocal } from "@/lib/zurich-time";
@@ -15,7 +17,7 @@ export default async function EditNewsPage({
   params: Promise<{ id: string }>;
   searchParams: Promise<{ neu?: string }>;
 }) {
-  const { supabase } = await requireAdmin();
+  const { supabase, me } = await requireAdmin();
   const { id } = await params;
   const { neu } = await searchParams;
 
@@ -23,9 +25,10 @@ export default async function EditNewsPage({
   if (!data) notFound();
   const row = data as NewsRow;
   const post = rowToPost(row);
+  const emojis = await getDiscordEmojis(supabase);
 
   return (
-    <div className="max-w-[72rem]">
+    <div className="max-w-[80rem]">
       <Link href="/dashboard/news" className="text-sm text-muted hover:text-ink">Zurück zu News</Link>
       <h1 className="mt-3 font-sans text-2xl font-medium tracking-normal">News bearbeiten</h1>
       {neu && <p className="mt-2 text-sm text-muted">Angelegt. Als Entwurf gespeichert, bis du sie veröffentlichst.</p>}
@@ -37,15 +40,16 @@ export default async function EditNewsPage({
       <div className="mt-8">
         <NewsForm
           action={saveNews}
+          emojis={emojis}
+          defaultSignature={defaultSignature(me.slug, me.name, me.is_lead)}
           post={{
             id: row.id,
             topic: post.topic,
             template: post.template,
             title: post.title,
             body: post.body,
-            items: post.items,
-            links: post.links,
-            imageUrl: post.imageUrl ?? "",
+            signature: post.signature,
+            useEmbed: post.useEmbed,
             published: row.published,
             publishLocal: isoToZurichLocal(row.publish_at),
           }}

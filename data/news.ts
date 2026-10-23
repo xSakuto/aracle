@@ -1,4 +1,4 @@
-// Themen, Vorlagen und Aufräum-Funktionen für News. Gleiche Schlüssel wie der Discord-Bot.
+// Themen, Vorlagenarten und Signatur für News. Gleiche Schlüssel wie der Discord-Bot.
 
 export const TOPICS = [
   { key: "aracle", label: "Aracle", accent: "#8fd6d3" },
@@ -12,25 +12,13 @@ export const TOPICS = [
 export type TopicKey = (typeof TOPICS)[number]["key"];
 
 export const TEMPLATES = [
-  { key: "update", label: "Update", hint: "Titel und Text, für fast alles." },
-  { key: "status", label: "Status-Update", hint: "Störung, Wartung oder Entwarnung." },
-  { key: "changelog", label: "Changelog", hint: "Version mit Liste der Änderungen." },
-  { key: "video", label: "Video", hint: "Neues Video mit Link." },
+  { key: "update", label: "Update" },
+  { key: "status", label: "Status-Update" },
+  { key: "changelog", label: "Changelog" },
+  { key: "video", label: "Video" },
 ] as const;
 
 export type TemplateKey = (typeof TEMPLATES)[number]["key"];
-
-export const CHANGELOG_TAGS = ["Added", "Updated", "Fixed", "Optimized", "Tested", "Removed"] as const;
-
-export interface NewsItem {
-  tag: string;
-  text: string;
-}
-
-export interface NewsLink {
-  label: string;
-  url: string;
-}
 
 export interface NewsPost {
   id: string;
@@ -38,9 +26,10 @@ export interface NewsPost {
   template: TemplateKey;
   title: string;
   body: string;
-  items: NewsItem[];
-  links: NewsLink[];
-  imageUrl: string | null;
+  /** Fertige Signatur, z.B. "Sakuto 🪽". Leer = keine. */
+  signature: string;
+  /** Als Embed senden statt als normale Nachricht */
+  useEmbed: boolean;
   publishedAt: string;
 }
 
@@ -51,30 +40,17 @@ const isTemplate = (v: unknown): v is TemplateKey => TEMPLATES.some((t) => t.key
 export const asTemplate = (v: unknown): TemplateKey => (isTemplate(v) ? v : "update");
 export const asTopic = (v: unknown): string => (TOPICS.some((t) => t.key === v) ? String(v) : "aracle");
 
-export function cleanItems(raw: unknown): NewsItem[] {
-  if (!Array.isArray(raw)) return [];
-  return raw
-    .map((r) => ({
-      tag: String((r as NewsItem)?.tag ?? "").trim().slice(0, 20),
-      text: String((r as NewsItem)?.text ?? "").trim().slice(0, 200),
-    }))
-    .filter((r) => r.text)
-    .slice(0, 20);
+// Signatur: Name der Person plus Zeichen. Die Leitung (Joel) bekommt die Schwinge, alle anderen ein Feuer.
+const SIGNATURE_NAME: Record<string, string> = { joel: "Sakuto" };
+
+export function defaultSignature(slug: string, name: string, isLead: boolean) {
+  const first = SIGNATURE_NAME[slug] ?? name.split(/[\s-]/)[0] ?? name;
+  return `${first} ${isLead ? "🪽" : "🔥"}`;
 }
 
-export function cleanLinks(raw: unknown): NewsLink[] {
-  if (!Array.isArray(raw)) return [];
-  return raw
-    .map((r) => ({
-      label: String((r as NewsLink)?.label ?? "").trim().slice(0, 40),
-      url: String((r as NewsLink)?.url ?? "").trim().slice(0, 500),
-    }))
-    .filter((r) => /^https:\/\//i.test(r.url))
-    .map((r) => ({ label: r.label || new URL(r.url).hostname.replace(/^www\./, ""), url: r.url }))
-    .slice(0, 6);
+/** Die Nachricht, wie sie der Bot postet (Überschrift mit Rollen-Ping, Text, Signatur). */
+export function composeMessage(p: { topic: string; title: string; body: string; signature: string }) {
+  const head = `## <@&${p.topic}> ${p.title || "Titel"}`;
+  const sig = p.signature.trim() ? `Cheers,\n**${p.signature.trim()}**` : "";
+  return [head, p.body.trim(), sig].filter(Boolean).join("\n\n");
 }
-
-export const asHttpsUrl = (v: unknown): string | null => {
-  const s = String(v ?? "").trim().slice(0, 500);
-  return /^https:\/\//i.test(s) ? s : null;
-};
