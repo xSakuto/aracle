@@ -17,6 +17,8 @@ export interface FullProfile {
   quote: string;
   /** Öffentliche Kontaktadresse, nicht die Login-Adresse */
   contact_email: string | null;
+  /** Discord-Benutzername, gesetzt beim ersten Login mit Discord */
+  discord_username: string | null;
   is_lead: boolean;
   is_admin: boolean;
   visible: boolean;
@@ -26,7 +28,7 @@ export interface FullProfile {
 
 export const LEGACY_COLUMNS =
   "id, user_id, email, slug, name, role, bio, accent, photo_url, socials, is_lead, is_admin, visible, sort";
-export const FULL_COLUMNS = `${LEGACY_COLUMNS}, quote, contact_email`;
+export const FULL_COLUMNS = `${LEGACY_COLUMNS}, quote, contact_email, discord_username`;
 
 /** Spalte fehlt noch, weil supabase/2026-10-profile-quote.sql nicht ausgeführt ist. */
 export function missingColumn(err: { code?: string; message?: string } | null | undefined) {
@@ -44,10 +46,11 @@ export async function withProfileColumns<T extends { error: { code?: string; mes
   return res.error && missingColumn(res.error) ? run(legacy) : res;
 }
 
-type Row = Omit<FullProfile, "socials" | "projects" | "quote" | "contact_email"> & {
+type Row = Omit<FullProfile, "socials" | "projects" | "quote" | "contact_email" | "discord_username"> & {
   socials: unknown;
   quote?: string | null;
   contact_email?: string | null;
+  discord_username?: string | null;
 };
 
 export function toProfile(
@@ -59,6 +62,7 @@ export function toProfile(
     socials: cleanSocials(row.socials),
     quote: row.quote ?? "",
     contact_email: row.contact_email ?? null,
+    discord_username: row.discord_username ?? null,
     projects: members
       .filter((m) => m.profile_id === row.id)
       .map((m) => ({ slug: m.project_slug, role: m.role })),

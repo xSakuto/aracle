@@ -15,6 +15,7 @@ export default async function LoginPage({
 }) {
   const { weiter, fehler } = await searchParams;
   const next = weiter?.startsWith("/dashboard") ? weiter : "/dashboard";
+  const loginError = fehler === "link" || fehler === "discord" ? fehler : undefined;
 
   if (supabaseConfigured) {
     const supabase = await createSessionClient();
@@ -33,13 +34,13 @@ export default async function LoginPage({
         </h1>
         <p className="lead mt-5 max-w-[30rem] text-muted" data-rise style={{ ["--i" as string]: 1 }}>
           Für alle im Aracle-Team: Profil, Foto und Social-Links selbst pflegen.
-          Kein Passwort nötig, du bekommst einen Code per E-Mail.
+          Login mit Discord oder per Code per E-Mail, kein Passwort nötig.
         </p>
       </div>
       <div className="col-span-12 md:col-span-5 md:col-start-8" data-rise style={{ ["--i" as string]: 2 }}>
         <div className="tile p-8">
           {supabaseConfigured ? (
-            <LoginForm next={next} linkError={fehler === "link"} />
+            <LoginForm next={next} fehler={loginError} />
           ) : (
             <p>
               Der Login ist noch nicht eingerichtet: Es fehlen die

@@ -133,6 +133,32 @@ export const projects: Project[] = [
     featured: true,
   },
   {
+    slug: "milvia",
+    mark: "/images/milvia/milvia-mark.png",
+    year: "2026",
+    title: "Milvia",
+    tagline: "Your companion through the RS.",
+    pillar: "Digital Experiences",
+    category: "App, Flutter",
+    status: "Aktiv",
+    owner: "Joel Nef",
+    shortDescription:
+      "Schweizer-Armee-Companion-App für die RS: Reglemente, Grade, Fitnesstests und ein Kompaniebau-Game.",
+    longDescription:
+      "Milvia begleitet durch die RS: Reglemente und Vorschriften zum Nachschlagen, Dienstgrade, Fitnesstests und ein eigenes Kompaniebau-Game, alles in einer App. Entwickelt mit Flutter, nativ für iOS und Android.",
+    scope: ["App-Entwicklung", "Branding", "Content"],
+    goal: "Angehörigen der Schweizer Armee die RS mit einer App erleichtern, die Wissen und ein wenig Motivation an einem Ort bündelt.",
+    includes: [
+      { title: "Reglemente", text: "Vorschriften und Regularien zum schnellen Nachschlagen." },
+      { title: "Grade & Fitness", text: "Dienstgrade der Armee und die Fitnesstests der RS." },
+      { title: "Kompaniebau-Game", text: "Ein kleines Spiel für zwischendurch, direkt in der App." },
+    ],
+    team: [{ name: "Joel Nef", role: "Director", slug: "joel" }],
+    techStack: ["Flutter", "Dart"],
+    timeline: [{ date: "2026", label: "Launch milvia.ch" }],
+    links: [{ label: "milvia.ch", url: "https://milvia.ch" }],
+  },
+  {
     slug: "swizzly",
     landing: "/swizzly",
     year: "2024",

@@ -40,7 +40,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
             </div>
             <div className="min-w-0 flex-1">
               <p className="truncate font-medium">{me?.name ?? "Ohne Profil"}</p>
-              <p className="truncate text-xs text-muted">{user.email}</p>
+              <p className="truncate text-xs text-muted">{me?.discord_username ? `Discord: ${me.discord_username}` : user.email}</p>
             </div>
           </div>
           <form action={signOut} className="mt-2 px-1">

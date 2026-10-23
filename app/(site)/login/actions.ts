@@ -94,6 +94,22 @@ export async function verifyCode(
   redirect(safeNext(form.get("weiter")));
 }
 
+export async function signInWithDiscord(form: FormData) {
+  if (!supabaseConfigured) return;
+  const next = safeNext(form.get("weiter"));
+  const supabase = await createSessionClient();
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: "discord",
+    options: {
+      redirectTo: `${await siteUrl()}/auth/callback?weiter=${encodeURIComponent(next)}`,
+    },
+  });
+  if (error || !data?.url) {
+    redirect(`/login?fehler=discord`);
+  }
+  redirect(data.url);
+}
+
 export async function signOut() {
   if (supabaseConfigured) {
     const supabase = await createSessionClient();

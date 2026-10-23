@@ -22,7 +22,7 @@ export default function Footer() {
         <div className="md:col-span-4">
           <Link href="/" aria-label="Aracle, zur Startseite" className="inline-flex transition-opacity hover:opacity-80 active:opacity-60">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/Brand_assets/logo/aracle-horizontal-white.png" alt="Aracle" width={1200} height={279} className="h-9 w-auto bg-transparent md:h-11" />
+            <img src="/Brand_assets/logo/aracle-horizontal-white.png" alt="Aracle" width={1200} height={279} className="h-14 w-auto bg-transparent md:h-[4.25rem]" />
           </Link>
           <p className="small mt-5 max-w-[18rem] text-muted">Creative &amp; Technology Studio aus Glarus.</p>
         </div>
