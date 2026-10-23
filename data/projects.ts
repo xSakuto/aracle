@@ -63,7 +63,7 @@ export const projects: Project[] = [
     category: "Hosting, Infrastruktur",
     status: "Aktiv",
     owner: "Tim Mockweiss & Joel Nef",
-    coverImage: `${H}/cloudhosting.jpg`,
+    coverImage: "/images/cloud/server-rack.webp",
     shortDescription:
       "Hosting und Server-Infrastruktur auf eigener Hardware. Die technische Basis aller Aracle-Projekte.",
     longDescription:
@@ -87,7 +87,7 @@ export const projects: Project[] = [
     ],
     links: [],
     gallery: [
-      { kind: "photo", src: `${H}/cloudhosting.jpg`, alt: "Serverraum mit Racks und Arbeitsplatz", width: 1600, height: 1067 },
+      { kind: "photo", src: "/images/cloud/server-rack.webp", alt: "Nahaufnahme eines Server-Racks", width: 1920, height: 1278 },
     ],
     featured: true,
   },
@@ -135,6 +135,7 @@ export const projects: Project[] = [
   {
     slug: "milvia",
     mark: "/images/milvia/milvia-mark.png",
+    coverImage: "/images/milvia/forest.webp",
     year: "2026",
     title: "Milvia",
     tagline: "Your companion through the RS.",
@@ -192,6 +193,7 @@ export const projects: Project[] = [
   },
   {
     slug: "beer-game",
+    mark: "/images/beer/beer-logo.png",
     year: "2025",
     title: "Beer Game",
     tagline: "A tiny online tavern for up to four.",
@@ -199,8 +201,7 @@ export const projects: Project[] = [
     category: "Game Dev",
     status: "In Entwicklung",
     owner: "Joel Nef",
-    // Grafiken direkt von der Steam-Seite (BEER, App 3438570)
-    coverImage: `${STEAM}/d024f1f8cd35164bd168559cc037a8983a2334ca/capsule_616x353.jpg`,
+    coverImage: "/images/beer/rusty-mug.webp",
     shortDescription:
       "Kleine Online-Taverne für bis zu vier Leute. Free to Play, bald auf Steam.",
     longDescription:
@@ -322,6 +323,7 @@ export const projects: Project[] = [
   {
     slug: "all-the-clients",
     mark: "/images/atc/atc-logo.png",
+    coverImage: "/images/atc/atc-world.webp",
     year: "2023",
     title: "All the Clients",
     tagline: "Vanilla+, tuned for performance.",
@@ -377,7 +379,8 @@ export const projects: Project[] = [
   },
   {
     slug: "araclesmp",
-    mark: "/images/smp/server-icon.png",
+    mark: "/images/smp/vanilla-logo.png",
+    coverImage: "/images/smp/smp-world.webp",
     landing: "/smp",
     year: "2025",
     title: "AracleSMP",
