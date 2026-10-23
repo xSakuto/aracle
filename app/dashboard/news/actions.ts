@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import type { SaveState } from "@/app/dashboard/actions";
-import { asTemplate, asTopic } from "@/data/news";
+import { asTemplate, asTopic, defaultSignature } from "@/data/news";
 import { getDiscordEmojis } from "@/lib/discord-emojis";
 import { convertShortcodes } from "@/lib/emoji";
 import { requireAdmin } from "@/lib/session";
@@ -30,7 +30,7 @@ function dbError(err: { code?: string; message: string }) {
 }
 
 export async function saveNews(_prev: SaveState, form: FormData): Promise<SaveState> {
-  const { supabase } = await requireAdmin();
+  const { supabase, me } = await requireAdmin();
   const id = text(form, "id", 64);
 
   // Kürzel wie :tools: und Server-Emojis werden hier zu dem, was Discord anzeigt.
@@ -39,7 +39,17 @@ export async function saveNews(_prev: SaveState, form: FormData): Promise<SaveSt
 
   const title = convert(text(form, "title", 600));
   const body = convert(text(form, "body", 8000));
-  const signature = convert(text(form, "signature", 160));
+
+  // Die Signatur ändert nur die Leitung. Alle anderen bekommen immer ihre eigene, egal was das Formular schickt.
+  let signature: string;
+  if (me.is_lead) {
+    signature = convert(text(form, "signature", 160));
+  } else if (id) {
+    const { data: current } = await supabase.from("news_posts").select("signature").eq("id", id).maybeSingle();
+    signature = current?.signature ?? "";
+  } else {
+    signature = defaultSignature(me.slug, me.name, me.is_lead);
+  }
   if (title.length < 3) return { error: "Der Titel braucht mindestens 3 Zeichen." };
   if (title.length > 300) return { error: "Der Titel ist zu lang (höchstens 300 Zeichen, Emojis zählen mit)." };
   if (body.length > 4000) return { error: `Der Text ist zu lang: ${body.length} von 4000 Zeichen (Emojis zählen mit).` };
@@ -63,11 +73,9 @@ export async function saveNews(_prev: SaveState, form: FormData): Promise<SaveSt
     return { ok: true, at: Date.now() };
   }
 
-  const { data: me } = await supabase.auth.getUser();
-  const { data: author } = await supabase.from("profiles").select("id").eq("user_id", me.user?.id ?? "").maybeSingle();
   const { data, error } = await supabase
     .from("news_posts")
-    .insert({ ...fields, author_id: author?.id ?? null })
+    .insert({ ...fields, author_id: me.id })
     .select("id")
     .single();
   if (error) return { error: dbError(error) };

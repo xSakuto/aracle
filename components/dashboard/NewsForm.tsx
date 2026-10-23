@@ -39,11 +39,14 @@ export default function NewsForm({
   action,
   emojis,
   defaultSignature,
+  canEditSignature,
 }: {
   post: NewsFormValues;
   action: (prev: SaveState, form: FormData) => Promise<SaveState>;
   emojis: CustomEmoji[];
   defaultSignature: string;
+  /** Nur die Leitung darf die Signatur ändern. Der Server erzwingt das ebenfalls. */
+  canEditSignature: boolean;
 }) {
   const [state, formAction, pending] = useActionState(action, {});
   const [topic, setTopic] = useState(post.topic);
@@ -216,15 +219,22 @@ export default function NewsForm({
                 name="signature"
                 maxLength={160}
                 value={signature}
+                readOnly={!canEditSignature}
                 onChange={(e) => setSignature(e.target.value)}
                 placeholder="Leer lassen für keine Signatur"
-                className="dash-input max-w-[18rem] flex-1"
+                className={`dash-input max-w-[18rem] flex-1 ${canEditSignature ? "" : "cursor-not-allowed opacity-70"}`}
               />
-              <button type="button" onClick={() => { setSignature(defaultSignature); touch(); }} className="dash-btn-quiet">
-                Standard
-              </button>
+              {canEditSignature && (
+                <button type="button" onClick={() => { setSignature(defaultSignature); touch(); }} className="dash-btn-quiet">
+                  Standard
+                </button>
+              )}
             </div>
-            <p className="dash-help mt-1">Standard bist du: Joel als Sakuto mit 🪽, alle anderen mit 🔥.</p>
+            <p className="dash-help mt-1">
+              {canEditSignature
+                ? "Standard bist du: Joel als Sakuto mit 🪽, alle anderen mit 🔥. Nur du darfst die Signatur ändern."
+                : "Deine Signatur wird automatisch gesetzt und kann nur von der Leitung geändert werden."}
+            </p>
           </div>
 
           <label className="flex min-h-10 cursor-pointer items-start gap-3 text-sm">

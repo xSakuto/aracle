@@ -42,6 +42,7 @@ export default async function EditNewsPage({
           action={saveNews}
           emojis={emojis}
           defaultSignature={defaultSignature(me.slug, me.name, me.is_lead)}
+          canEditSignature={me.is_lead}
           post={{
             id: row.id,
             topic: post.topic,
