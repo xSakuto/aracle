@@ -161,6 +161,33 @@ export default function SwizzlyPage() {
         </ul>
       </section>
 
+      <section aria-label="Unterwegs" className="wrap py-[var(--section)]">
+        <ul className="grid gap-4 sm:grid-cols-2">
+          <li>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/images/swizzly/ktm-mountain.webp"
+              alt="Swizzly auf der KTM 690 SMC R vor Glarner Bergkulisse"
+              width={1080}
+              height={1156}
+              loading="lazy"
+              className="aspect-[4/5] w-full rounded-[var(--radius)] object-cover"
+            />
+          </li>
+          <li>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/images/swizzly/ktm-road.webp"
+              alt="KTM am Strassenrand vor den Glarner Alpen"
+              width={1600}
+              height={2133}
+              loading="lazy"
+              className="aspect-[4/5] w-full rounded-[var(--radius)] object-cover"
+            />
+          </li>
+        </ul>
+      </section>
+
       <section aria-labelledby="rs-title" className="wrap grid gap-10 py-[var(--section)] md:grid-cols-12">
         <div className="md:col-span-4">
           <h2 id="rs-title" className="head">Ready for the RS.</h2>
