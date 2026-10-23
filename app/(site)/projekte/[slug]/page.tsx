@@ -14,11 +14,12 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const p = getProject(slug);
-  if (!p) return { title: "Projekt · Aracle" };
+  if (!p) return { title: "Projekt" };
   return {
-    title: `${p.title} · Aracle`,
+    title: p.title,
+    alternates: { canonical: `/projekte/${p.slug}` },
     description: p.shortDescription,
-    openGraph: { title: `${p.title} · Aracle`, description: p.shortDescription, images: p.coverImage ? [p.coverImage] : undefined },
+    openGraph: { title: `${p.title} · Aracle`, url: `/projekte/${p.slug}`, description: p.shortDescription, images: p.coverImage ? [p.coverImage] : undefined },
   };
 }
 

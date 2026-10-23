@@ -4,7 +4,7 @@ import { supabaseConfigured } from "@/lib/supabase/config";
 import { createSessionClient } from "@/lib/supabase/server";
 
 export const metadata = {
-  title: "Team-Login · Aracle",
+  title: "Team-Login",
   robots: { index: false, follow: false },
 };
 

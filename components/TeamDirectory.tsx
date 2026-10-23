@@ -2,11 +2,13 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import Portrait from "@/components/Portrait";
+import DuoPortrait from "@/components/DuoPortrait";
+import TouchLight from "@/components/TouchLight";
+import { APPLY_ROLES } from "@/data/apply";
 import ContactLinks from "@/components/ContactLinks";
 import type { TeamMember } from "@/lib/team";
 
-type ProjectRef = { slug: string; title: string; href: string };
+type ProjectRef = { slug: string; title: string; href: string; mark?: string };
 
 // Team als Register auf dem Raster: Porträt, Name und Rolle, kurze Bio,
 // Projekte als ruhige Liste. Der Filter blendet nicht aus, er nimmt zurück,
@@ -25,6 +27,10 @@ export default function TeamDirectory({
   );
   const hrefOf = useMemo(
     () => Object.fromEntries(projects.map((p) => [p.slug, p.href])),
+    [projects],
+  );
+  const markOf = useMemo(
+    () => Object.fromEntries(projects.map((p) => [p.slug, p.mark])),
     [projects],
   );
   // Nur Projekte zeigen, an denen jemand beteiligt ist, in der Reihenfolge der Projektliste.
@@ -69,12 +75,12 @@ export default function TeamDirectory({
             <li
               key={m.id}
               id={m.slug}
-              className={`grid scroll-mt-24 grid-cols-[7.5rem_1fr] gap-x-5 gap-y-6 border-t border-line py-8 transition-opacity duration-500 sm:grid-cols-[10rem_1fr] md:grid-cols-12 md:gap-x-8 md:py-12 ${
+              className={`duo-host grid scroll-mt-24 grid-cols-[7.5rem_1fr] gap-x-5 gap-y-6 border-t border-line py-8 transition-opacity duration-500 sm:grid-cols-[10rem_1fr] md:grid-cols-12 md:gap-x-8 md:py-12 ${
                 on ? "opacity-100" : "opacity-25"
               }`}
             >
               <div className="overflow-hidden rounded-[var(--radius)] md:col-span-3">
-                <Portrait name={m.name} photo={m.photo} accent={m.accent} sizes="(min-width: 768px) 22vw, 10rem" />
+                <DuoPortrait name={m.name} photo={m.photo} accent={m.accent} sizes="(min-width: 768px) 22vw, 10rem" />
               </div>
 
               <div className="flex min-w-0 flex-col md:col-span-5">
@@ -93,29 +99,77 @@ export default function TeamDirectory({
 
               {m.projects.length > 0 && (
                 <div className="col-span-2 md:col-span-4">
-                  <h3 className="small text-muted">Projekte</h3>
-                  <ul className="mt-3 border-b border-line/70">
-                    {m.projects.map((p) => (
-                      <li key={p.slug}>
-                        <Link
-                          href={hrefOf[p.slug] ?? `/projekte/${p.slug}`}
-                          className={`seg-host relative flex min-h-10 items-center justify-between gap-4 border-t border-line/70 text-[0.9375rem] transition-colors hover:text-aqua ${
-                            filter === p.slug ? "is-current text-ink" : ""
-                          }`}
-                        >
-                          <span aria-hidden className="seg seg-top" />
-                          {titleOf[p.slug] ?? p.slug}
-                          {p.role && <span className="small shrink-0 text-muted">{p.role}</span>}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
+                  {/* Nach Rolle gruppiert: die Rolle steht einmal, darunter die Projekte mit Logo */}
+                  {Object.entries(
+                    m.projects.reduce<Record<string, string[]>>((acc, p) => {
+                      (acc[p.role || m.role] ??= []).push(p.slug);
+                      return acc;
+                    }, {}),
+                  ).map(([role, slugs]) => (
+                    <div key={role} className="[&+&]:mt-6">
+                      <h3 className="small text-muted">
+                        {role} <span className="nums">· {slugs.length}</span>
+                      </h3>
+                      <ul className="mt-3 flex flex-wrap gap-1.5">
+                        {slugs.map((slug) => (
+                          <li key={slug}>
+                            <Link
+                              href={hrefOf[slug] ?? `/projekte/${slug}`}
+                              className={`group inline-flex min-h-9 items-center gap-2 rounded-[var(--radius)] border py-1 pl-1 pr-3 text-[0.875rem] transition-[border-color,color] duration-200 hover:border-aqua hover:text-aqua ${
+                                filter === slug ? "border-aqua text-ink" : "border-line"
+                              }`}
+                            >
+                              <span aria-hidden className="grid h-7 w-7 shrink-0 place-items-center overflow-hidden rounded-[4px] bg-raised">
+                                {markOf[slug] ? (
+                                  // eslint-disable-next-line @next/next/no-img-element
+                                  <img src={markOf[slug]} alt="" width={28} height={28} loading="lazy" className="max-h-5 max-w-5 bg-transparent object-contain" />
+                                ) : (
+                                  <span className="text-[0.6875rem] font-semibold text-muted">{(titleOf[slug] ?? slug).slice(0, 2)}</span>
+                                )}
+                              </span>
+                              {titleOf[slug] ?? slug}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
                 </div>
               )}
             </li>
           );
         })}
+        <li className="grid grid-cols-[7.5rem_1fr] gap-x-5 gap-y-6 border-t border-line py-8 sm:grid-cols-[10rem_1fr] md:grid-cols-12 md:gap-x-8 md:py-12">
+          <Link
+            href="/apply"
+            aria-label="Bewerben"
+            className="group grid aspect-[4/5] place-items-center rounded-[var(--radius)] border border-dashed border-ink/25 transition-colors hover:border-aqua md:col-span-3"
+          >
+            <span aria-hidden className="text-[2.5rem] font-light text-muted transition-colors group-hover:text-aqua">+</span>
+          </Link>
+          <div className="flex min-w-0 flex-col md:col-span-5">
+            <p className="kicker text-aqua">Wir suchen</p>
+            <h2 className="head mt-2">Dein Platz im Team.</h2>
+            <p className="mt-6 max-w-[44ch] text-ink/80">
+              Du programmierst, gestaltest oder hilfst gerne bei Moderation und Organisation? Dann bewirb dich direkt.
+            </p>
+            <Link href="/apply" className="btn mt-6 self-start">Jetzt bewerben</Link>
+          </div>
+          <div className="col-span-2 md:col-span-4">
+            <h3 className="small text-muted">Offen</h3>
+            <ul className="mt-3 flex flex-wrap gap-1.5">
+              {APPLY_ROLES.map((r) => (
+                <li key={r.key}>
+                  <Link href={`/apply?bereich=${r.key}`} className="inline-flex min-h-9 items-center rounded-[var(--radius)] border border-line px-3 text-[0.875rem] transition-[border-color,color] hover:border-aqua hover:text-aqua">
+                    {r.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </li>
       </ul>
+      <TouchLight />
     </>
   );
 }

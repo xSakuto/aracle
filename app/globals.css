@@ -503,3 +503,21 @@ html.lenis, html.lenis body { height: auto; }
   background-position: 12% 22%, 28% 64%, 47% 14%, 63% 38%, 81% 18%, 92% 56%;
   opacity: 0.35;
 }
+
+/* Das A in der Navigation: hebt sich beim Überfahren leicht an */
+.nav-mark img { transition: transform 420ms var(--ease-out), opacity 200ms ease; }
+.nav-mark:hover img { transform: translateY(-2px); }
+.nav-mark:active img { opacity: 0.7; }
+
+/* ---------- Team: schwarzweiss, farbig beim Überfahren ---------- */
+.duo-base { filter: grayscale(1) contrast(1.06) brightness(0.92); }
+.duo-color {
+  opacity: 0; transform: scale(1.04);
+  transition: opacity 700ms var(--ease-out), transform 1100ms var(--ease-out);
+}
+.duo-host:hover .duo-color, .duo-host:focus-within .duo-color, .duo-host.is-lit .duo-color { opacity: 1; transform: scale(1); }
+@media (prefers-reduced-motion: reduce) {
+  .duo-color { transition: opacity 200ms ease; transform: none; }
+}
+.theme-swizzly { --color-aqua: #ffb547; --color-accent-ink: #1a1003; }  /* Bernstein */
+.theme-zelda { --color-aqua: #3fe0c5; --color-accent-ink: #03140f; }  /* Sheikah-Türkis */

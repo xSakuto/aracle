@@ -11,7 +11,7 @@ const links = [
   { href: "/history", label: "Journey" },
 ];
 
-// Desktop: eine Leiste auf dem 12er-Raster, getragen von einer Haarlinie.
+// Desktop: eine Leiste auf dem 12er-Raster, das A in der Mitte, getragen von einer Haarlinie.
 // Der aktive Punkt ist ein Segment in Gletscherblau auf dieser Linie, wie die
 // Gipfelmarken im Panorama. Mobile: die bewährte Glasleiste mit Vollbild-Menü.
 export default function Navbar() {
@@ -47,22 +47,7 @@ export default function Navbar() {
           {/* Ticks auf der Haarlinie, im Takt des Hintergrundrasters */}
           <span aria-hidden className="nav-ticks hidden md:block" />
 
-          <Link
-            href="/"
-            aria-label="Aracle, zur Startseite"
-            className="flex items-center transition-opacity hover:opacity-80 active:opacity-60 md:col-span-3"
-          >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/Brand_assets/aracle-logo.png"
-              alt="Aracle"
-              width={1111}
-              height={260}
-              className="h-6 w-auto bg-transparent"
-            />
-          </Link>
-
-          <nav aria-label="Hauptnavigation" className="hidden h-full items-stretch gap-7 md:col-span-5 md:col-start-4 md:flex">
+          <nav aria-label="Hauptnavigation" className="hidden h-full items-stretch gap-7 md:col-span-5 md:flex">
             {links.map((l) => {
               const on = isActive(l.href);
               return (
@@ -81,17 +66,34 @@ export default function Navbar() {
             })}
           </nav>
 
-          <div className="hidden items-center justify-between gap-6 md:col-span-4 md:col-start-9 md:flex">
+          {/* Das A in der Mitte, auf Handy und Desktop */}
+          <Link
+            href="/"
+            aria-label="Aracle, zur Startseite"
+            className="nav-mark absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 items-center justify-center md:static md:col-span-2 md:translate-x-0 md:translate-y-0"
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/Brand_assets/logo/aracle-mark-white.png"
+              alt="Aracle"
+              width={512}
+              height={413}
+              className="h-7 w-auto bg-transparent md:h-8"
+            />
+          </Link>
+
+          <div className="hidden items-center justify-end gap-6 md:col-span-5 md:flex">
             <p className="nums hidden text-[0.75rem] text-muted lg:block">
               <span className="text-ink/80">Glarus</span>
               <span className="ml-2">47°02′ N</span>
               <span className="ml-2">9°04′ E</span>
             </p>
-            <Link href="/kontakt" className="btn ml-auto min-h-8 px-3.5 text-[0.8125rem]">
+            <Link href="/kontakt" className="btn min-h-8 px-3.5 text-[0.8125rem]">
               Projekt anfragen
             </Link>
           </div>
 
+          <span aria-hidden className="w-11 md:hidden" />
           <button
             type="button"
             aria-label={open ? "Menü schliessen" : "Menü öffnen"}

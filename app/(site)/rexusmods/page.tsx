@@ -3,6 +3,7 @@ import Hud from "@/components/visuals/Hud";
 import { getProject } from "@/data/projects";
 
 export const metadata = {
+  alternates: { canonical: "/rexusmods" }, openGraph: { images: [{ url: "/og/rexusmods.jpg", width: 1200, height: 630 }] },
   title: "RexusMods · Mods für GTA V und Flugsimulatoren",
   description: "RexusMods: Gebäude, Lackierungen und Fahrzeuge für GTA V und FiveM, neu auch Add-ons für Flugsimulatoren. Von Joel Nef und Tim Mockweiss.",
 };
@@ -69,6 +70,8 @@ export default function RexusModsPage() {
         </div>
 
         <div className="wrap relative mt-auto pb-16 pt-32 md:pb-20">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/images/rexusmods/rexusmods-logo.png" alt="RexusMods" width={600} height={326} className="mb-6 h-16 w-auto bg-transparent md:h-20" data-rise />
           <p className="kicker text-aqua" data-rise>RexusMods · Wieder aktiv</p>
           <h1 className="mega mt-5 max-w-[11ch]" data-split="load">Mods for GTA V. Now taking flight.</h1>
           <div className="mt-8 flex flex-col gap-6 md:flex-row md:items-end md:justify-between" data-rise style={{ ["--i" as string]: 2 }}>

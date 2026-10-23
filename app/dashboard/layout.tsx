@@ -5,7 +5,7 @@ import DashNav from "@/components/dashboard/DashNav";
 import { requireMember } from "@/lib/session";
 
 export const metadata = {
-  title: "Team-Bereich · Aracle",
+  title: "Team-Bereich",
   robots: { index: false, follow: false },
 };
 

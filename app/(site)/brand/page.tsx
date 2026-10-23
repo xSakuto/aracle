@@ -9,7 +9,8 @@ import { GLAERNISCH } from "@/data/panorama/glaernisch";
 import { MOUNTAINS } from "@/lib/mountains";
 
 export const metadata = {
-  title: "Brand Guidelines · Aracle",
+  alternates: { canonical: "/brand" },
+  title: "Brand Guidelines",
   description: "Wie Aracle aussieht, klingt und sich bewegt: Logo, Farben, Typografie, Designsprache und Motion.",
 };
 
@@ -26,7 +27,6 @@ const sections = [
   { id: "downloads", label: "Downloads" },
 ];
 
-const asset = (f: string) => encodeURI(`/Brand_assets/${f}`);
 
 type Swatch = { name: string; hex: string; token?: string; use: string; ink?: "dark" | "light" };
 
@@ -63,12 +63,11 @@ const colorGroups: { title: string; text: string; swatches: Swatch[] }[] = [
   },
   {
     title: "Im Logo",
-    text: "Das Logo hat eigene Werte. Sie sind nicht Teil der Website-Palette und werden nur im Logo verwendet.",
+    text: "Das Zeichen hat eigene Farbvarianten. Sie gehören zum Logo und nicht zur Website-Palette.",
     swatches: [
-      { name: "Logo-Türkis", hex: "#2ED9D9", use: "Schriftzug der Wortmarken", ink: "dark" },
-      { name: "Unterzeile hell", hex: "#DCE0DF", use: "Unterzeile auf dunklem Grund", ink: "dark" },
-      { name: "Unterzeile dunkel", hex: "#231F20", use: "Unterzeile auf hellem Grund" },
-      { name: "Kreuz im Logo", hex: "#FF0000", use: "Schweizer Kreuz im Primärlogo" },
+      { name: "Logo-Blau", hex: "#00ACEC", use: "Farbvariante des Zeichens", ink: "dark" },
+      { name: "Logo-Rot", hex: "#ED1C24", use: "Farbvariante des Zeichens" },
+      { name: "Logo-Grün", hex: "#00A350", use: "Farbvariante des Zeichens" },
     ],
   },
 ];
@@ -83,15 +82,36 @@ const typeScale = [
   { name: "Kicker", cls: "kicker", size: "13 px, Versalien", lh: "1.5", track: "0.06em", sample: "Create. Connect. Inspire." },
 ];
 
-const logoFiles = [
-  { file: "aracle-logo.png", title: "Primärlogo", note: "Bergmarke, Schriftzug, Kreuz. Für dunklen Grund.", w: 1111, h: 260, kb: 37, bg: "dark" as const },
-  { file: "aracle logo - black.png", title: "Wortmarke Media & Design", note: "Für dunklen Grund", w: 793, h: 190, kb: 11, bg: "dark" as const },
-  { file: "aracle logo - white.png", title: "Wortmarke Media & Design", note: "Für hellen Grund", w: 793, h: 190, kb: 11, bg: "light" as const },
-  { file: "aracle cloud hosting logo - black.png", title: "Wortmarke Cloud Hosting", note: "Für dunklen Grund", w: 793, h: 190, kb: 11, bg: "dark" as const },
-  { file: "aracle cloud hosting logo - white.png", title: "Wortmarke Cloud Hosting", note: "Für hellen Grund", w: 793, h: 190, kb: 11, bg: "light" as const },
-  { file: "aracle services logo - black.png", title: "Wortmarke Services", note: "Für dunklen Grund", w: 793, h: 190, kb: 10, bg: "dark" as const },
-  { file: "aracle services logo - white.png", title: "Wortmarke Services", note: "Für hellen Grund", w: 793, h: 190, kb: 10, bg: "light" as const },
+const L = "/Brand_assets/logo";
+const D = "/Brand_assets/logo/download";
+
+// Neues Logo (Oktober 2026): das A als Zeichen, dazu Schriftzug und Leitsatz.
+const lockups = [
+  { src: `${L}/aracle-horizontal-white.png`, title: "Horizontal", note: "Für dunklen Grund", w: 1200, h: 279, bg: "dark" as const },
+  { src: `${L}/aracle-horizontal-black.png`, title: "Horizontal", note: "Für hellen Grund", w: 1200, h: 279, bg: "light" as const },
+  { src: `${L}/aracle-vertical-white.png`, title: "Vertikal", note: "Für dunklen Grund", w: 831, h: 615, bg: "dark" as const },
+  { src: `${L}/aracle-vertical-black.png`, title: "Vertikal", note: "Für hellen Grund", w: 831, h: 615, bg: "light" as const },
 ];
+
+const markColors = [
+  { src: `${L}/aracle-mark-white.png`, title: "Weiss", hex: "Standard auf dunklem Grund" },
+  { src: `${L}/aracle-mark-aqua.png`, title: "Blau", hex: "#00ACEC" },
+  { src: `${L}/aracle-mark-red.png`, title: "Rot", hex: "#ED1C24" },
+  { src: `${L}/aracle-mark-green.png`, title: "Grün", hex: "#00A350" },
+];
+
+const downloads = [
+  { file: `${D}/aracle-a-white.png`, preview: `${L}/aracle-mark-white.png`, title: "Zeichen, weiss", note: "Für dunklen Grund", size: "2614 × 2614 px", bg: "dark" as const },
+  { file: `${D}/aracle-a-black.png`, preview: `${L}/aracle-mark-black.png`, title: "Zeichen, schwarz", note: "Für hellen Grund", size: "2614 × 2614 px", bg: "light" as const },
+  { file: `${D}/aracle-a-aqua.png`, preview: `${L}/aracle-mark-aqua.png`, title: "Zeichen, blau", note: "Farbvariante", size: "2614 × 2614 px", bg: "dark" as const },
+  { file: `${D}/aracle-a-red.png`, preview: `${L}/aracle-mark-red.png`, title: "Zeichen, rot", note: "Farbvariante", size: "2614 × 2614 px", bg: "dark" as const },
+  { file: `${D}/aracle-a-green.png`, preview: `${L}/aracle-mark-green.png`, title: "Zeichen, grün", note: "Farbvariante", size: "2614 × 2614 px", bg: "dark" as const },
+  { file: `${D}/aracle-horizontal-white.png`, preview: `${L}/aracle-horizontal-white.png`, title: "Horizontal, weiss", note: "Für dunklen Grund", size: "1593 × 370 px", bg: "dark" as const },
+  { file: `${D}/aracle-horizontal-black.png`, preview: `${L}/aracle-horizontal-black.png`, title: "Horizontal, schwarz", note: "Für hellen Grund", size: "1593 × 370 px", bg: "light" as const },
+  { file: `${D}/aracle-vertical-white.png`, preview: `${L}/aracle-vertical-white.png`, title: "Vertikal, weiss", note: "Für dunklen Grund", size: "831 × 615 px", bg: "dark" as const },
+  { file: `${D}/aracle-vertical-black.png`, preview: `${L}/aracle-vertical-black.png`, title: "Vertikal, schwarz", note: "Für hellen Grund", size: "1000 × 1000 px", bg: "light" as const },
+];
+
 
 const misuse = [
   { label: "So", ok: true, style: {} },
@@ -211,42 +231,55 @@ export default function BrandPage() {
 
           {/* ---------- Logo ---------- */}
           <section id="logo" aria-labelledby="logo-title" className="scroll-mt-24">
-            <Head id="logo" title="Logo." lead="Ein Primärlogo mit Bergmarke und drei Wortmarken für die Bereiche. Das Primärlogo steht immer auf dunklem Grund." />
+            <Head id="logo" title="Logo." lead="Das A ist das Zeichen von Aracle: zwei Linien, die sich zu einem Gipfel treffen. Es steht allein oder zusammen mit Schriftzug und Leitsatz." />
 
             <div className="mt-12 grid gap-4 md:grid-cols-9">
-              <figure className="md:col-span-6">
-                <div className="tile grid min-h-[18rem] place-items-center p-8 md:min-h-[22rem]">
+              <figure className="md:col-span-5">
+                <div className="tile grid min-h-[20rem] place-items-center p-10 md:min-h-[24rem]">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={asset("aracle-logo.png")} alt="Aracle Primärlogo" width={1111} height={260} className="h-auto w-full max-w-[26rem] bg-transparent" />
+                  <img src={`${L}/aracle-mark-white.png`} alt="Aracle Zeichen" width={512} height={413} className="h-auto w-full max-w-[14rem] bg-transparent" />
                 </div>
-                <figcaption className="small mt-2 text-muted">Primärlogo: Bergmarke, Schriftzug ARACLE, Unterzeile Media &amp; Design und Schweizer Kreuz.</figcaption>
+                <figcaption className="small mt-2 text-muted">Zeichen. In der Navigation, als Favicon und überall, wo wenig Platz ist.</figcaption>
               </figure>
-              <figure className="md:col-span-3">
-                <div className="tile grid min-h-[18rem] place-items-center p-8 md:min-h-[22rem]">
-                  <div className="overflow-hidden" style={{ height: "7rem", width: `${7 * (327 / 260)}rem` }}>
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={asset("aracle-logo.png")} alt="Aracle Bergmarke" width={1111} height={260} className="h-full w-auto max-w-none bg-transparent" />
-                  </div>
+              <figure className="md:col-span-4">
+                <div className="grid min-h-[20rem] place-items-center rounded-[var(--radius)] bg-ink p-10 md:min-h-[24rem]">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={`${L}/aracle-mark-black.png`} alt="Aracle Zeichen schwarz" width={512} height={413} className="h-auto w-full max-w-[10rem] bg-transparent" />
                 </div>
-                <figcaption className="small mt-2 text-muted">Bergmarke. Teil des Primärlogos, liegt noch nicht als eigene Datei vor.</figcaption>
+                <figcaption className="small mt-2 text-muted">Auf hellem Grund in Schwarz.</figcaption>
               </figure>
             </div>
 
-            <Sub>Wortmarken für hellen und dunklen Grund</Sub>
-            <p className="mt-3 max-w-[60ch] text-[0.9375rem] text-ink/75">
-              Achtung bei den Dateinamen: «black» und «white» bezeichnen den Hintergrund, für
-              den die Datei gedacht ist, nicht die Farbe des Logos.
-            </p>
+            <Sub>Mit Schriftzug</Sub>
             <ul className="mt-6 grid gap-4 sm:grid-cols-2">
-              {logoFiles.slice(1).map((f) => (
-                <li key={f.file}>
-                  <div className={`grid h-36 place-items-center rounded-[var(--radius)] px-8 ${f.bg === "light" ? "bg-ink" : "bg-surface"}`}>
+              {lockups.map((f) => (
+                <li key={f.src}>
+                  <div className={`grid h-44 place-items-center rounded-[var(--radius)] px-8 ${f.bg === "light" ? "bg-ink" : "bg-surface"}`}>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={asset(f.file)} alt={`${f.title}, ${f.note}`} width={f.w} height={f.h} loading="lazy" className="h-auto w-full max-w-[15rem] bg-transparent" />
+                    <img src={f.src} alt={`Aracle ${f.title}, ${f.note}`} width={f.w} height={f.h} loading="lazy" className={`h-auto bg-transparent ${f.title === "Horizontal" ? "w-full max-w-[18rem]" : "max-h-32 w-auto"}`} />
                   </div>
                   <p className="small mt-2 flex justify-between gap-4">
                     <span>{f.title}</span>
                     <span className="text-muted">{f.note}</span>
+                  </p>
+                </li>
+              ))}
+            </ul>
+
+            <Sub>Farbvarianten des Zeichens</Sub>
+            <p className="mt-3 max-w-[60ch] text-[0.9375rem] text-ink/75">
+              Die linke Flanke des A kann eine Farbe tragen. Standard ist Weiss mit grauem Verlauf.
+            </p>
+            <ul className="mt-6 grid grid-cols-2 gap-4 lg:grid-cols-4">
+              {markColors.map((m) => (
+                <li key={m.src}>
+                  <div className="tile grid h-36 place-items-center p-6">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={m.src} alt={`Aracle Zeichen ${m.title}`} width={512} height={413} loading="lazy" className="h-20 w-auto bg-transparent" />
+                  </div>
+                  <p className="small mt-2 flex justify-between gap-3">
+                    <span>{m.title}</span>
+                    <span className="nums text-muted">{m.hex}</span>
                   </p>
                 </li>
               ))}
@@ -258,7 +291,7 @@ export default function BrandPage() {
                 <div className="relative">
                   <div className="clearzone p-[1.5rem]">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={asset("aracle-logo.png")} alt="" width={1111} height={260} className="h-24 w-auto bg-transparent outline outline-1 outline-line" />
+                    <img src={`${L}/aracle-horizontal-white.png`} alt="" width={1200} height={279} className="h-16 w-auto bg-transparent outline outline-1 outline-line" />
                   </div>
                   <span aria-hidden className="small nums absolute -top-6 left-1/2 -translate-x-1/2 text-aqua">x</span>
                   <span aria-hidden className="small nums absolute -left-5 top-1/2 -translate-y-1/2 text-aqua">x</span>
@@ -270,8 +303,8 @@ export default function BrandPage() {
                   <p className="small mt-1 text-ink/75">Ein Viertel der Logohöhe, rundum frei von Text, Kanten und Bildmotiven.</p>
                 </li>
                 <li className="border-t border-line py-4">
-                  <p className="font-medium">Mindestens 24 px hoch</p>
-                  <p className="small mt-1 text-ink/75">So steht es in der Navigation. Kleiner wird die Unterzeile unlesbar.</p>
+                  <p className="font-medium">Zeichen ab 24 px, Schriftzug ab 32 px Höhe</p>
+                  <p className="small mt-1 text-ink/75">Kleiner wird der Leitsatz unter dem Schriftzug unlesbar. Dann nur das Zeichen.</p>
                 </li>
               </ul>
             </div>
@@ -282,7 +315,7 @@ export default function BrandPage() {
                 <li key={m.label}>
                   <div className={`grid h-32 place-items-center overflow-hidden rounded-[var(--radius)] px-6 ${m.light ? "bg-ink" : "bg-surface"}`}>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={asset("aracle-logo.png")} alt="" width={1111} height={260} loading="lazy" className="h-auto w-full max-w-[11rem] bg-transparent" style={m.style} />
+                    <img src={`${L}/aracle-horizontal-white.png`} alt="" width={1200} height={279} loading="lazy" className="h-auto w-full max-w-[11rem] bg-transparent" style={m.style} />
                   </div>
                   <p className={`small mt-2 font-medium ${m.ok ? "text-aqua" : "text-danger"}`}>
                     <span aria-hidden className="mr-1.5">{m.ok ? "✓" : "✕"}</span>
@@ -510,33 +543,33 @@ export default function BrandPage() {
 
           {/* ---------- Downloads ---------- */}
           <section id="downloads" aria-labelledby="downloads-title" className="scroll-mt-24">
-            <Head id="downloads" title="Downloads." lead="Die Logo-Dateien, so wie sie auf der Website verwendet werden. PNG mit transparentem Hintergrund." />
+            <Head id="downloads" title="Downloads." lead="Alle Logo-Dateien in voller Grösse, PNG mit transparentem Hintergrund." />
             <ul className="mt-10 border-b border-line">
-              {logoFiles.map((f) => (
+              {downloads.map((f) => (
                 <li key={f.file}>
                   <a
-                    href={asset(f.file)}
+                    href={f.file}
                     download
                     className="seg-host group relative grid grid-cols-[5.5rem_1fr_auto] items-center gap-x-5 border-t border-line py-4 sm:grid-cols-[7rem_1fr_auto_auto]"
                   >
                     <span aria-hidden className="seg seg-top" />
                     <span className={`grid h-12 place-items-center rounded-[4px] px-2 ${f.bg === "light" ? "bg-ink" : "bg-surface"}`}>
                       {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={asset(f.file)} alt="" width={f.w} height={f.h} loading="lazy" className="h-auto max-h-8 w-full bg-transparent object-contain" />
+                      <img src={f.preview} alt="" loading="lazy" className="h-auto max-h-8 w-full bg-transparent object-contain" />
                     </span>
                     <span className="min-w-0">
                       <span className="block font-medium transition-colors group-hover:text-aqua">{f.title}</span>
                       <span className="small block truncate text-muted">{f.note}</span>
                     </span>
-                    <span className="small nums hidden text-muted sm:block">{f.w} × {f.h} px · {f.kb} KB</span>
+                    <span className="small nums hidden text-muted sm:block">{f.size}</span>
                     <span className="small font-medium text-aqua">PNG laden</span>
                   </a>
                 </li>
               ))}
             </ul>
             <p className="small mt-6 max-w-[60ch] text-muted">
-              Vektordateien (SVG) und die Bergmarke als einzelne Datei gibt es noch nicht. Für
-              Druck oder grosse Formate: <a href="mailto:info@aracle.ch" className="link-under">info@aracle.ch</a>
+              Vektordateien (AI, SVG) für Druck und grosse Formate gibt es auf Anfrage:{" "}
+              <a href="mailto:info@aracle.ch" className="link-under">info@aracle.ch</a>
             </p>
           </section>
         </div>

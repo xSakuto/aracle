@@ -1,12 +1,12 @@
 import TeamDirectory from "@/components/TeamDirectory";
-import CtaBand from "@/components/CtaBand";
 import { projectHref, projects } from "@/data/projects";
 import { getTeam } from "@/lib/team";
 
 export const revalidate = 60;
 
 export const metadata = {
-  title: "Team · Aracle",
+  alternates: { canonical: "/team" },
+  title: "Team",
   description: "Die Leute hinter Aracle und woran sie arbeiten.",
 };
 
@@ -28,16 +28,10 @@ export default async function TeamPage() {
           </div>
           <TeamDirectory
             members={team}
-            projects={projects.map((p) => ({ slug: p.slug, title: p.title, href: projectHref(p) }))}
+            projects={projects.map((p) => ({ slug: p.slug, title: p.title, href: projectHref(p), mark: p.mark }))}
           />
         </div>
       </div>
-      <CtaBand
-        title="Du willst mitmachen?"
-        text="Du kannst etwas richtig gut, Video, Design, Code oder Community, und hast Lust auf echte Projekte? Schreib uns."
-        action="Bewerbung schicken"
-        href="/apply"
-      />
     </>
   );
 }

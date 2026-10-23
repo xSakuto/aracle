@@ -40,6 +40,8 @@ export interface Project {
   links: { label: string; url: string }[];
   gallery?: GalleryItem[];
   featured?: boolean;
+  /** Kleines Logo für Listen und Credits (quadratisch oder breit, transparent) */
+  mark?: string;
   /** Eigene Landing Page statt der Projektseite */
   landing?: string;
   /** Startjahr */
@@ -52,6 +54,7 @@ const STEAM = "https://shared.fastly.steamstatic.com/store_item_assets/steam/app
 export const projects: Project[] = [
   {
     slug: "aracle-cloud-hosting",
+    mark: "/images/cloud/aracle-cloud-logo.png",
     landing: "/hosting",
     year: "2022",
     title: "Aracle Cloud",
@@ -90,6 +93,7 @@ export const projects: Project[] = [
   },
   {
     slug: "highside",
+    mark: "/images/highside/highside-h.png",
     landing: "/highside",
     year: "2024",
     title: "Highside",
@@ -130,6 +134,7 @@ export const projects: Project[] = [
   },
   {
     slug: "swizzly",
+    landing: "/swizzly",
     year: "2024",
     title: "Swizzly",
     tagline: "Motorcycle content, made for the feed.",
@@ -138,7 +143,7 @@ export const projects: Project[] = [
     status: "Aktiv",
     owner: "Joel Nef",
     shortDescription:
-      "Motorrad-Content auf TikTok und Instagram, eng verbunden mit Highside.",
+      "Motorrad, Entertainment und RS-Content auf YouTube, TikTok und Instagram.",
     longDescription:
       "Swizzly ist der Content-Kanal rund ums Motorrad auf TikTok und Instagram. Er verbindet Community und Marke durch authentischen Content und dient gleichzeitig als Werbefläche für Highside.",
     scope: ["Kurzvideo", "Schnitt", "Social Media"],
@@ -152,7 +157,11 @@ export const projects: Project[] = [
     team: [{ name: "Joel Nef", role: "Director", slug: "joel" }],
     techStack: [],
     timeline: [{ date: "2024", label: "Erstes Motorrad-Video auf TikTok" }],
-    links: [],
+    links: [
+      { label: "YouTube", url: "https://www.youtube.com/@swizzly690" },
+      { label: "TikTok", url: "https://www.tiktok.com/@swizzly690" },
+      { label: "Instagram", url: "https://www.instagram.com/swizzly690" },
+    ],
     featured: true,
   },
   {
@@ -192,6 +201,7 @@ export const projects: Project[] = [
   },
   {
     slug: "rexusmods",
+    mark: "/images/rexusmods/rexusmods-logo.png",
     landing: "/rexusmods",
     year: "2021",
     title: "RexusMods",
@@ -225,6 +235,7 @@ export const projects: Project[] = [
   },
   {
     slug: "sakuto",
+    mark: "/images/sakuto/sakuto-white.png",
     year: "2021",
     title: "Sakuto",
     tagline: "Video essays, streams and Nintendo culture.",
@@ -232,6 +243,7 @@ export const projects: Project[] = [
     category: "Content, Gaming",
     status: "Aktiv",
     owner: "Joel Nef",
+    coverImage: "/images/sakuto/sakuto.webp",
     shortDescription:
       "Nintendo-Content, Videoessays und Streams. Herzstück der Creator-Sparte.",
     longDescription:
@@ -253,6 +265,8 @@ export const projects: Project[] = [
   },
   {
     slug: "zelda-de-server",
+    landing: "/zelda-de",
+    mark: "/images/zelda/zelda-de-logo.png",
     year: "2022",
     title: "Zelda DE",
     tagline: "A community for Hyrule, in German.",
@@ -260,8 +274,9 @@ export const projects: Project[] = [
     category: "Community, Discord",
     status: "Aktiv",
     owner: "Lars & Joel Nef",
+    coverImage: "/images/zelda/zelda-de-header.webp",
     shortDescription:
-      "Grösste deutsche Legend-of-Zelda-Community auf Discord.",
+      "Grösste deutsche Zelda-Community auf Discord: Theorien, Spiele, Speedruns und Nostalgie.",
     longDescription:
       "Die grösste deutschsprachige The-Legend-of-Zelda-Community auf Discord. Im Fokus stehen Theorien, Speedruns und Nostalgie. Aracle übernimmt die technische Pflege und das Community-Management.",
     scope: ["Community-Management", "Discord-Setup", "Moderation"],
@@ -280,6 +295,7 @@ export const projects: Project[] = [
   },
   {
     slug: "all-the-clients",
+    mark: "/images/atc/atc-logo.png",
     year: "2023",
     title: "All the Clients",
     tagline: "Vanilla+, tuned for performance.",
@@ -335,6 +351,7 @@ export const projects: Project[] = [
   },
   {
     slug: "araclesmp",
+    mark: "/images/smp/server-icon.png",
     landing: "/smp",
     year: "2025",
     title: "AracleSMP",

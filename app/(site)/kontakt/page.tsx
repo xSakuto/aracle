@@ -2,7 +2,8 @@ import InquiryForm from "@/components/InquiryForm";
 import Contours from "@/components/alpine/Contours";
 
 export const metadata = {
-  title: "Kontakt · Aracle",
+  alternates: { canonical: "/kontakt" },
+  title: "Kontakt",
   description: "Projekt anfragen: Website, Branding, Video oder Hosting. Aracle, Creative & Technology Studio aus Glarus.",
 };
 

@@ -3,7 +3,8 @@ import SectionIndex from "@/components/project/SectionIndex";
 import { RULES_UPDATED, closing, rules } from "@/data/zelda-rules";
 
 export const metadata = {
-  title: "Regelwerk · Zelda Community DE",
+  alternates: { canonical: "/zelda-de/regelwerk" }, openGraph: { images: [{ url: "/og/zelda-de.jpg", width: 1200, height: 630 }] },
+  title: { absolute: "Regelwerk · Zelda Community DE" },
   description: "Die Regeln der deutschsprachigen Zelda-Community auf Discord.",
 };
 
@@ -12,7 +13,7 @@ export default function ZeldaRulesPage() {
   return (
     <div className="wrap pb-[var(--section)] pt-28 md:pt-36">
       <nav aria-label="Brotkrumen" className="small text-muted">
-        <Link href="/projekte/zelda-de-server" className="transition-colors hover:text-ink">Zelda DE</Link>
+        <Link href="/zelda-de" className="transition-colors hover:text-ink">Zelda DE</Link>
         <span aria-hidden className="mx-2">/</span>
         <span>Regelwerk</span>
       </nav>

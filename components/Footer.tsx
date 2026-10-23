@@ -5,7 +5,7 @@ import { WIGGIS } from "@/data/panorama/wiggis";
 
 const columns: { title: string; links: [string, string][] }[] = [
   { title: "Studio", links: [["Projekte", "/projekte"], ["Team", "/team"], ["Journey", "/history"], ["Brand", "/brand"], ["Mitmachen", "/apply"]] },
-  { title: "Marken", links: [["Aracle Cloud", "/hosting"], ["Highside", "/highside"], ["Swizzly", "/projekte/swizzly"], ["Beer Game", "/projekte/beer-game"], ["RexusMods", "/rexusmods"], ["AracleSMP", "/smp"]] },
+  { title: "Marken", links: [["Aracle Cloud", "/hosting"], ["Highside", "/highside"], ["Swizzly", "/swizzly"], ["Beer Game", "/projekte/beer-game"], ["RexusMods", "/rexusmods"], ["AracleSMP", "/smp"], ["Zelda DE", "/zelda-de"]] },
   { title: "Kontakt", links: [["Projekt anfragen", "/kontakt"], ["info@aracle.ch", "mailto:info@aracle.ch"], ["Discord", "https://discord.gg/BgpKdzBYtD"], ["Instagram", "https://www.instagram.com/aracle.ch/"]] },
   { title: "Intern", links: [["Team-Login", "/login"], ["Impressum", "/impressum"], ["Datenschutz", "/datenschutz"]] },
 ];
@@ -22,7 +22,7 @@ export default function Footer() {
         <div className="md:col-span-4">
           <Link href="/" aria-label="Aracle, zur Startseite" className="inline-flex transition-opacity hover:opacity-80 active:opacity-60">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/Brand_assets/aracle-logo.png" alt="Aracle" width={1111} height={260} className="h-10 w-auto bg-transparent md:h-12" />
+            <img src="/Brand_assets/logo/aracle-horizontal-white.png" alt="Aracle" width={1200} height={279} className="h-9 w-auto bg-transparent md:h-11" />
           </Link>
           <p className="small mt-5 max-w-[18rem] text-muted">Creative &amp; Technology Studio aus Glarus.</p>
         </div>

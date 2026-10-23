@@ -7,7 +7,8 @@ import { PILLARS, featuredProjects, projectHref, projects, type Pillar } from "@
 import { PILLAR_MOUNTAIN } from "@/lib/mountains";
 
 export const metadata = {
-  title: "Projekte · Aracle",
+  alternates: { canonical: "/projekte" },
+  title: "Projekte",
   description: "Eigene Marken und Projekte aus dem Aracle Studio: Creative Production, Digital Experiences, Cloud & Infrastructure.",
 };
 

@@ -4,6 +4,7 @@ import ApplyForm from "@/components/smp/ApplyForm";
 import PixelGround from "@/components/smp/PixelGround";
 
 export const metadata = {
+  alternates: { canonical: "/smp" },
   title: "AracleSMP · Vanilla+ Minecraft-Server",
   description: "AracleSMP ist ein Langzeit-Server für Freunde und Mitglieder. Vanilla+, Minecraft 1.21.10. Bewirb dich, um mitzuspielen.",
 };
@@ -29,6 +30,8 @@ export default function SmpPage() {
       <header className="relative overflow-hidden bg-[linear-gradient(to_bottom,#0b1115,#10202a_70%,#16303a)]">
         <div aria-hidden className="mc-stars pointer-events-none absolute inset-0" />
         <div className="wrap relative pb-14 pt-32 md:pb-20 md:pt-40">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/images/smp/server-icon.png" alt="" aria-hidden width={64} height={64} className="mb-6 h-16 w-16 bg-transparent [image-rendering:pixelated]" data-rise />
           <p className="mc-label text-aqua" data-rise>Vanilla+ · Minecraft 1.21.10</p>
           <h1 className="mc-title mt-4 text-[clamp(3rem,1rem+8vw,8.5rem)] leading-[0.95]" data-rise style={{ ["--i" as string]: 1 }}>
             AracleSMP

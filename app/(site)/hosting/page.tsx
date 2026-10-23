@@ -2,6 +2,7 @@ import Contours from "@/components/alpine/Contours";
 import InquiryForm from "@/components/InquiryForm";
 
 export const metadata = {
+  alternates: { canonical: "/hosting" }, openGraph: { images: [{ url: "/og/cloud.jpg", width: 1200, height: 630 }] },
   title: "Aracle Cloud · Hosting aus Glarus",
   description:
     "Webhosting, Game-Server und Server-Lösungen auf eigener Hardware im Kanton Glarus. Persönlich betreut von Aracle.",
@@ -34,6 +35,8 @@ export default function HostingPage() {
         </div>
 
         <div className="wrap relative mt-auto pb-16 pt-32 md:pb-24">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/images/cloud/aracle-cloud-logo.png" alt="Aracle Cloud" width={640} height={371} className="mb-8 h-14 w-auto bg-transparent md:h-16" data-rise />
           <p className="small inline-flex items-center gap-2.5 text-ink/85" data-rise>
             <span aria-hidden className="led" />
             Aracle Cloud · Eigene Server im Kanton Glarus

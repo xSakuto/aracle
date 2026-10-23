@@ -1,6 +1,7 @@
 import Descent from "@/components/alpine/Descent";
 
-export const metadata = { title: "Datenschutz · Aracle" };
+export const metadata = {
+  alternates: { canonical: "/datenschutz" }, title: "Datenschutz" };
 
 const sections: { n: string; title: string; body: React.ReactNode }[] = [
   {

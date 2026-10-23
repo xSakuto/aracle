@@ -5,7 +5,8 @@ import Journey from "@/components/journey/Journey";
 import { journey } from "@/data/journey";
 
 export const metadata = {
-  title: "The Aracle Journey · Aracle",
+  alternates: { canonical: "/history" },
+  title: "The Aracle Journey",
   description: "Von einem YouTube-Kanal zum Creative & Technology Studio. Die Geschichte von Aracle seit 2017.",
 };
 

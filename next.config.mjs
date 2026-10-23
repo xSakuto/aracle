@@ -7,7 +7,8 @@ const nextConfig = {
       // Kurzlinks, wie sie im Discord stehen
       { source: "/ZeldaDE/regelwerk", destination: "/zelda-de/regelwerk", permanent: true },
       { source: "/zeldade/regelwerk", destination: "/zelda-de/regelwerk", permanent: true },
-      { source: "/ZeldaDE", destination: "/projekte/zelda-de-server", permanent: false },
+      { source: "/ZeldaDE", destination: "/zelda-de", permanent: true },
+      { source: "/zelda", destination: "/zelda-de", permanent: true },
     ];
   },
 };

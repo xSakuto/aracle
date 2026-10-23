@@ -16,7 +16,7 @@ export default function ProjectPoster({
   className = "",
   size = "md",
 }: {
-  project: Pick<Project, "slug" | "title" | "category" | "year" | "pillar">;
+  project: Pick<Project, "slug" | "title" | "category" | "year" | "pillar" | "mark">;
   tone?: keyof typeof tones;
   className?: string;
   size?: "md" | "lg";
@@ -38,6 +38,17 @@ export default function ProjectPoster({
       <div aria-hidden className="absolute inset-x-0 bottom-0" style={{ color: t.line }}>
         <PillarMark mountain={mountain} ratio={16 / 10} caption={false} className="opacity-80" />
       </div>
+      {project.mark ? (
+        // Logo statt Titel, wenn das Projekt eins hat
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={project.mark}
+          alt=""
+          aria-hidden
+          loading="lazy"
+          className="relative mx-auto my-auto max-h-[46%] w-auto max-w-[62%] bg-transparent object-contain pb-[12%] drop-shadow-[0_8px_24px_rgb(0_0_0/0.35)]"
+        />
+      ) : (
       <p
         className="relative mt-5 font-[650] leading-[0.9] tracking-[-0.05em]"
         // Schriftgrösse nach längstem Wort, damit lange Namen nie aus der Karte laufen
@@ -45,6 +56,7 @@ export default function ProjectPoster({
       >
         {project.title}
       </p>
+      )}
     </div>
   );
 }

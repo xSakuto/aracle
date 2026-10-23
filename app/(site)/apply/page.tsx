@@ -2,7 +2,8 @@ import JoinForm from "@/components/JoinForm";
 import { APPLY_ROLES } from "@/data/apply";
 
 export const metadata = {
-  title: "Mitmachen · Aracle",
+  alternates: { canonical: "/apply" },
+  title: "Mitmachen",
   description: "Aracle sucht Leute für Programmierung, Grafik, Webdesign, Moderation und Community-Management. Bewirb dich direkt.",
 };
 
