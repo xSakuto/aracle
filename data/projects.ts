@@ -6,10 +6,10 @@
 export type ProjectStatus = "Aktiv" | "In Entwicklung" | "Konzept" | "Pausiert" | "Eingestellt";
 
 export type Pillar =
-  | "Creative Production"
-  | "Digital Experiences"
-  | "Cloud & Infrastructure"
-  | "Community & Gaming";
+  | "Marken & Produkte"
+  | "Kanäle"
+  | "Communitys & Server"
+  | "Cloud & Hosting";
 
 export type GalleryItem =
   | { kind: "photo"; src: string; alt: string; caption?: string; width: number; height: number }
@@ -57,12 +57,11 @@ export const projects: Project[] = [
   {
     slug: "aracle-cloud-hosting",
     mark: "/images/cloud/aracle-cloud-logo.png",
-    markTile: "/images/cloud/aracle-cloud-logo-white.png",
     landing: "/hosting",
     year: "2022",
     title: "Aracle Cloud",
     tagline: "Own hardware. Swiss hosting.",
-    pillar: "Cloud & Infrastructure",
+    pillar: "Cloud & Hosting",
     category: "Hosting, Infrastruktur",
     status: "Aktiv",
     owner: "Tim Mockweiss & Joel Nef",
@@ -102,7 +101,7 @@ export const projects: Project[] = [
     year: "2024",
     title: "Highside",
     tagline: "Swiss biker streetwear. Built for the curve.",
-    pillar: "Creative Production",
+    pillar: "Marken & Produkte",
     category: "Fashion, Brand",
     status: "Aktiv",
     owner: "Joel Nef",
@@ -139,12 +138,11 @@ export const projects: Project[] = [
   {
     slug: "milvia",
     mark: "/images/milvia/milvia-mark.png",
-    markTile: "/images/milvia/milvia-mark-white.png",
     coverImage: "/images/milvia/forest.webp",
     year: "2026",
     title: "Milvia",
     tagline: "Your companion through the RS.",
-    pillar: "Digital Experiences",
+    pillar: "Marken & Produkte",
     category: "App, Flutter",
     status: "Aktiv",
     owner: "Joel Nef",
@@ -170,7 +168,7 @@ export const projects: Project[] = [
     year: "2024",
     title: "Swizzly",
     tagline: "Motorcycle content, made for the feed.",
-    pillar: "Creative Production",
+    pillar: "Kanäle",
     category: "Content, Social Media",
     status: "Aktiv",
     owner: "Joel Nef",
@@ -204,7 +202,7 @@ export const projects: Project[] = [
     year: "2025",
     title: "Beer Game",
     tagline: "A tiny online tavern for up to four.",
-    pillar: "Digital Experiences",
+    pillar: "Marken & Produkte",
     category: "Game Dev",
     status: "In Entwicklung",
     owner: "Joel Nef",
@@ -241,7 +239,7 @@ export const projects: Project[] = [
     year: "2021",
     title: "RexusMods",
     tagline: "Mods for GTA V. Now taking flight.",
-    pillar: "Creative Production",
+    pillar: "Marken & Produkte",
     category: "3D, Mods",
     status: "Aktiv",
     owner: "Joel Nef & Tim Mockweiss",
@@ -275,7 +273,7 @@ export const projects: Project[] = [
     year: "2021",
     title: "Sakuto",
     tagline: "Video essays, streams and Nintendo culture.",
-    pillar: "Creative Production",
+    pillar: "Kanäle",
     category: "Content, Gaming",
     status: "Aktiv",
     owner: "Joel Nef",
@@ -307,7 +305,7 @@ export const projects: Project[] = [
     year: "2022",
     title: "Zelda DE",
     tagline: "A community for Hyrule, in German.",
-    pillar: "Community & Gaming",
+    pillar: "Communitys & Server",
     category: "Community, Discord",
     status: "Aktiv",
     owner: "Lars & Joel Nef",
@@ -338,7 +336,7 @@ export const projects: Project[] = [
     year: "2023",
     title: "All the Clients",
     tagline: "Vanilla+, tuned for performance.",
-    pillar: "Community & Gaming",
+    pillar: "Communitys & Server",
     category: "Minecraft-Modpack",
     status: "Aktiv",
     owner: "Joel Nef",
@@ -364,7 +362,7 @@ export const projects: Project[] = [
     year: "2025",
     title: "Aracle Living",
     tagline: "A concept for real estate visuals.",
-    pillar: "Creative Production",
+    pillar: "Marken & Produkte",
     category: "Konzept",
     status: "Konzept",
     owner: "Jan Waser",
@@ -397,7 +395,7 @@ export const projects: Project[] = [
     year: "2025",
     title: "AracleSMP",
     tagline: "A long-term server for friends.",
-    pillar: "Community & Gaming",
+    pillar: "Communitys & Server",
     category: "Minecraft-Server",
     status: "Aktiv",
     owner: "Joel Nef",
@@ -422,7 +420,7 @@ export const projects: Project[] = [
     year: "2021",
     title: "Alcatros",
     tagline: "Coding help, community-driven.",
-    pillar: "Community & Gaming",
+    pillar: "Communitys & Server",
     category: "Community",
     status: "Eingestellt",
     owner: "Yao Kaiser",
@@ -455,10 +453,10 @@ export const getProject = (slug: string) => projects.find((p) => p.slug === slug
 export const STATUS_ORDER: ProjectStatus[] = ["Aktiv", "In Entwicklung", "Konzept", "Pausiert", "Eingestellt"];
 
 export const PILLARS: Pillar[] = [
-  "Creative Production",
-  "Digital Experiences",
-  "Cloud & Infrastructure",
-  "Community & Gaming",
+  "Marken & Produkte",
+  "Kanäle",
+  "Communitys & Server",
+  "Cloud & Hosting",
 ];
 
 /** Vorheriges und nächstes Projekt in der Reihenfolge oben, im Kreis. */

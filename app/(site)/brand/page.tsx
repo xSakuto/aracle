@@ -488,10 +488,10 @@ export default function BrandPage() {
             </p>
             <ul className="mt-8 grid gap-x-6 gap-y-10 sm:grid-cols-2">
               {[
-                [MOUNTAINS.toedi, "Digital Experiences"],
-                [MOUNTAINS.glaernisch, "Creative Production"],
-                [MOUNTAINS.kaerpf, "Cloud & Infrastructure"],
-                [MOUNTAINS.wiggis, "Community & Gaming"],
+                [MOUNTAINS.toedi, "Kanäle"],
+                [MOUNTAINS.glaernisch, "Marken & Produkte"],
+                [MOUNTAINS.kaerpf, "Cloud & Hosting"],
+                [MOUNTAINS.wiggis, "Communitys & Server"],
               ].map(([m, pillar]) => (
                 <li key={pillar as string}>
                   <PillarMark mountain={m as (typeof MOUNTAINS)["toedi"]} className="text-ink" />

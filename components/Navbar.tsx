@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { createBrowserSupabase } from "@/lib/supabase/browser";
+import { supabaseConfigured } from "@/lib/supabase/config";
 
 const links = [
   { href: "/projekte", label: "Projekte" },
@@ -18,7 +20,16 @@ const links = [
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(false);
   const pathname = usePathname();
+
+  useEffect(() => {
+    if (!supabaseConfigured) return;
+    const supabase = createBrowserSupabase();
+    supabase.auth.getUser().then(({ data }) => setLoggedIn(!!data.user)).catch(() => {});
+    const { data: sub } = supabase.auth.onAuthStateChange((_event, session) => setLoggedIn(!!session?.user));
+    return () => sub.subscription.unsubscribe();
+  }, []);
 
   useEffect(() => setOpen(false), [pathname]);
 
@@ -89,6 +100,20 @@ export default function Navbar() {
               <span className="ml-2">47°02′ N</span>
               <span className="ml-2">9°04′ E</span>
             </p>
+            {loggedIn && (
+              <Link
+                href="/dashboard"
+                aria-label="Zum Dashboard"
+                className="flex h-9 w-9 items-center justify-center rounded-full border border-line text-ink/80 transition-colors hover:border-aqua hover:text-aqua"
+              >
+                <svg aria-hidden viewBox="0 0 24 24" fill="none" className="h-[18px] w-[18px]">
+                  <rect x="3" y="3" width="7" height="9" rx="1.5" stroke="currentColor" strokeWidth="1.6" />
+                  <rect x="14" y="3" width="7" height="5" rx="1.5" stroke="currentColor" strokeWidth="1.6" />
+                  <rect x="14" y="12" width="7" height="9" rx="1.5" stroke="currentColor" strokeWidth="1.6" />
+                  <rect x="3" y="16" width="7" height="5" rx="1.5" stroke="currentColor" strokeWidth="1.6" />
+                </svg>
+              </Link>
+            )}
             <Link href="/kontakt" className="btn min-h-8 px-3.5 text-[0.8125rem]">
               Projekt anfragen
             </Link>
@@ -116,7 +141,7 @@ export default function Navbar() {
         aria-hidden={!open}
       >
         <nav aria-label="Mobile Navigation" className="flex flex-col gap-2">
-          {[{ href: "/", label: "Start" }, ...links].map((l) => (
+          {[{ href: "/", label: "Start" }, ...links, ...(loggedIn ? [{ href: "/dashboard", label: "Dashboard" }] : [])].map((l) => (
             <Link
               key={l.href}
               href={l.href}
