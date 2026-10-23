@@ -1,14 +1,9 @@
-import {
-  asTemplate,
-  cleanItems,
-  cleanLinks,
-  type NewsPost,
-} from "@/data/news";
+import { asTemplate, type NewsPost } from "@/data/news";
 import { supabaseConfigured } from "@/lib/supabase/config";
 import { createPublicClient } from "@/lib/supabase/server";
 
 export const NEWS_COLUMNS =
-  "id, topic, template, title, body, items, links, image_url, published, publish_at, created_at";
+  "id, topic, template, title, body, signature, use_embed, published, publish_at, created_at";
 
 export type NewsRow = {
   id: string;
@@ -16,9 +11,8 @@ export type NewsRow = {
   template: string;
   title: string;
   body: string;
-  items: unknown;
-  links: unknown;
-  image_url: string | null;
+  signature: string | null;
+  use_embed: boolean;
   published: boolean;
   publish_at: string;
   created_at: string;
@@ -31,9 +25,8 @@ export function rowToPost(r: NewsRow): NewsPost {
     template: asTemplate(r.template),
     title: r.title,
     body: r.body,
-    items: cleanItems(r.items),
-    links: cleanLinks(r.links),
-    imageUrl: r.image_url,
+    signature: r.signature ?? "",
+    useEmbed: r.use_embed,
     publishedAt: r.publish_at,
   };
 }
