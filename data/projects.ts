@@ -138,6 +138,7 @@ export const projects: Project[] = [
   {
     slug: "milvia",
     mark: "/images/milvia/milvia-mark.png",
+    markTile: "/images/milvia/milvia-mark-white.png",
     coverImage: "/images/milvia/forest.webp",
     year: "2026",
     title: "Milvia",
@@ -147,20 +148,21 @@ export const projects: Project[] = [
     status: "Aktiv",
     owner: "Joel Nef",
     shortDescription:
-      "Schweizer-Armee-Companion-App für die RS: Reglemente, Grade, Fitnesstests und ein Kompaniebau-Game.",
+      "Inoffizielle Companion-App für RS und WK: Reglemente, Armeewissen, Vorbereitung und ein Kompaniebau-Game.",
     longDescription:
-      "Milvia begleitet durch die RS: Reglemente und Vorschriften zum Nachschlagen, Dienstgrade, Fitnesstests und ein eigenes Kompaniebau-Game, alles in einer App. Entwickelt mit Flutter, nativ für iOS und Android.",
+      "Milvia ist eine inoffizielle Begleit-App für Rekrutenschule und Wiederholungskurs. Original-Reglemente zum Nachlesen und Durchsuchen, Dienstgrade und Abkürzungen zum Nachschlagen, der Fitnesstest zum Festhalten, Packliste und Marschbefehl zur Vorbereitung, dazu ein eigenes Kompaniebau-Game. Läuft im Browser, auf dem Handy wie am Computer.",
     scope: ["App-Entwicklung", "Branding", "Content"],
-    goal: "Angehörigen der Schweizer Armee die RS mit einer App erleichtern, die Wissen und ein wenig Motivation an einem Ort bündelt.",
+    goal: "Angehörigen der Schweizer Armee RS und WK mit einer App erleichtern, die Wissen und Vorbereitung an einem Ort bündelt, ohne die Armee offiziell zu vertreten.",
     includes: [
-      { title: "Reglemente", text: "Vorschriften und Regularien zum schnellen Nachschlagen." },
-      { title: "Grade & Fitness", text: "Dienstgrade der Armee und die Fitnesstests der RS." },
-      { title: "Kompaniebau-Game", text: "Ein kleines Spiel für zwischendurch, direkt in der App." },
+      { title: "Reglemente", text: "Original-Reglemente als PDF, mit Zoom, Volltextsuche und gemerkter letzter Seite." },
+      { title: "Armeewissen", text: "Dienstgrade erkennen, die Laufbahn erkunden und Abkürzungen im Glossar nachschlagen, dazu der Kader-Corner mit Auszügen aus den Reglementen." },
+      { title: "Vorbereitung", text: "Fitnesstest-Resultate festhalten und den Fortschritt verfolgen, dazu Packliste und Marschbefehl." },
+      { title: "Meine Kompanie", text: "Ein Bauspiel: eigene Kompanie benennen, Rekruten ausbilden und den Waffenplatz ausbauen. Spielregeln sind frei erfunden, Fortschritt bleibt lokal auf dem Gerät." },
     ],
     team: [{ name: "Joel Nef", role: "Director", slug: "joel" }],
     techStack: ["Flutter", "Dart"],
     timeline: [{ date: "2026", label: "Launch milvia.ch" }],
-    links: [{ label: "milvia.ch", url: "https://milvia.ch" }],
+    links: [{ label: "milvia.ch", url: "https://milvia.ch" }, { label: "Über Milvia", url: "https://milvia.ch/ueber/" }],
   },
   {
     slug: "swizzly",
@@ -199,6 +201,7 @@ export const projects: Project[] = [
     slug: "beer-game",
     mark: "/images/beer/beer-logo.png",
     markTile: "/images/beer/beer-logo.png",
+    landing: "/beer",
     year: "2025",
     title: "Beer Game",
     tagline: "A tiny online tavern for up to four.",
@@ -208,9 +211,9 @@ export const projects: Project[] = [
     owner: "Joel Nef",
     coverImage: "/images/beer/rusty-mug.webp",
     shortDescription:
-      "Kleine Online-Taverne für bis zu vier Leute. Free to Play, bald auf Steam.",
+      "The Rusty Mug: kleine Online-Taverne für bis zu vier Leute. Free to Play, bald auf Steam.",
     longDescription:
-      "Ihr seid Fässer und Bierkrüge mit Wackelaugen. Bier zapfen, anstossen, Roulette, Blackjack, Würfel und Darts spielen und euch Bierdeckel an den Kopf werfen. BEER erscheint als Free-to-Play-Spiel auf Steam, entwickelt und veröffentlicht von Aracle.",
+      "Ihr seid Fässer und Bierkrüge mit Wackelaugen. Bier zapfen, anstossen, Roulette, Blackjack, Meiern und Darts spielen und euch Bierdeckel an den Kopf werfen. BEER: The Rusty Mug erscheint als Free-to-Play-Spiel auf Steam, entwickelt und veröffentlicht von Aracle.",
     scope: ["Game Design", "Entwicklung", "Steam-Seite"],
     goal: "Ein eigenes kleines Online-Spiel für Freunde entwickeln und auf Steam veröffentlichen.",
     includes: [
@@ -234,7 +237,6 @@ export const projects: Project[] = [
   {
     slug: "rexusmods",
     mark: "/images/rexusmods/rexusmods-logo.png",
-    markTile: "/images/rexusmods/rexusmods-logo-white.png",
     landing: "/rexusmods",
     year: "2021",
     title: "RexusMods",
@@ -277,7 +279,7 @@ export const projects: Project[] = [
     category: "Content, Gaming",
     status: "Aktiv",
     owner: "Joel Nef",
-    coverImage: "/images/sakuto/sakuto.webp",
+    coverImage: "/images/sakuto/sakuto-header.webp",
     shortDescription:
       "Nintendo-Content, Videoessays und Streams. Herzstück der Creator-Sparte.",
     longDescription:

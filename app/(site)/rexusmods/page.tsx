@@ -28,7 +28,7 @@ const faq: { q: string; a: string }[] = [
   },
   {
     q: "Wo kann ich die Mods herunterladen?",
-    a: "Direkt auf dieser Seite bei den jeweiligen Arbeiten, oder auf gta5-mods.com, zum Beispiel für den Sprinter Schweizer Post.",
+    a: "Fahrzeug-Lackierungen wie der Sprinter Schweizer Post sind auf gta5-mods.com verfügbar. Nicht alle Arbeiten, etwa das Gebäude Jagd- und Forstschutz, stehen aktuell zum Download bereit.",
   },
   {
     q: "Für welche Plattform sind die Mods?",
@@ -49,23 +49,6 @@ type Work = {
 
 const works: Work[] = [
   {
-    title: "Jagd- und Forstschutz",
-    kind: "Gebäude · FiveM",
-    text: "Ein eigenes Gebäude für FiveM-Server: Aussenbereich mit Carport, Empfang und Wartebereich, alles mit eigenen Skins.",
-    images: [
-      { src: `${IMG}/forstschutz-aussen.webp`, alt: "Gebäude Jagd- und Forstschutz von aussen, mit Carport und Schild", w: 1600, h: 754 },
-      { src: `${IMG}/forstschutz-empfang.webp`, alt: "Empfang mit Holztheke und Logo Jagd- und Forstschutz", w: 1600, h: 723 },
-      { src: `${IMG}/forstschutz-wartebereich.webp`, alt: "Wartebereich mit Sofas, Wasserspender und Bildern an der Wand", w: 1600, h: 756 },
-    ],
-    specs: [
-      ["Version", "V1.0"],
-      ["Optimiert für", "FiveM"],
-      ["3D-Modell", "OB Interiors"],
-      ["Skins", "xMGamerPlex, RexusMods"],
-    ],
-    links: [{ label: "Download", url: "https://mega.nz/file/LgRHEY7R#NQ3rC5HZKYUMFxLLlgWEqDtxQFl9QHREstekf1r6zyE" }],
-  },
-  {
     title: "Rettungsdienst Glarus",
     kind: "Lackierung · Fahrzeug",
     text: "Mercedes Sprinter als Rettungswagen im Design des Kantonsspitals Glarus, mit 144 und Glarner Kennzeichen.",
@@ -81,6 +64,32 @@ const works: Work[] = [
     images: [
       { src: `${IMG}/weazel-news-flotte.webp`, alt: "Drei weisse Audi RS6 von Weazel News nebeneinander", w: 1390, h: 483 },
       { src: `${IMG}/weazel-news-seite.webp`, alt: "Audi RS6 Weazel News Geschäftsführung von der Seite", w: 1282, h: 645 },
+    ],
+  },
+  {
+    title: "Sprinter Schweizer Post",
+    kind: "Lackierung · Fahrzeug",
+    text: "Mercedes Sprinter im Design der Schweizer Post, mit Glarner Kennzeichen. Auch auf gta5-mods.com verfügbar.",
+    images: [
+      { src: `${IMG}/post-sprinter-front.webp`, alt: "Gelber Sprinter der Schweizer Post von vorne, bei Nacht", w: 1800, h: 1012 },
+      { src: `${IMG}/post-sprinter-rear.webp`, alt: "Gelber Sprinter der Schweizer Post von hinten, mit RexusMods-Logo", w: 1800, h: 1012 },
+    ],
+    links: [{ label: "Auf gta5-mods.com ansehen", url: "https://www.gta5-mods.com/de/vehicles/mercedes-benz-sprinter-schweizer-post-rexusmods" }],
+  },
+  {
+    title: "Jagd- und Forstschutz",
+    kind: "Gebäude · FiveM",
+    text: "Ein eigenes Gebäude für FiveM-Server: Aussenbereich mit Carport, Empfang und Wartebereich, alles mit eigenen Skins. Aktuell nicht mehr zum Download verfügbar.",
+    images: [
+      { src: `${IMG}/forstschutz-aussen.webp`, alt: "Gebäude Jagd- und Forstschutz von aussen, mit Carport und Schild", w: 1600, h: 754 },
+      { src: `${IMG}/forstschutz-empfang.webp`, alt: "Empfang mit Holztheke und Logo Jagd- und Forstschutz", w: 1600, h: 723 },
+      { src: `${IMG}/forstschutz-wartebereich.webp`, alt: "Wartebereich mit Sofas, Wasserspender und Bildern an der Wand", w: 1600, h: 756 },
+    ],
+    specs: [
+      ["Version", "V1.0"],
+      ["Optimiert für", "FiveM"],
+      ["3D-Modell", "OB Interiors"],
+      ["Skins", "xMGamerPlex, RexusMods"],
     ],
   },
 ];
@@ -194,24 +203,10 @@ export default function RexusModsPage() {
           </article>
         ))}
 
-        <div className="mt-[calc(var(--section)*0.7)] grid gap-x-8 gap-y-8 border-t border-line pt-8 md:grid-cols-2">
-          <div>
-            <p className="small text-aqua">Auch auf GTA5-Mods</p>
-            <h2 className="head mt-2">Sprinter Schweizer Post</h2>
-            <a
-              href="https://www.gta5-mods.com/de/vehicles/mercedes-benz-sprinter-schweizer-post-rexusmods"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="link-under mt-4 inline-flex min-h-11 items-center font-medium"
-            >
-              Auf gta5-mods.com ansehen <span aria-hidden className="ml-1">↗</span>
-            </a>
-          </div>
-          <div>
-            <p className="small text-aqua">Neu, in Arbeit</p>
-            <h2 className="head mt-2">Flight Simulator</h2>
-            <p className="mt-4 max-w-[40ch] text-ink/75">Add-ons für Flugsimulatoren. Details folgen, sobald es etwas zu zeigen gibt.</p>
-          </div>
+        <div className="mt-[calc(var(--section)*0.7)] border-t border-line pt-8">
+          <p className="small text-aqua">Neu, in Arbeit</p>
+          <h2 className="head mt-2">Flight Simulator</h2>
+          <p className="mt-4 max-w-[40ch] text-ink/75">Add-ons für Flugsimulatoren. Details folgen, sobald es etwas zu zeigen gibt.</p>
         </div>
       </section>
 

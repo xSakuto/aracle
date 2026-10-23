@@ -24,7 +24,7 @@ export default function ProjectTile({
 }) {
   return (
     <Link href={projectHref(p)} className={`group block ${className}`}>
-      <div className={`relative overflow-hidden rounded-[var(--radius)] ${wide ? "aspect-[16/10]" : "aspect-square"}`}>
+      <div className={`relative overflow-hidden rounded-[var(--radius)] ${wide ? "aspect-[2/1]" : "aspect-square"}`}>
         {p.coverImage ? (
           <>
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -48,7 +48,7 @@ export default function ProjectTile({
                 className="absolute bottom-3 left-3 h-auto max-h-[44%] w-[40%] bg-transparent object-contain object-left-bottom drop-shadow-[0_4px_14px_rgb(0_0_0/0.6)] md:bottom-4 md:left-4"
               />
             ) : (
-              <p className="absolute bottom-3 left-3 right-3 font-[family-name:var(--font-display)] text-[1.0625rem] font-bold leading-[1.05] tracking-[-0.025em] text-white drop-shadow-[0_2px_6px_rgb(0_0_0/0.6)] md:bottom-4 md:left-4">
+              <p className="absolute bottom-3 left-3 right-3 font-[family-name:var(--font-display)] text-[1.5rem] font-bold leading-[1.05] tracking-[-0.025em] text-white drop-shadow-[0_2px_6px_rgb(0_0_0/0.6)] md:bottom-4 md:left-4 md:text-[1.875rem]">
                 {p.title}
               </p>
             )}
