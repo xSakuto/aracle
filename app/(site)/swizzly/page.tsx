@@ -1,12 +1,34 @@
 import Link from "next/link";
 import SocialIcon from "@/components/SocialIcon";
 import type { SocialType } from "@/data/socials";
+import { SITE_URL } from "@/lib/site";
+
+const TITLE = "Swizzly · Motorrad- und Entertainment-Content aus Glarus";
+const DESCRIPTION =
+  "Swizzly ist der Content-Kanal von Joel Nef aus Glarus: Motorrad, Entertainment und die RS. Auf YouTube, TikTok und Instagram als @swizzly690.";
 
 export const metadata = {
-  title: "Swizzly · Motorrad- und Entertainment-Content",
-  description:
-    "Swizzly ist der Content-Kanal von Joel aus Glarus: Motorrad, Entertainment und die RS. Auf YouTube, TikTok und Instagram als @swizzly690.",
+  title: { absolute: TITLE },
+  description: DESCRIPTION,
+  keywords: [
+    "Swizzly",
+    "Motorrad Content Schweiz",
+    "Motovlog Schweiz",
+    "RS Content",
+    "Töff TikTok",
+    "Motorrad YouTube Schweiz",
+    "Highside",
+    "Joel Nef",
+    "Content Creator Glarus",
+  ],
   alternates: { canonical: "/swizzly" },
+  openGraph: {
+    title: TITLE,
+    description: DESCRIPTION,
+    url: "/swizzly",
+    siteName: "Swizzly",
+    images: [{ url: "/og/swizzly.jpg", width: 1200, height: 630, alt: "Swizzly, Motorrad- und Entertainment-Content aus Glarus" }],
+  },
 };
 
 const channels: { type: SocialType; label: string; handle: string; url: string }[] = [
@@ -25,10 +47,65 @@ const rs: { label: string; url: string; note?: string }[] = [
   { label: "Rohner Sommer-RS-Starterpaket, 20 %", url: "https://rohner-socks.com/products/sommer-rs-starter-kit?_pos=4&_sid=3ca760fe9&_ss=r", note: "Werbung" },
 ];
 
+const faq: { q: string; a: string }[] = [
+  {
+    q: "Wer ist Swizzly?",
+    a: "Swizzly ist der Content-Kanal von Joel Nef aus Glarus: kurze Videos rund um Motorrad, Entertainment und die RS, auf YouTube, TikTok und Instagram.",
+  },
+  {
+    q: "Wo kann ich Swizzly folgen?",
+    a: "Auf YouTube, TikTok und Instagram jeweils als @swizzly690, dazu eine eigene Community auf Discord.",
+  },
+  {
+    q: "Was hat Swizzly mit Highside zu tun?",
+    a: "Swizzly ist die Content-Bühne für Highside, die Schweizer Streetwear-Marke aus der Motorrad-Szene von Aracle.",
+  },
+];
+
 // Swizzly als eigene Landing Page: Bernstein, gross der Name, darunter die Kanäle.
 export default function SwizzlyPage() {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": `${SITE_URL}/swizzly`,
+        url: `${SITE_URL}/swizzly`,
+        name: TITLE,
+        description: DESCRIPTION,
+        inLanguage: "de",
+        isPartOf: { "@id": `${SITE_URL}/#website` },
+        about: { "@type": "Thing", name: "Motorradkultur" },
+        mainEntity: { "@id": `${SITE_URL}/swizzly#person` },
+        publisher: { "@id": `${SITE_URL}/#org` },
+      },
+      {
+        "@type": "Person",
+        "@id": `${SITE_URL}/swizzly#person`,
+        name: "Joel-Sananda Nef",
+        alternateName: "Swizzly",
+        url: `${SITE_URL}/swizzly`,
+        jobTitle: "Content Creator",
+        knowsAbout: ["Motorrad", "Content Creation", "Schweizer Armee RS"],
+        sameAs: [
+          "https://www.youtube.com/@swizzly690",
+          "https://www.tiktok.com/@swizzly690",
+          "https://www.instagram.com/swizzly690",
+          "https://discord.gg/2vYr24vGk2",
+        ],
+        worksFor: { "@id": `${SITE_URL}/#org` },
+      },
+      {
+        "@type": "FAQPage",
+        mainEntity: faq.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })),
+      },
+    ],
+  };
+
   return (
     <div className="theme-swizzly">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+
       <header className="relative flex min-h-[92svh] flex-col overflow-hidden">
         <div aria-hidden className="absolute inset-0">
           {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -108,6 +185,21 @@ export default function SwizzlyPage() {
             </li>
           ))}
         </ul>
+      </section>
+
+      <section aria-labelledby="faq-title" className="wrap grid gap-10 py-[var(--section)] md:grid-cols-12">
+        <div className="md:col-span-4">
+          <h2 id="faq-title" className="head">Häufige Fragen.</h2>
+          <p className="mt-4 text-ink/80">Kurz beantwortet, für alle, die neu dazukommen.</p>
+        </div>
+        <dl className="border-b border-line md:col-span-7 md:col-start-6">
+          {faq.map((f) => (
+            <div key={f.q} className="border-t border-line py-6">
+              <dt className="font-semibold tracking-[-0.015em]">{f.q}</dt>
+              <dd className="mt-2 text-ink/80">{f.a}</dd>
+            </div>
+          ))}
+        </dl>
       </section>
 
       <section aria-label="Verbunden" className="border-t border-line">
