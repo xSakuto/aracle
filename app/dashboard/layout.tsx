@@ -20,7 +20,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
           <span className="text-muted">Team</span>
         </Link>
 
-        <DashNav admin={Boolean(me?.is_admin)} />
+        <DashNav admin={Boolean(me?.is_admin)} permissions={me?.permissions} />
         <form action={signOut} className="mt-1 md:hidden">
           <button type="submit" className="flex h-8 items-center rounded-[6px] px-3 text-muted hover:text-ink">
             Abmelden

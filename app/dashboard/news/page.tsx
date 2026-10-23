@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { templateOf, topicOf } from "@/data/news";
 import { NEWS_COLUMNS, type NewsRow } from "@/lib/news";
-import { requireAdmin } from "@/lib/session";
+import { requirePermission } from "@/lib/session";
 
 const fmt = new Intl.DateTimeFormat("de-CH", { dateStyle: "medium", timeStyle: "short", timeZone: "Europe/Zurich" });
 
@@ -16,7 +16,7 @@ export default async function NewsAdminPage({
 }: {
   searchParams: Promise<{ geloescht?: string }>;
 }) {
-  const { supabase } = await requireAdmin();
+  const { supabase } = await requirePermission("news");
   const { geloescht } = await searchParams;
   const { data, error } = await supabase
     .from("news_posts")

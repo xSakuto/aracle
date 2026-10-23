@@ -2,7 +2,7 @@ import Link from "next/link";
 import AddMember from "@/components/dashboard/AddMember";
 import Portrait from "@/components/Portrait";
 import { projects } from "@/data/projects";
-import { requireAdmin, toProfile, withProfileColumns, type FullProfile } from "@/lib/session";
+import { PERMISSION_LABELS, requireAdmin, toProfile, withProfileColumns, type FullProfile } from "@/lib/session";
 
 export default async function TeamAdminPage({
   searchParams,
@@ -39,6 +39,7 @@ export default async function TeamAdminPage({
               <tr className="border-b border-[#24272c] text-xs text-muted">
                 <th scope="col" className="py-2 pr-4 font-normal">Person</th>
                 <th scope="col" className="py-2 pr-4 font-normal">Projekte</th>
+                <th scope="col" className="py-2 pr-4 font-normal">Rechte</th>
                 <th scope="col" className="py-2 pr-4 font-normal">Login</th>
                 <th scope="col" className="py-2 pr-4 font-normal">Website</th>
                 <th scope="col" className="py-2 font-normal"><span className="sr-only">Aktion</span></th>
@@ -69,6 +70,15 @@ export default async function TeamAdminPage({
                     )}
                   </td>
                   <td className="py-3 pr-4">
+                    {m.is_admin ? (
+                      <span>Vollzugriff</span>
+                    ) : m.permissions.length ? (
+                      <span>{m.permissions.map((p) => PERMISSION_LABELS[p]).join(", ")}</span>
+                    ) : (
+                      <span className="text-muted">–</span>
+                    )}
+                  </td>
+                  <td className="py-3 pr-4">
                     {m.user_id ? (
                       <span>Aktiv</span>
                     ) : m.email ? (
@@ -77,7 +87,9 @@ export default async function TeamAdminPage({
                       <span className="text-muted">Keine E-Mail</span>
                     )}
                   </td>
-                  <td className="py-3 pr-4">{m.visible ? "Sichtbar" : <span className="text-muted">Versteckt</span>}</td>
+                  <td className="py-3 pr-4">
+                    {m.visible ? (m.listed ? "Sichtbar" : <span title="Nur auf eigenen Projektseiten, nicht auf /team">Nur Projektseiten</span>) : <span className="text-muted">Versteckt</span>}
+                  </td>
                   <td className="py-3 text-right">
                     <Link href={`/dashboard/team/${m.id}`} className="dash-btn-quiet h-8">
                       Bearbeiten

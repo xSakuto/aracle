@@ -6,7 +6,7 @@ import type { SaveState } from "@/app/dashboard/actions";
 import { asHttpsUrl, asTemplate, asTopic, defaultSignature } from "@/data/news";
 import { getDiscordEmojis } from "@/lib/discord-emojis";
 import { convertShortcodes } from "@/lib/emoji";
-import { requireAdmin } from "@/lib/session";
+import { requirePermission } from "@/lib/session";
 import { zurichLocalToIso } from "@/lib/zurich-time";
 
 function text(form: FormData, key: string, max: number) {
@@ -30,7 +30,7 @@ function dbError(err: { code?: string; message: string }) {
 }
 
 export async function saveNews(_prev: SaveState, form: FormData): Promise<SaveState> {
-  const { supabase, me } = await requireAdmin();
+  const { supabase, me } = await requirePermission("news");
   const id = text(form, "id", 64);
 
   // Kürzel wie :tools: und Server-Emojis werden hier zu dem, was Discord anzeigt.
@@ -85,7 +85,7 @@ export async function saveNews(_prev: SaveState, form: FormData): Promise<SaveSt
 }
 
 export async function deleteNews(form: FormData) {
-  const { supabase } = await requireAdmin();
+  const { supabase } = await requirePermission("news");
   const id = text(form, "id", 64);
   if (id) await supabase.from("news_posts").delete().eq("id", id);
   refresh();

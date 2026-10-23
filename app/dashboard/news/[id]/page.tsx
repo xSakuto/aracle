@@ -4,7 +4,7 @@ import NewsForm from "@/components/dashboard/NewsForm";
 import { defaultSignature } from "@/data/news";
 import { getDiscordEmojis } from "@/lib/discord-emojis";
 import { NEWS_COLUMNS, rowToPost, type NewsRow } from "@/lib/news";
-import { requireAdmin } from "@/lib/session";
+import { requirePermission } from "@/lib/session";
 import { isoToZurichLocal } from "@/lib/zurich-time";
 import { deleteNews, saveNews } from "../actions";
 
@@ -17,7 +17,7 @@ export default async function EditNewsPage({
   params: Promise<{ id: string }>;
   searchParams: Promise<{ neu?: string }>;
 }) {
-  const { supabase, me } = await requireAdmin();
+  const { supabase, me } = await requirePermission("news");
   const { id } = await params;
   const { neu } = await searchParams;
 

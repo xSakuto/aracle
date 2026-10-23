@@ -11,6 +11,7 @@ import {
   type SocialType,
 } from "@/data/socials";
 import type { SaveState } from "@/app/dashboard/actions";
+import { PERMISSION_LABELS, PERMISSIONS } from "@/lib/permissions";
 import type { FullProfile } from "@/lib/session";
 import { createBrowserSupabase } from "@/lib/supabase/browser";
 
@@ -424,9 +425,10 @@ export default function ProfileForm({
             <div className="grid gap-3 sm:grid-cols-2">
               {(
                 [
-                  ["visible", "Auf der Teamseite zeigen", profile.visible],
+                  ["visible", "Profil öffentlich lesbar (Website, Projektseiten)", profile.visible],
+                  ["listed", "Zusätzlich auf der /team-Übersicht zeigen", profile.listed],
                   ["is_lead", "Oben als Leitung zeigen", profile.is_lead],
-                  ["is_admin", "Darf das Team verwalten", profile.is_admin],
+                  ["is_admin", "Vollzugriff: darf das ganze Dashboard verwalten", profile.is_admin],
                 ] as const
               ).map(([key, label, on]) => (
                 <label key={key} className="flex min-h-10 cursor-pointer items-center gap-3 text-sm">
@@ -435,6 +437,32 @@ export default function ProfileForm({
                 </label>
               ))}
             </div>
+            <p className="dash-help">
+              «Öffentlich lesbar» ohne «Teamseite zeigen» heisst: die Person erscheint nur auf
+              Projektseiten, an denen sie zugeordnet ist (z. B. Zelda DE), nicht in der Team-Übersicht.
+            </p>
+
+            <div>
+              <p className="dash-label">Dashboard-Rechte</p>
+              <p className="dash-help mb-2">
+                Einzelne Bereiche freigeben, ohne Vollzugriff zu geben. Bei «Vollzugriff» oben unnötig.
+              </p>
+              <div className="grid gap-3 sm:grid-cols-3">
+                {PERMISSIONS.map((perm) => (
+                  <label key={perm} className="flex min-h-10 cursor-pointer items-center gap-3 text-sm">
+                    <input
+                      type="checkbox"
+                      name="permissions"
+                      value={perm}
+                      defaultChecked={profile.permissions.includes(perm)}
+                      className="h-4 w-4 accent-[var(--color-aqua)]"
+                    />
+                    {PERMISSION_LABELS[perm]}
+                  </label>
+                ))}
+              </div>
+            </div>
+
             <div className="max-w-[10rem]">
               <label htmlFor="sort" className="dash-label">Reihenfolge</label>
               <input id="sort" name="sort" type="number" min={0} max={9999} defaultValue={profile.sort} className="dash-input nums" />

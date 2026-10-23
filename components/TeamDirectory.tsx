@@ -38,7 +38,10 @@ export default function TeamDirectory({
     members.some((m) => m.projects.some((x) => x.slug === p.slug)),
   );
   const match = (m: TeamMember) => !filter || m.projects.some((p) => p.slug === filter);
-  const count = members.filter(match).length;
+  // Nicht gelistete Personen (z. B. ein Discord-Mod) tauchen nur auf, solange genau
+  // ihr Projekt-Filter aktiv ist, nie unter "Alle" und nie bei einem anderen Filter.
+  const shown = members.filter((m) => m.listed || (filter !== null && m.projects.some((p) => p.slug === filter)));
+  const count = shown.filter(match).length;
 
   return (
     <>
@@ -64,12 +67,12 @@ export default function TeamDirectory({
           })}
         </div>
         <p className="sr-only" aria-live="polite">
-          {filter ? `${count} von ${members.length} Personen arbeiten an ${titleOf[filter]}` : `${members.length} Personen`}
+          {filter ? `${count} von ${shown.length} Personen arbeiten an ${titleOf[filter]}` : `${shown.length} Personen`}
         </p>
       </div>
 
       <ul className="mt-10 border-b border-line">
-        {members.map((m) => {
+        {shown.map((m) => {
           const on = match(m);
           return (
             <li

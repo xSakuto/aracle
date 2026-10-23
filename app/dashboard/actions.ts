@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { projects } from "@/data/projects";
 import { cleanSocials } from "@/data/socials";
-import { missingColumn, requireAdmin, requireMember } from "@/lib/session";
+import { missingColumn, PERMISSIONS, requireAdmin, requireMember, type Permission } from "@/lib/session";
 import { siteUrl } from "@/lib/site-url";
 
 export type SaveState = { ok?: boolean; error?: string; at?: number };
@@ -104,6 +104,11 @@ export async function saveMember(_prev: SaveState, form: FormData): Promise<Save
     return { error: "Die E-Mail-Adresse ist ungültig." };
   }
 
+  const permissions = form
+    .getAll("permissions")
+    .map(String)
+    .filter((p): p is Permission => (PERMISSIONS as readonly string[]).includes(p));
+
   const { error, pending } = await updateProfile(supabase, id, {
       ...fields,
       role: text(form, "role", 80),
@@ -112,6 +117,8 @@ export async function saveMember(_prev: SaveState, form: FormData): Promise<Save
       // Sich selbst die Admin-Rechte entziehen geht nicht, sonst sperrt man sich aus.
       is_admin: id === me.id ? true : form.get("is_admin") === "on",
       visible: form.get("visible") === "on",
+      listed: form.get("listed") === "on",
+      permissions,
       sort: Number.parseInt(text(form, "sort", 6), 10) || 100,
     });
   if (error) {

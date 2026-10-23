@@ -3,18 +3,15 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-export default function DashNav({ admin }: { admin: boolean }) {
+export default function DashNav({ admin, permissions = [] }: { admin: boolean; permissions?: string[] }) {
   const pathname = usePathname();
+  const can = (perm: string) => admin || permissions.includes(perm);
   const items = [
     { href: "/dashboard", label: "Mein Profil", active: pathname === "/dashboard" },
-    ...(admin
-      ? [
-          { href: "/dashboard/news", label: "News", active: pathname.startsWith("/dashboard/news") },
-          { href: "/dashboard/bot", label: "Discord-Bot", active: pathname.startsWith("/dashboard/bot") },
-          { href: "/dashboard/anfragen", label: "Anfragen", active: pathname.startsWith("/dashboard/anfragen") },
-          { href: "/dashboard/team", label: "Team verwalten", active: pathname.startsWith("/dashboard/team") },
-        ]
-      : []),
+    ...(can("news") ? [{ href: "/dashboard/news", label: "News", active: pathname.startsWith("/dashboard/news") }] : []),
+    ...(can("bot") ? [{ href: "/dashboard/bot", label: "Discord-Bot", active: pathname.startsWith("/dashboard/bot") }] : []),
+    ...(can("anfragen") ? [{ href: "/dashboard/anfragen", label: "Anfragen", active: pathname.startsWith("/dashboard/anfragen") }] : []),
+    ...(admin ? [{ href: "/dashboard/team", label: "Team verwalten", active: pathname.startsWith("/dashboard/team") }] : []),
   ];
   return (
     <nav aria-label="Team-Bereich" className="mt-6 flex gap-1 overflow-x-auto md:flex-col">

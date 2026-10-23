@@ -2,14 +2,14 @@ import Link from "next/link";
 import NewsForm from "@/components/dashboard/NewsForm";
 import { defaultSignature } from "@/data/news";
 import { getDiscordEmojis } from "@/lib/discord-emojis";
-import { requireAdmin } from "@/lib/session";
+import { requirePermission } from "@/lib/session";
 import { isoToZurichLocal } from "@/lib/zurich-time";
 import { saveNews } from "../actions";
 
 export const metadata = { title: "Neue News" };
 
 export default async function NewNewsPage() {
-  const { supabase, me } = await requireAdmin();
+  const { supabase, me } = await requirePermission("news");
   const emojis = await getDiscordEmojis(supabase);
   const signature = defaultSignature(me.slug, me.name, me.is_lead);
   return (

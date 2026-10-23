@@ -27,11 +27,13 @@ export interface TeamMember {
   quote: string;
   /** Öffentliche Kontaktadresse */
   contactEmail?: string;
+  /** Auf der /team-Übersicht gezeigt. false heisst: nur auf den eigenen Projektseiten. */
+  listed: boolean;
 }
 
 const LEGACY_PUBLIC_COLUMNS =
   "id, slug, name, role, bio, accent, photo_url, socials, is_lead, visible, sort";
-export const PUBLIC_PROFILE_COLUMNS = `${LEGACY_PUBLIC_COLUMNS}, quote, contact_email`;
+export const PUBLIC_PROFILE_COLUMNS = `${LEGACY_PUBLIC_COLUMNS}, quote, contact_email, listed`;
 
 function staticMembers(): TeamMember[] {
   return staticTeam.map((m, i) => ({
@@ -47,6 +49,7 @@ function staticMembers(): TeamMember[] {
     socials: m.socials,
     quote: m.quote ?? "",
     contactEmail: m.email,
+    listed: true,
     projects: projects.flatMap((p) =>
       p.team
         .filter((t) => t.slug === m.slug)
@@ -68,6 +71,7 @@ type ProfileRow = {
   sort: number;
   quote?: string | null;
   contact_email?: string | null;
+  listed?: boolean | null;
 };
 
 export function rowToMember(
@@ -87,6 +91,7 @@ export function rowToMember(
     socials: cleanSocials(row.socials),
     quote: row.quote ?? "",
     contactEmail: row.contact_email ?? undefined,
+    listed: row.listed ?? true,
     projects: memberships
       .filter((m) => m.profile_id === row.id)
       .map((m) => ({ slug: m.project_slug, role: m.role })),

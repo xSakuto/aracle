@@ -1,6 +1,9 @@
 import { redirect } from "next/navigation";
 import { cleanSocials, type Social } from "@/data/socials";
+import { PERMISSIONS, PERMISSION_LABELS, type Permission } from "@/lib/permissions";
 import { createSessionClient } from "@/lib/supabase/server";
+
+export { PERMISSIONS, PERMISSION_LABELS, type Permission };
 
 export interface FullProfile {
   id: string;
@@ -22,13 +25,18 @@ export interface FullProfile {
   is_lead: boolean;
   is_admin: boolean;
   visible: boolean;
+  /** Auf der /team-Übersicht gezeigt. Getrennt von "visible": jemand kann lesbar
+   *  (z. B. für eine einzelne Projektseite) sein, ohne auf /team zu stehen. */
+  listed: boolean;
+  /** Einzeln freigeschaltete Dashboard-Bereiche für Nicht-Admins, z. B. ["bot"]. */
+  permissions: Permission[];
   sort: number;
   projects: { slug: string; role: string }[];
 }
 
 export const LEGACY_COLUMNS =
   "id, user_id, email, slug, name, role, bio, accent, photo_url, socials, is_lead, is_admin, visible, sort";
-export const FULL_COLUMNS = `${LEGACY_COLUMNS}, quote, contact_email, discord_username`;
+export const FULL_COLUMNS = `${LEGACY_COLUMNS}, quote, contact_email, discord_username, permissions, listed`;
 
 /** Spalte fehlt noch, weil supabase/2026-10-profile-quote.sql nicht ausgeführt ist. */
 export function missingColumn(err: { code?: string; message?: string } | null | undefined) {
@@ -46,11 +54,13 @@ export async function withProfileColumns<T extends { error: { code?: string; mes
   return res.error && missingColumn(res.error) ? run(legacy) : res;
 }
 
-type Row = Omit<FullProfile, "socials" | "projects" | "quote" | "contact_email" | "discord_username"> & {
+type Row = Omit<FullProfile, "socials" | "projects" | "quote" | "contact_email" | "discord_username" | "permissions" | "listed"> & {
   socials: unknown;
   quote?: string | null;
   contact_email?: string | null;
   discord_username?: string | null;
+  permissions?: Permission[] | null;
+  listed?: boolean | null;
 };
 
 export function toProfile(
@@ -63,6 +73,8 @@ export function toProfile(
     quote: row.quote ?? "",
     contact_email: row.contact_email ?? null,
     discord_username: row.discord_username ?? null,
+    permissions: row.permissions ?? [],
+    listed: row.listed ?? true,
     projects: members
       .filter((m) => m.profile_id === row.id)
       .map((m) => ({ slug: m.project_slug, role: m.role })),
@@ -95,5 +107,12 @@ export async function requireMember() {
 export async function requireAdmin() {
   const ctx = await requireMember();
   if (!ctx.me?.is_admin) redirect("/dashboard");
+  return ctx as typeof ctx & { me: FullProfile };
+}
+
+/** Wie requireAdmin, lässt aber auch Leute mit genau dieser einzelnen Berechtigung durch. */
+export async function requirePermission(perm: Permission) {
+  const ctx = await requireMember();
+  if (!ctx.me?.is_admin && !ctx.me?.permissions.includes(perm)) redirect("/dashboard");
   return ctx as typeof ctx & { me: FullProfile };
 }
