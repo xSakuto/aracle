@@ -1,9 +1,9 @@
-import InquiryBoard, { type Assignee, type InquiryRow } from "@/components/dashboard/InquiryBoard";
+import InquiryBoard, { type Assignee, type InquiryEvent, type InquiryRow } from "@/components/dashboard/InquiryBoard";
 import { requirePermission } from "@/lib/session";
 
 export default async function InquiriesPage() {
   const { supabase } = await requirePermission("anfragen");
-  const [{ data, error }, { data: people }] = await Promise.all([
+  const [{ data, error }, { data: people }, { data: events }] = await Promise.all([
     supabase
       .from("inquiries")
       .select("id, created_at, name, email, company, project_type, description, budget, status, assigned_to, note")
@@ -14,12 +14,18 @@ export default async function InquiriesPage() {
       .select("id, name, photo_url, accent, is_admin, permissions")
       .order("is_lead", { ascending: false })
       .order("sort"),
+    supabase
+      .from("inquiry_events")
+      .select("inquiry_id, actor_name, action, detail, created_at")
+      .order("created_at", { ascending: false })
+      .limit(1000),
   ]);
 
   const rows = (data ?? []) as InquiryRow[];
   const assignees: Assignee[] = ((people ?? []) as { id: string; name: string; photo_url: string | null; accent: string; is_admin: boolean; permissions: string[] | null }[])
     .filter((p) => p.is_admin || (p.permissions ?? []).includes("anfragen"))
     .map((p) => ({ id: p.id, name: p.name, photo: p.photo_url, accent: p.accent }));
+  const allEvents = (events ?? []) as InquiryEvent[];
 
   return (
     <div className="max-w-[88rem]">
@@ -35,7 +41,7 @@ export default async function InquiriesPage() {
           <p className="dash-help mt-1">Sobald jemand das Formular auf /kontakt absendet, erscheint die Anfrage hier.</p>
         </div>
       ) : (
-        <InquiryBoard rows={rows} assignees={assignees} />
+        <InquiryBoard rows={rows} assignees={assignees} events={allEvents} />
       )}
     </div>
   );

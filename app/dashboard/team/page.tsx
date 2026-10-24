@@ -11,12 +11,17 @@ export default async function TeamAdminPage({
 }) {
   const { supabase } = await requireAdmin();
   const { geloescht } = await searchParams;
-  const [{ data: rows }, { data: members }] = await Promise.all([
+  const [{ data: rows }, { data: members }, { data: logins }] = await Promise.all([
     withProfileColumns((cols) => supabase.from("profiles").select(cols).order("is_lead", { ascending: false }).order("sort").order("name")),
     supabase.from("project_members").select("profile_id, project_slug, role"),
+    supabase.rpc("team_logins"),
   ]);
   const team: FullProfile[] = (rows ?? []).map((r) => toProfile(r as unknown as Parameters<typeof toProfile>[0], members ?? []));
   const titleOf = Object.fromEntries(projects.map((p) => [p.slug, p.title]));
+  const lastLogin = Object.fromEntries(
+    ((logins ?? []) as { profile_id: string; last_sign_in_at: string | null }[]).map((r) => [r.profile_id, r.last_sign_in_at]),
+  );
+  const fmtLogin = new Intl.DateTimeFormat("de-CH", { dateStyle: "medium", timeStyle: "short", timeZone: "Europe/Zurich" });
 
   return (
     <div className="max-w-[72rem]">
@@ -80,7 +85,12 @@ export default async function TeamAdminPage({
                   </td>
                   <td className="py-3 pr-4">
                     {m.user_id ? (
-                      <span>Aktiv</span>
+                      <>
+                        <span>Aktiv</span>
+                        <span className="block text-xs text-muted">
+                          {lastLogin[m.id] ? `Zuletzt ${fmtLogin.format(new Date(lastLogin[m.id] as string))}` : "Noch nie eingeloggt"}
+                        </span>
+                      </>
                     ) : m.email ? (
                       <span className="text-muted">Eingeladen</span>
                     ) : (

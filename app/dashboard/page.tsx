@@ -1,4 +1,5 @@
 import { signOut } from "@/app/(site)/login/actions";
+import Overview from "@/components/dashboard/Overview";
 import ProfileForm from "@/components/dashboard/ProfileForm";
 import SocialIcon from "@/components/SocialIcon";
 import { projects } from "@/data/projects";
@@ -43,7 +44,11 @@ export default async function DashboardPage({
         Änderungen sind nach dem Speichern innert einer Minute auf der Teamseite sichtbar.
       </p>
 
-      <div className="mt-8 flex flex-wrap items-center justify-between gap-4 rounded-[10px] border border-[#1c1e22] p-5">
+      <div className="mt-8">
+        <Overview me={me} />
+      </div>
+
+      <div className="flex flex-wrap items-center justify-between gap-4 rounded-[10px] border border-[#1c1e22] p-5">
         <div className="flex items-center gap-3">
           <SocialIcon type="discord" className="h-6 w-6 shrink-0 text-[#5865F2]" />
           <div>

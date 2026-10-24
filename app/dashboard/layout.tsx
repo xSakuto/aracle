@@ -10,7 +10,17 @@ export const metadata = {
 };
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
-  const { user, me } = await requireMember();
+  const { supabase, user, me } = await requireMember();
+  const canAnfragen = Boolean(me?.is_admin || me?.permissions.includes("anfragen"));
+
+  let openInquiries = 0;
+  if (canAnfragen) {
+    const { count } = await supabase
+      .from("inquiries")
+      .select("id", { count: "exact", head: true })
+      .neq("status", "archiviert");
+    openInquiries = count ?? 0;
+  }
 
   return (
     <div className="min-h-svh text-[0.875rem] tracking-normal md:grid md:grid-cols-[15rem_1fr]">
@@ -20,7 +30,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
           <span className="text-muted">Team</span>
         </Link>
 
-        <DashNav admin={Boolean(me?.is_admin)} permissions={me?.permissions} />
+        <DashNav admin={Boolean(me?.is_admin)} permissions={me?.permissions} badges={{ anfragen: openInquiries }} />
         <form action={signOut} className="mt-1 md:hidden">
           <button type="submit" className="flex h-8 items-center rounded-[6px] px-3 text-muted hover:text-ink">
             Abmelden
