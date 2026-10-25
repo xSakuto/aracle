@@ -1,6 +1,5 @@
 import Link from "next/link";
 import CopyValue from "@/components/brand/CopyValue";
-import ApplyForm from "@/components/smp/ApplyForm";
 import PixelGround from "@/components/smp/PixelGround";
 import { SMP_DISCORD_INVITE } from "@/data/smp";
 import { SITE_URL } from "@/lib/site";
@@ -158,14 +157,6 @@ export default function SmpPage() {
                 Discord beitreten <span aria-hidden>↗</span>
               </a>
             )}
-          </div>
-          <div className="md:col-span-7 md:col-start-6">
-            {!SMP_DISCORD_INVITE && (
-              <p className="small mb-4 text-muted">
-                Noch kein öffentlicher Einladungslink. Schreib uns kurz, dann schicken wir dir die Einladung zum Discord.
-              </p>
-            )}
-            <ApplyForm />
           </div>
         </div>
       </section>

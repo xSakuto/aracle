@@ -56,7 +56,8 @@ const STEAM = "https://shared.fastly.steamstatic.com/store_item_assets/steam/app
 export const projects: Project[] = [
   {
     slug: "aracle-cloud-hosting",
-    mark: "/images/cloud/aracle-cloud-logo.png",
+    mark: "/images/cloud/aracle-cloud-hosting-logo.png",
+    markTile: "/images/cloud/aracle-cloud-hosting-logo.png",
     landing: "/hosting",
     year: "2022",
     title: "Aracle Cloud",
@@ -138,7 +139,7 @@ export const projects: Project[] = [
   {
     slug: "milvia",
     mark: "/images/milvia/milvia-mark.png",
-    markTile: "/images/milvia/milvia-mark-white.png",
+    markTile: "/images/milvia/milvia-mark.png",
     coverImage: "/images/milvia/forest.webp",
     year: "2026",
     title: "Milvia",
@@ -270,8 +271,8 @@ export const projects: Project[] = [
   },
   {
     slug: "sakuto",
-    mark: "/images/sakuto/sakuto-purple.png",
-    markTile: "/images/sakuto/sakuto-purple.png",
+    mark: "/images/sakuto/sakuto-ice.png",
+    markTile: "/images/sakuto/sakuto-ice.png",
     year: "2021",
     title: "Sakuto",
     tagline: "Video essays, streams and Nintendo culture.",

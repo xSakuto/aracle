@@ -1,7 +1,5 @@
 // Neueste Videos vom YouTube-Kanal, über den öffentlichen RSS-Feed von YouTube.
 // Kein API-Schlüssel nötig. Wird alle 30 Minuten neu geholt.
-const CHANNEL_ID = "UCM7MsGKJAniBSAloifLcJ-Q";
-const FEED = `https://www.youtube.com/feeds/videos.xml?channel_id=${CHANNEL_ID}`;
 
 type Video = { id: string; title: string; published: string };
 
@@ -14,9 +12,9 @@ function decode(s: string) {
     .replace(/&#39;/g, "'");
 }
 
-async function loadVideos(): Promise<Video[]> {
+async function loadVideos(channelId: string): Promise<Video[]> {
   try {
-    const res = await fetch(FEED, { next: { revalidate: 1800 } });
+    const res = await fetch(`https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`, { next: { revalidate: 1800 } });
     if (!res.ok) return [];
     const xml = await res.text();
     const entries = xml.split("<entry>").slice(1, 7);
@@ -30,15 +28,15 @@ async function loadVideos(): Promise<Video[]> {
   }
 }
 
-export default async function YouTubeFeed() {
-  const videos = await loadVideos();
+export default async function YouTubeFeed({ channelId, handle, title = "Neueste Videos" }: { channelId: string; handle: string; title?: string }) {
+  const videos = await loadVideos(channelId);
   if (videos.length === 0) return null;
 
   return (
     <section aria-labelledby="feed-title" className="wrap py-[var(--section)]">
       <div className="flex flex-wrap items-end justify-between gap-4">
-        <h2 id="feed-title" className="head">Neueste Videos</h2>
-        <a href="https://www.youtube.com/@swizzly690" target="_blank" rel="noopener noreferrer" className="link-under small">
+        <h2 id="feed-title" className="head">{title}</h2>
+        <a href={`https://www.youtube.com/${handle}`} target="_blank" rel="noopener noreferrer" className="link-under small">
           Alle auf YouTube <span aria-hidden>↗</span>
         </a>
       </div>

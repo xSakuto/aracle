@@ -4,6 +4,7 @@ import ProductMockup from "@/components/visuals/ProductMockup";
 import ProjectPoster from "@/components/visuals/ProjectPoster";
 import { getProject, projects, type GalleryItem, type Project, type ProjectStatus } from "@/data/projects";
 import { getTeam } from "@/lib/team";
+import YouTubeFeed from "@/components/swizzly/YouTubeFeed";
 import { SITE_URL } from "@/lib/site";
 
 export const revalidate = 60;
@@ -194,7 +195,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
             <span>{p.category}</span>
           </nav>
 
-          {p.slug === "milvia" && p.markTile ? (
+          {(p.slug === "milvia" || p.slug === "sakuto") && p.markTile ? (
             <>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={p.markTile} alt="" aria-hidden width={480} height={480} className="mt-6 h-auto w-[min(40vw,14rem)] bg-transparent" />
@@ -250,6 +251,10 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
             </li>
           </ul>
         </section>
+      )}
+
+      {p.slug === "sakuto" && (
+        <YouTubeFeed channelId="UCoYpRaDlbs40VW_01KMWQ7Q" handle="@xSakuto" />
       )}
 
       {gallery.length > 0 && (

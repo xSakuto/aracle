@@ -162,7 +162,7 @@ export default function SwizzlyPage() {
         </ul>
       </section>
 
-      <YouTubeFeed />
+      <YouTubeFeed channelId="UCM7MsGKJAniBSAloifLcJ-Q" handle="@swizzly690" />
 
       <section aria-label="Unterwegs" className="wrap py-[var(--section)]">
         <ul className="grid gap-4 sm:grid-cols-2">
