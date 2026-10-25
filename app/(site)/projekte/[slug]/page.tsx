@@ -178,6 +178,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
                 height={1067}
                 fetchPriority="high"
                 data-parallax="0.06"
+                style={p.coverPosition ? { objectPosition: p.coverPosition } : undefined}
                 className="h-[112%] w-full object-cover"
               />
               <div className="absolute inset-0 bg-[#0b1115]/30 mix-blend-multiply" />
@@ -255,6 +256,10 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
       )}
 
       {p.slug === "sakuto" && <SakutoStage />}
+
+      {p.slug === "sakuto" && (
+        <YouTubeFeed channelId="UCQmuxJXLoovdUOQcaQnyFTA" handle="@Sakuto.mp4" />
+      )}
 
 
       {gallery.length > 0 && (

@@ -34,6 +34,7 @@ export default function ProjectTile({
               width={1600}
               height={1067}
               loading={eager ? "eager" : "lazy"}
+              style={p.coverPosition ? { objectPosition: p.coverPosition } : undefined}
               className="h-full w-full object-cover grayscale-[0.3] saturate-[0.85] transition-transform duration-700 ease-[var(--ease-out)] group-hover:scale-[1.04]"
             />
             <div aria-hidden className="absolute inset-0 bg-[linear-gradient(155deg,rgb(143_214_211/0.9),transparent_62%)] mix-blend-multiply opacity-40" />

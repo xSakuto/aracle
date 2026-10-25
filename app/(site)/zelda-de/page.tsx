@@ -1,4 +1,5 @@
 import Link from "next/link";
+import ZeldaLayers from "@/components/zelda/ZeldaLayers";
 import { ZELDA_DISCORD_INVITE } from "@/data/zelda";
 import { SITE_URL } from "@/lib/site";
 
@@ -110,6 +111,8 @@ export default function ZeldaDePage() {
           <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-bg to-transparent" />
         </div>
 
+        <ZeldaLayers />
+
         <div className="wrap relative mt-auto pb-14 pt-32 md:pb-20">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/images/zelda/zelda-de-logo.png" alt="" aria-hidden width={600} height={556} className="mb-6 h-20 w-auto bg-transparent md:h-24" data-rise />
@@ -131,27 +134,6 @@ export default function ZeldaDePage() {
           </div>
         </div>
       </header>
-
-      <section aria-label="Willkommen in Hyrule" className="wrap relative pb-[var(--section)]">
-        <div className="grid items-end gap-10 md:grid-cols-12">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/images/zelda/zelda-duo.png" alt="Zelda und Prinzessin Zelda, Artwork aus The Legend of Zelda" loading="lazy" width={790} height={1058} className="mx-auto h-auto w-[min(70vw,22rem)] md:col-span-5" />
-          <div className="md:col-span-6 md:col-start-7">
-            <p className="kicker text-aqua">Hyrule ruft</p>
-            <h2 className="head mt-4">Komm vorbei, Navi weiss den Weg.</h2>
-            <p className="mt-4 max-w-[46ch] text-ink/80">
-              Ob du gerade erst mit Ocarina of Time anfängst oder seit Skyward Sword dabei bist: Im Discord
-              findest du Leute, die deine Theorien hören wollen und dir bei jedem Schrein weiterhelfen.
-            </p>
-            <div className="mt-8 flex items-center gap-5">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/images/zelda/navi.png" alt="" aria-hidden loading="lazy" width={325} height={307} className="h-16 w-auto drop-shadow-[0_0_18px_rgb(120_200_255/0.6)] [animation:navi-hover_5s_ease-in-out_infinite] motion-reduce:[animation:none]" />
-              <style>{`@keyframes navi-hover { 0%,100% { transform: translate3d(0,0,0); } 50% { transform: translate3d(0,-10px,0); } }`}</style>
-              <span className="small text-muted">Listen, Hey! Listen! Der Discord wartet.</span>
-            </div>
-          </div>
-        </div>
-      </section>
 
       <section aria-labelledby="themen" className="wrap pb-[var(--section)]">
         <h2 id="themen" className="sr-only">Worüber wir reden</h2>
@@ -182,6 +164,12 @@ export default function ZeldaDePage() {
           ))}
         </dl>
       </section>
+
+      <div aria-hidden className="pointer-events-none relative h-[min(60vw,22rem)] overflow-hidden">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/images/zelda/link.webp" alt="" loading="lazy" width={806} height={900} data-parallax="0.05" className="bg-transparent absolute bottom-[-30%] right-[6%] h-[120%] w-auto max-w-none opacity-90 md:right-[14%]" />
+        <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-bg to-transparent" />
+      </div>
 
       <p className="wrap small pb-12 text-muted">
         Fan-Community. The Legend of Zelda ist eine Marke von Nintendo. Betreut von{" "}

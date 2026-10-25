@@ -28,7 +28,7 @@ export default function SakutoStage() {
           loading="lazy"
           width={1388}
           height={1133}
-          className="sakuto-ghost mx-auto h-auto w-[min(80vw,26rem)] drop-shadow-[0_0_28px_rgb(170_140_255/0.45)]"
+          className="bg-transparent sakuto-ghost mx-auto h-auto w-[min(80vw,26rem)] drop-shadow-[0_0_28px_rgb(170_140_255/0.45)]"
         />
         <div aria-hidden className="sakuto-ghost-glow pointer-events-none absolute inset-0 -z-10 m-auto h-[70%] w-[70%] rounded-full bg-[radial-gradient(closest-side,rgb(160_120_255/0.35),transparent)] blur-2xl" />
       </div>
@@ -42,12 +42,12 @@ export default function SakutoStage() {
           loading="lazy"
           width={1024}
           height={1536}
-          className="absolute bottom-0 right-[-8%] h-[125%] w-auto max-w-none -rotate-[8deg] object-cover object-top"
+          className="bg-transparent absolute bottom-0 right-[-8%] h-[125%] w-auto max-w-none -rotate-[8deg] object-cover object-top"
         />
         <div aria-hidden className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-bg via-bg/70 to-transparent" />
         <div className="absolute inset-x-0 bottom-6 flex justify-center">
           <a
-            href="https://www.youtube.com/@xSakuto"
+            href="https://www.youtube.com/@Sakuto.mp4"
             target="_blank"
             rel="noopener noreferrer"
             className="btn rounded-full px-7 shadow-[0_10px_30px_-10px_rgb(160_120_255/0.6)] transition-[transform,background-color] duration-300 active:scale-[0.97]"

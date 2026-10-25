@@ -26,6 +26,8 @@ export interface Project {
   status: ProjectStatus;
   owner: string;
   coverImage?: string;
+  /** object-position für Cover-Ausschnitt, z. B. um das Motiv mittig zu halten */
+  coverPosition?: string;
   shortDescription: string;
   longDescription: string;
   /** Was Aracle konkret beiträgt (Rollen, Disziplinen) */
@@ -175,7 +177,8 @@ export const projects: Project[] = [
     category: "Content, Social Media",
     status: "Aktiv",
     owner: "Joel Nef",
-    coverImage: "/images/swizzly/ktm-mountain.webp",
+    coverImage: "/images/swizzly/moto-sunset.webp",
+    coverPosition: "50% 47%",
     shortDescription:
       "Motorrad, Entertainment und RS-Content auf YouTube, TikTok und Instagram.",
     longDescription:
@@ -298,7 +301,7 @@ export const projects: Project[] = [
       { date: "2017", label: "Start als YouTube-Kanal xSakuto" },
       { date: "2021", label: "Rebranding zu Sakuto, erstes Videoessay" },
     ],
-    links: [],
+    links: [{ label: "YouTube", url: "https://www.youtube.com/@Sakuto.mp4" }],
   },
   {
     slug: "zelda-de-server",
