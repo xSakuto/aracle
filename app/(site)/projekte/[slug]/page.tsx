@@ -5,6 +5,7 @@ import ProjectPoster from "@/components/visuals/ProjectPoster";
 import { getProject, projects, type GalleryItem, type Project, type ProjectStatus } from "@/data/projects";
 import { getTeam } from "@/lib/team";
 import YouTubeFeed from "@/components/swizzly/YouTubeFeed";
+import SakutoStage from "@/components/sakuto/SakutoStage";
 import { SITE_URL } from "@/lib/site";
 
 export const revalidate = 60;
@@ -252,6 +253,8 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
           </ul>
         </section>
       )}
+
+      {p.slug === "sakuto" && <SakutoStage />}
 
       {p.slug === "sakuto" && (
         <YouTubeFeed channelId="UCoYpRaDlbs40VW_01KMWQ7Q" handle="@xSakuto" />

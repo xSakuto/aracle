@@ -139,7 +139,7 @@ export const projects: Project[] = [
   {
     slug: "milvia",
     mark: "/images/milvia/milvia-mark.png",
-    markTile: "/images/milvia/milvia-mark.png",
+    markTile: "/images/milvia/milvia-mark-white.png",
     coverImage: "/images/milvia/forest.webp",
     year: "2026",
     title: "Milvia",
@@ -271,8 +271,8 @@ export const projects: Project[] = [
   },
   {
     slug: "sakuto",
-    mark: "/images/sakuto/sakuto-ice.png",
-    markTile: "/images/sakuto/sakuto-ice.png",
+    mark: "/images/sakuto/sakuto-silver.png",
+    markTile: "/images/sakuto/sakuto-silver.png",
     year: "2021",
     title: "Sakuto",
     tagline: "Video essays, streams and Nintendo culture.",
@@ -280,7 +280,7 @@ export const projects: Project[] = [
     category: "Content, Gaming",
     status: "Aktiv",
     owner: "Joel Nef",
-    coverImage: "/images/sakuto/sakuto-header.webp",
+    coverImage: "/images/sakuto/sakuto-hero-purple.png",
     shortDescription:
       "Nintendo-Content, Videoessays und Streams. Herzstück der Creator-Sparte.",
     longDescription:

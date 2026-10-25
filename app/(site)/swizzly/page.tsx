@@ -12,7 +12,7 @@ export const metadata = {
   title: { absolute: TITLE },
   description: DESCRIPTION,
   keywords: [
-    "Swizzly",
+    "Swizzly", "Swizzly690", "@swizzly690", "Swizzly Aracle", "Swizzly YouTube", "Swizzly TikTok",
     "Motorrad Content Schweiz",
     "Motovlog Schweiz",
     "RS Content",
@@ -84,7 +84,7 @@ export default function SwizzlyPage() {
         "@type": "Person",
         "@id": `${SITE_URL}/swizzly#person`,
         name: "Joel-Sananda Nef",
-        alternateName: "Swizzly",
+        alternateName: ["Swizzly", "Swizzly690"],
         url: `${SITE_URL}/swizzly`,
         jobTitle: "Content Creator",
         knowsAbout: ["Motorrad", "Content Creation", "Schweizer Armee RS"],

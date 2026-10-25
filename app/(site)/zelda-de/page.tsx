@@ -10,6 +10,7 @@ export const metadata = {
   title: { absolute: TITLE },
   description: DESCRIPTION,
   keywords: [
+    "ZeldaDE", "Zelda DE", "ZeldaDE Discord", "Zelda Community DE", "Zelda Aracle",
     "Zelda Discord",
     "Zelda Community deutsch",
     "Zelda Discord Server deutsch",
@@ -130,6 +131,27 @@ export default function ZeldaDePage() {
           </div>
         </div>
       </header>
+
+      <section aria-label="Willkommen in Hyrule" className="wrap relative pb-[var(--section)]">
+        <div className="grid items-end gap-10 md:grid-cols-12">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/images/zelda/zelda-duo.png" alt="Zelda und Prinzessin Zelda, Artwork aus The Legend of Zelda" loading="lazy" width={790} height={1058} className="mx-auto h-auto w-[min(70vw,22rem)] md:col-span-5" />
+          <div className="md:col-span-6 md:col-start-7">
+            <p className="kicker text-aqua">Hyrule ruft</p>
+            <h2 className="head mt-4">Komm vorbei, Navi weiss den Weg.</h2>
+            <p className="mt-4 max-w-[46ch] text-ink/80">
+              Ob du gerade erst mit Ocarina of Time anfängst oder seit Skyward Sword dabei bist: Im Discord
+              findest du Leute, die deine Theorien hören wollen und dir bei jedem Schrein weiterhelfen.
+            </p>
+            <div className="mt-8 flex items-center gap-5">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/images/zelda/navi.png" alt="" aria-hidden loading="lazy" width={325} height={307} className="h-16 w-auto drop-shadow-[0_0_18px_rgb(120_200_255/0.6)] [animation:navi-hover_5s_ease-in-out_infinite] motion-reduce:[animation:none]" />
+              <style>{`@keyframes navi-hover { 0%,100% { transform: translate3d(0,0,0); } 50% { transform: translate3d(0,-10px,0); } }`}</style>
+              <span className="small text-muted">Listen, Hey! Listen! Der Discord wartet.</span>
+            </div>
+          </div>
+        </div>
+      </section>
 
       <section aria-labelledby="themen" className="wrap pb-[var(--section)]">
         <h2 id="themen" className="sr-only">Worüber wir reden</h2>
