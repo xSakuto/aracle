@@ -312,7 +312,7 @@ export const projects: Project[] = [
     category: "Community, Discord",
     status: "Aktiv",
     owner: "Lars & Joel Nef",
-    coverImage: "/images/zelda/zelda-de-header.webp",
+    coverImage: "/images/zelda/zelda-cover.png",
     shortDescription:
       "Grösste deutsche Zelda-Community auf Discord: Theorien, Spiele, Speedruns und Nostalgie.",
     longDescription:

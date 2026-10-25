@@ -97,7 +97,7 @@ export default function ZeldaDePage() {
         <div aria-hidden className="absolute inset-0">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="/images/zelda/zelda-de-header.webp"
+            src="/images/zelda/zelda-cover.png"
             alt=""
             width={960}
             height={540}
