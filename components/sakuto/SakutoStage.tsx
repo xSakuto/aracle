@@ -22,7 +22,7 @@ export default function SakutoStage() {
       <div className="relative md:col-span-6">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src="/images/sakuto/sakuto-ghost.png"
+          src="/images/sakuto/sakuto-pose-master.webp"
           alt=""
           aria-hidden
           loading="lazy"
@@ -36,7 +36,7 @@ export default function SakutoStage() {
       <div className="relative h-[min(80vw,30rem)] overflow-hidden rounded-[var(--radius)] md:col-span-5 md:col-start-8 md:h-[34rem]">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src="/images/sakuto/sakuto-peek.png"
+          src="/images/sakuto/sakuto-pose-point.webp"
           alt=""
           aria-hidden
           loading="lazy"

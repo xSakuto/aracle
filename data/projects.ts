@@ -138,8 +138,8 @@ export const projects: Project[] = [
   },
   {
     slug: "milvia",
-    mark: "/images/milvia/milvia-mark.png",
-    markTile: "/images/milvia/milvia-mark-white.png",
+    mark: "/images/milvia/milvia-logo-white.png",
+    markTile: "/images/milvia/milvia-logo-white.png",
     coverImage: "/images/milvia/forest.webp",
     year: "2026",
     title: "Milvia",
