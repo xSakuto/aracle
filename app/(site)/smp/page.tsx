@@ -44,9 +44,9 @@ const facts: { title: string; text: string; href?: string }[] = [
 ];
 
 const steps: [string, string, string][] = [
-  ["Discord beitreten", "Tritt unserem Discord-Server bei. Das ist der Treffpunkt der Community.", "https://placehold.co/640x360?text=Discord"],
-  ["Minecraft-Account verknüpfen", "Verknüpfe dort deinen Minecraft-Account mit deinem Discord-Profil.", "https://placehold.co/640x360?text=Account+verkn%C3%BCpfen"],
-  ["Mitspielen", "Sobald verknüpft, verbindest du dich direkt mit play.aracle.ch.", "https://placehold.co/640x360?text=play.aracle.ch"],
+  ["Discord beitreten", "Tritt unserem Discord-Server bei. Das ist der Treffpunkt der Community.", "/images/smp/smp-banner.png"],
+  ["Minecraft-Account verknüpfen", "Verknüpfe dort deinen Minecraft-Account mit deinem Discord-Profil.", "/images/smp/smp-cherry.png"],
+  ["Mitspielen", "Sobald verknüpft, verbindest du dich direkt mit play.aracle.ch.", "/images/smp/smp-banner.png"],
 ];
 
 // AracleSMP: eigene Landing Page im Minecraft-Stil, mit Bewerbung statt offener Tür.
