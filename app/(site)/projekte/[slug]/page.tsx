@@ -256,9 +256,6 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
 
       {p.slug === "sakuto" && <SakutoStage />}
 
-      {p.slug === "sakuto" && (
-        <YouTubeFeed channelId="UCoYpRaDlbs40VW_01KMWQ7Q" handle="@xSakuto" />
-      )}
 
       {gallery.length > 0 && (
         <section aria-label="Einblicke" className="wrap mt-[calc(var(--section)*0.7)]">

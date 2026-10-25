@@ -162,33 +162,20 @@ export default function SwizzlyPage() {
         </ul>
       </section>
 
-      <YouTubeFeed channelId="UCM7MsGKJAniBSAloifLcJ-Q" handle="@swizzly690" />
+      <div className="wrap"><div className="rounded-[var(--radius)] border border-line bg-[#0b1115]/60 p-6 md:p-10"><YouTubeFeed channelId="UCM7MsGKJAniBSAloifLcJ-Q" handle="@swizzly690" /></div></div>
 
       <section aria-label="Unterwegs" className="wrap py-[var(--section)]">
-        <ul className="grid gap-4 sm:grid-cols-2">
-          <li>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/images/swizzly/ktm-mountain.webp"
-              alt="Swizzly auf der KTM 690 SMC R vor Glarner Bergkulisse"
-              width={1080}
-              height={1156}
-              loading="lazy"
-              className="aspect-[4/5] w-full rounded-[var(--radius)] object-cover"
-            />
-          </li>
-          <li>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/images/swizzly/ktm-road.webp"
-              alt="KTM am Strassenrand vor den Glarner Alpen"
-              width={1600}
-              height={2133}
-              loading="lazy"
-              className="aspect-[4/5] w-full rounded-[var(--radius)] object-cover"
-            />
-          </li>
-        </ul>
+        <div className="overflow-hidden rounded-[var(--radius)] border border-line bg-[#0b1115]">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/images/swizzly/moto-sunset.webp"
+            alt="Motorrad im Sonnenuntergang auf einem Bergkamm"
+            width={1200}
+            height={2132}
+            loading="lazy"
+            className="mx-auto aspect-[4/5] w-full max-w-[32rem] object-cover object-[50%_58%]"
+          />
+        </div>
       </section>
 
       <section aria-labelledby="rs-title" className="wrap grid gap-10 py-[var(--section)] md:grid-cols-12">
