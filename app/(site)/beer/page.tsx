@@ -2,16 +2,16 @@ import Link from "next/link";
 import { getProject } from "@/data/projects";
 import { SITE_URL } from "@/lib/site";
 
-const TITLE = "BEER: The Rusty Mug · A tiny online tavern for up to four";
+const TITLE = "BEER: The Rusty Mug · Eine kleine Online-Taverne für bis zu vier";
 const DESCRIPTION =
-  "BEER: The Rusty Mug is a free-to-play online tavern for up to four friends. Pour beer, play roulette, blackjack, Meiern and darts, and don't die of thirst. In development by Aracle, coming to Steam.";
+  "BEER: The Rusty Mug ist eine kostenlose Online-Taverne für bis zu vier Freunde. Bier zapfen, Roulette, Blackjack, Meiern und Darts spielen und nicht verdursten. Entwickelt von Aracle, bald auf Steam.";
 
 export const metadata = {
   title: { absolute: TITLE },
   description: DESCRIPTION,
   keywords: [
-    "BEER", "The Rusty Mug", "Beer Game", "Free to Play Steam", "Online tavern game",
-    "Multiplayer drinking game", "Aracle", "Joel Nef",
+    "BEER", "The Rusty Mug", "Beer Game", "Free to Play Steam", "Online-Taverne",
+    "Multiplayer Trinkspiel", "Aracle", "Joel Nef",
   ],
   alternates: { canonical: "/beer" },
   openGraph: {
@@ -24,36 +24,36 @@ export const metadata = {
 };
 
 const tables = [
-  { title: "Roulette", host: "with Bierhard" },
-  { title: "Blackjack", host: "with Hopfried" },
-  { title: "Meiern", host: "dice & bluffing, at the dice table" },
-  { title: "Darts", host: "on the wall, 501 double out" },
+  { title: "Roulette", host: "mit Bierhard" },
+  { title: "Blackjack", host: "mit Hopfried" },
+  { title: "Meiern", host: "Würfel und Bluff, am Würfeltisch" },
+  { title: "Darts", host: "an der Wand, 501 mit Double-Out" },
 ];
 
 const also = [
-  "Up to 4 players, invite friends through Steam",
-  "Proximity voice: the further away someone stands, the quieter they are",
-  "A record player with music, a bonsai the whole tavern waters together, and a clock that shows the real time",
-  "Achievements, leaderboards, Steam Cloud",
-  "English and German",
+  "Bis zu 4 Spieler, Einladungen über Steam",
+  "Proximity-Voice: je weiter weg jemand steht, desto leiser ist er",
+  "Ein Plattenspieler mit Musik, ein Bonsai, den die ganze Taverne gemeinsam giesst, und eine Uhr mit der echten Zeit",
+  "Achievements, Bestenlisten, Steam Cloud",
+  "Deutsch und Englisch",
 ];
 
 const faq: { q: string; a: string }[] = [
   {
-    q: "What is The Rusty Mug?",
-    a: "A small online tavern for you and up to three friends. You're not people, you're barrels and beer mugs with googly eyes. Pour beer, play table games, and try not to die of thirst.",
+    q: "Was ist The Rusty Mug?",
+    a: "Eine kleine Online-Taverne für dich und bis zu drei Freunde. Ihr seid keine Menschen, sondern Fässer und Bierkrüge mit Wackelaugen. Bier zapfen, Tischspiele spielen und versuchen, nicht zu verdursten.",
   },
   {
-    q: "Is it free?",
-    a: "Yes. BEER: The Rusty Mug is free-to-play, developed and published by Aracle, coming to Steam.",
+    q: "Ist es kostenlos?",
+    a: "Ja. BEER: The Rusty Mug ist Free to Play, entwickelt und veröffentlicht von Aracle, und kommt auf Steam.",
   },
   {
-    q: "Is it finished?",
-    a: "No, it's in alpha and made by one person. Expect bugs, and things changing month to month.",
+    q: "Ist es fertig?",
+    a: "Nein, es ist in der Alpha und wird von einer Person gemacht. Es kann Bugs geben, und Dinge ändern sich von Monat zu Monat.",
   },
 ];
 
-// BEER: The Rusty Mug, eigene Landing Page: Kupfer und Taverne, im eigenen Wortlaut des Spiels.
+// BEER: The Rusty Mug, eigene Landing Page: Kupfer und Taverne, auf Deutsch.
 export default function BeerPage() {
   const p = getProject("beer-game");
   const jsonLd = {
@@ -65,7 +65,7 @@ export default function BeerPage() {
         url: `${SITE_URL}/beer`,
         name: TITLE,
         description: DESCRIPTION,
-        inLanguage: "en",
+        inLanguage: "de",
         isPartOf: { "@id": `${SITE_URL}/#website` },
         mainEntity: { "@id": `${SITE_URL}/beer#game` },
         publisher: { "@id": `${SITE_URL}/#org` },
@@ -112,16 +112,18 @@ export default function BeerPage() {
         </div>
 
         <div className="wrap relative mt-auto pb-14 pt-32 md:pb-20">
-          <p className="kicker text-aqua" data-rise>Free to Play · Coming to Steam</p>
-          <h1 className="mt-4 font-[family-name:var(--font-display)] text-[clamp(3rem,1rem+8vw,8rem)] font-black leading-[0.9] tracking-[-0.03em]" data-split="load">
-            The Rusty Mug
+          <p className="kicker text-aqua" data-rise>Free to Play · Bald auf Steam</p>
+          <h1 className="mt-6" data-rise>
+            <span className="sr-only">The Rusty Mug</span>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/images/beer/beer-logo.png" alt="" aria-hidden width={960} height={540} fetchPriority="high" className="h-auto w-[min(80vw,40rem)] bg-transparent" />
           </h1>
           <div className="mt-8 flex flex-col gap-6 border-t border-ink/15 pt-6 md:flex-row md:items-end md:justify-between" data-rise style={{ ["--i" as string]: 2 }}>
             <p className="lead max-w-[38ch] text-ink/90">
-              A tiny online tavern for you and up to three friends. You&apos;re not people, you&apos;re barrels and beer mugs with googly eyes.
+              Eine kleine Online-Taverne für dich und bis zu drei Freunde. Ihr seid keine Menschen, sondern Fässer und Bierkrüge mit Wackelaugen.
             </p>
             <a href="https://store.steampowered.com/app/3438570/BEER/" target="_blank" rel="noopener noreferrer" className="btn self-start md:self-auto">
-              Wishlist on Steam <span aria-hidden>↗</span>
+              Auf Steam merken <span aria-hidden>↗</span>
             </a>
           </div>
         </div>
@@ -129,41 +131,41 @@ export default function BeerPage() {
 
       <section aria-labelledby="what-title" className="wrap grid gap-10 py-[var(--section)] md:grid-cols-12">
         <div className="md:col-span-4">
-          <h2 id="what-title" className="head">What is this?</h2>
+          <h2 id="what-title" className="head">Worum geht es?</h2>
         </div>
         <div className="md:col-span-7 md:col-start-6">
           <p className="lead max-w-[46ch] text-ink/90">
-            You&apos;re not people, you&apos;re barrels and beer mugs with googly eyes and a tap for a nose.
-            You pour beer, drink it, clink glasses, lose your money at roulette and throw beer coasters at
-            each other&apos;s heads. That&apos;s about all you need to know.
+            Ihr seid keine Menschen, sondern Fässer und Bierkrüge mit Wackelaugen und einem Zapfhahn als Nase.
+            Ihr zapft Bier, trinkt es, stosst an, verliert euer Geld am Roulette und werft euch Bierdeckel
+            an den Kopf. Mehr muss man nicht wissen.
           </p>
         </div>
       </section>
 
       <section aria-labelledby="pouring-title" className="wrap grid gap-10 border-t border-line py-[var(--section)] md:grid-cols-12">
         <div className="md:col-span-4">
-          <h2 id="pouring-title" className="head">Pouring.</h2>
+          <h2 id="pouring-title" className="head">Zapfen.</h2>
         </div>
         <div className="md:col-span-7 md:col-start-6">
           <p className="max-w-[48ch] text-ink/80">
-            You open the tap with your mouse. Open it too far and you get a mug full of foam. Not far
-            enough and everyone watches you wait. Whatever you spill turns into a puddle, and someone has
-            to mop it up. Nefilou, the landlord, tips two coins for that.
+            Den Hahn öffnest du mit der Maus. Zu weit offen und du hast einen Krug voller Schaum. Zu wenig,
+            und alle schauen dir beim Warten zu. Was du verschüttest, wird zur Pfütze, und jemand muss sie
+            aufwischen. Nefilou, der Wirt, gibt dafür zwei Münzen Trinkgeld.
           </p>
           <p className="mt-4 max-w-[48ch] text-ink/80">
-            Every beer raises your blood alcohol. The room starts to sway, your hand shakes, and
-            eventually you black out. The milk tap in the corner sobers you up. You can also spend the
-            whole evening drinking only milk, it counts just the same.
+            Jedes Bier erhöht deinen Alkoholpegel. Der Raum fängt an zu schwanken, deine Hand zittert, und
+            irgendwann wirst du ohnmächtig. Der Milchhahn in der Ecke macht dich wieder nüchtern. Du kannst
+            auch den ganzen Abend nur Milch trinken, das zählt genauso.
           </p>
         </div>
       </section>
 
       <section aria-labelledby="tables-title" className="wrap border-t border-line py-[var(--section)]">
-        <h2 id="tables-title" className="head">At the tables.</h2>
+        <h2 id="tables-title" className="head">Am Tisch.</h2>
         <p className="mt-4 max-w-[48ch] text-ink/80">
-          In Meiern you can peek under the cup, but the others see you doing it. In darts your arm sways,
-          and after three beers it sways a lot. You play for Taler. They only exist in the game and
-          can&apos;t be bought.
+          Beim Meiern kannst du unter den Becher schielen, aber die anderen sehen dich dabei. Beim Darts
+          schwankt dein Arm, und nach drei Bier schwankt er ziemlich. Gespielt wird um Taler. Die gibt es nur
+          im Spiel und sie lassen sich nicht kaufen.
         </p>
         <ul className="mt-8 grid border-y border-line sm:grid-cols-2 lg:grid-cols-4">
           {tables.map((t) => (
@@ -177,33 +179,33 @@ export default function BeerPage() {
 
       <section aria-labelledby="session-title" className="wrap grid gap-10 border-t border-line py-[var(--section)] md:grid-cols-12">
         <div className="md:col-span-4">
-          <h2 id="session-title" className="head">The Beer Session.</h2>
+          <h2 id="session-title" className="head">Die Biersitzung.</h2>
         </div>
         <div className="md:col-span-7 md:col-start-6">
           <p className="max-w-[48ch] text-ink/80">
-            As soon as two people are in the tavern, the session starts. Go 20 minutes without a drink and
-            you die of thirst, and the session ends for everyone. The longest sessions go up on the board
-            of honour on the wall and on the Steam leaderboards.
+            Sobald zwei Personen in der Taverne sind, startet die Sitzung. Bleibst du 20 Minuten ohne Drink,
+            verdurstest du, und die Sitzung endet für alle. Die längsten Sitzungen landen auf der Ehrentafel
+            an der Wand und in den Steam-Bestenlisten.
           </p>
         </div>
       </section>
 
       <section aria-labelledby="looks-title" className="wrap grid gap-10 border-t border-line py-[var(--section)] md:grid-cols-12">
         <div className="md:col-span-4">
-          <h2 id="looks-title" className="head">Looks.</h2>
+          <h2 id="looks-title" className="head">Look.</h2>
         </div>
         <div className="md:col-span-7 md:col-start-6">
           <p className="max-w-[48ch] text-ink/80">
-            There&apos;s a mirror in the wardrobe. In front of it you pick your vessel, hair, eyes, brows,
-            mouth, moustache, hat and name plate. Some of it you have from the start, the rest you buy
-            with Taler or find. Every now and then you get a collectible mug for your display case while
-            playing, and a few of them are pretty rare.
+            Im Kleiderschrank steht ein Spiegel. Davor wählst du dein Gefäss, Haare, Augen, Brauen, Mund,
+            Schnauzer, Hut und Namensschild. Einiges hast du von Anfang an, den Rest kaufst du mit Taler oder
+            findest ihn. Ab und zu bekommst du beim Spielen einen Sammelkrug für deine Vitrine, ein paar davon
+            sind richtig selten.
           </p>
         </div>
       </section>
 
       <section aria-labelledby="also-title" className="wrap border-t border-line py-[var(--section)]">
-        <h2 id="also-title" className="head">Also.</h2>
+        <h2 id="also-title" className="head">Dazu.</h2>
         <ul className="mt-8 border-b border-line">
           {also.map((a) => (
             <li key={a} className="border-t border-line py-4 text-[0.9375rem] text-ink/80">{a}</li>
@@ -217,16 +219,16 @@ export default function BeerPage() {
         </div>
         <div className="md:col-span-7 md:col-start-6">
           <p className="max-w-[48ch] text-ink/80">
-            I&apos;m making this game on my own, and it&apos;s still in alpha. There are bugs, and some
-            things will look different next month. If you notice something or miss something, tell me on
-            Discord. Some things are in the game only because someone asked for them.
+            Ich mache dieses Spiel alleine, und es ist noch in der Alpha. Es gibt Bugs, und manches sieht nächsten
+            Monat anders aus. Wenn dir etwas auffällt oder etwas fehlt, sag es mir auf Discord. Manches ist nur im
+            Spiel, weil jemand danach gefragt hat.
           </p>
         </div>
       </section>
 
       <section aria-labelledby="faq-title" className="wrap grid gap-10 border-t border-line py-[var(--section)] md:grid-cols-12">
         <div className="md:col-span-4">
-          <h2 id="faq-title" className="head">FAQ.</h2>
+          <h2 id="faq-title" className="head">Fragen.</h2>
         </div>
         <dl className="border-b border-line md:col-span-7 md:col-start-6">
           {faq.map((f) => (

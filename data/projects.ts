@@ -270,8 +270,8 @@ export const projects: Project[] = [
   },
   {
     slug: "sakuto",
-    mark: "/images/sakuto/sakuto-white.png",
-    markTile: "/images/sakuto/sakuto-white-trim.png",
+    mark: "/images/sakuto/sakuto-purple.png",
+    markTile: "/images/sakuto/sakuto-purple.png",
     year: "2021",
     title: "Sakuto",
     tagline: "Video essays, streams and Nintendo culture.",

@@ -9,9 +9,14 @@ export const metadata = {
 };
 
 const offers = [
+  { name: "Game-Server mieten", text: "Wir vermieten Game-Server, vor allem Minecraft. Wie wir sie für AracleSMP und unsere Communities betreiben, kannst du auch für dein Projekt bekommen." },
+  { name: "Custom Hosting", text: "Individuelle Wünsche setzen wir um: ein eigener Server, eine spezielle Konfiguration, eine Lösung, die zu deinem Projekt passt." },
   { name: "Webhosting", text: "Websites und Web-Apps, schnell und zuverlässig. Wir richten ein, du kümmerst dich um den Inhalt." },
-  { name: "Game-Server", text: "Minecraft und andere Spiele, so wie wir sie für AracleSMP und unsere Communities betreiben." },
-  { name: "Server & Wartung", text: "Eigene virtuelle Server, Updates, Backups und Monitoring. Wenn etwas klemmt, merken wir es zuerst." },
+];
+
+const showcase = [
+  { src: "/images/cloud/server-rack.webp", alt: "Nahaufnahme eines Server-Racks", caption: "Eigene Hardware im Glarnerland" },
+  { src: "/Brand_assets/images/heros/cloudhosting.jpg", alt: "Cloud-Hosting Visual", caption: "Alles läuft auf Aracle Cloud" },
 ];
 
 const specs: [string, string][] = [
@@ -36,7 +41,7 @@ export default function HostingPage() {
 
         <div className="wrap relative mt-auto pb-16 pt-32 md:pb-24">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/images/cloud/aracle-cloud-logo.png" alt="Aracle Cloud" width={640} height={371} className="mb-8 h-14 w-auto bg-transparent md:h-16" data-rise />
+          <img src="/images/cloud/aracle-cloud-hosting-logo.png" alt="Aracle Cloud, Cloud Hosting" width={1580} height={370} className="mb-8 h-20 w-auto bg-transparent md:h-28" data-rise />
           <p className="small inline-flex items-center gap-2.5 text-ink/85" data-rise>
             <span aria-hidden className="led" />
             Aracle Cloud · Eigene Server im Kanton Glarus
@@ -61,6 +66,20 @@ export default function HostingPage() {
             <li key={o.name} data-reveal style={{ ["--i" as string]: i }} className="border-b border-line py-8 last:border-b-0 md:border-b-0 md:border-r md:px-8 md:first:pl-0 md:last:border-r-0 md:last:pr-0">
               <h2 className="text-[clamp(1.5rem,1rem+1vw,2rem)] font-[620] leading-[1.05] tracking-[-0.03em]">{o.name}</h2>
               <p className="mt-3 text-ink/75">{o.text}</p>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section aria-label="Einblicke" className="wrap py-[var(--section)]">
+        <ul className="grid gap-4 sm:grid-cols-2 md:gap-6">
+          {showcase.map((s) => (
+            <li key={s.src}>
+              <figure>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={s.src} alt={s.alt} loading="lazy" className="aspect-[4/3] w-full rounded-[var(--radius)] object-cover" />
+                <figcaption className="small mt-2 text-muted">{s.caption}</figcaption>
+              </figure>
             </li>
           ))}
         </ul>

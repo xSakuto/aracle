@@ -53,9 +53,14 @@ export default function HighsidePage() {
             <p className="hs-sans max-w-[30ch] text-[clamp(1.125rem,1rem+0.6vw,1.5rem)] font-medium leading-snug">
               Schweizer Streetwear aus der Motorrad-Szene. Zwischen Rennstrecke und Strasse.
             </p>
-            <p className="hs-sans text-[clamp(1.5rem,1rem+1.4vw,2.5rem)] font-extrabold uppercase tracking-[-0.02em] text-aqua">
-              Ride or regret.
-            </p>
+            <div className="flex flex-col items-start gap-4 md:items-end">
+              <p className="hs-sans text-[clamp(1.5rem,1rem+1.4vw,2.5rem)] font-extrabold uppercase tracking-[-0.02em] text-aqua">
+                Ride or regret.
+              </p>
+              <a href="https://highside.ch" target="_blank" rel="noopener noreferrer" className="btn rounded-[2px] font-semibold uppercase tracking-[0.04em]">
+                Zur Website, highside.ch <span aria-hidden>↗</span>
+              </a>
+            </div>
           </div>
         </div>
       </header>

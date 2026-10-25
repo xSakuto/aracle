@@ -194,7 +194,15 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
             <span>{p.category}</span>
           </nav>
 
-          <h1 className="mega mt-6" data-split="load">{p.title}</h1>
+          {p.slug === "milvia" && p.markTile ? (
+            <>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={p.markTile} alt="" aria-hidden width={480} height={480} className="mt-6 h-auto w-[min(40vw,14rem)] bg-transparent" />
+              <h1 className="sr-only">{p.title}</h1>
+            </>
+          ) : (
+            <h1 className="mega mt-6" data-split="load">{p.title}</h1>
+          )}
 
           <div className="mt-6 flex flex-col gap-6 md:flex-row md:items-end md:justify-between" data-rise style={{ ["--i" as string]: 2 }}>
             <p className="lead max-w-[38ch] text-ink/90">{p.tagline}</p>
@@ -218,6 +226,31 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
           ))}
         </dl>
       </div>
+
+      {p.slug === "milvia" && (
+        <section aria-label="Apps und Store" className="wrap mt-[calc(var(--section)*0.5)]">
+          <p className="small mb-4 text-muted">Milvia gibt es vorerst als Web-Preview</p>
+          <ul className="flex flex-wrap gap-3">
+            <li>
+              <a href="https://milvia.ch" target="_blank" rel="noopener noreferrer" className="btn">
+                Web-Preview öffnen <span aria-hidden>↗</span>
+              </a>
+            </li>
+            <li>
+              <span aria-disabled="true" className="btn-quiet inline-flex cursor-not-allowed items-center gap-2 opacity-50">
+                App Store
+                <span className="small text-muted">bald</span>
+              </span>
+            </li>
+            <li>
+              <span aria-disabled="true" className="btn-quiet inline-flex cursor-not-allowed items-center gap-2 opacity-50">
+                Google Play
+                <span className="small text-muted">bald</span>
+              </span>
+            </li>
+          </ul>
+        </section>
+      )}
 
       {gallery.length > 0 && (
         <section aria-label="Einblicke" className="wrap mt-[calc(var(--section)*0.7)]">

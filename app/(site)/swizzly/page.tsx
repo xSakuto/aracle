@@ -1,5 +1,6 @@
 import Link from "next/link";
 import SocialIcon from "@/components/SocialIcon";
+import YouTubeFeed from "@/components/swizzly/YouTubeFeed";
 import type { SocialType } from "@/data/socials";
 import { SITE_URL } from "@/lib/site";
 
@@ -160,6 +161,8 @@ export default function SwizzlyPage() {
           ))}
         </ul>
       </section>
+
+      <YouTubeFeed />
 
       <section aria-label="Unterwegs" className="wrap py-[var(--section)]">
         <ul className="grid gap-4 sm:grid-cols-2">
