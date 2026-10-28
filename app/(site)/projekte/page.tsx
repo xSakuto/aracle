@@ -1,27 +1,13 @@
 import Panorama from "@/components/alpine/Panorama";
-import ProjectTile from "@/components/project/ProjectTile";
+import ProjectBrowser from "@/components/project/ProjectBrowser";
 import { TOEDI } from "@/data/panorama/toedi";
-import { PILLARS, projects, type Pillar } from "@/data/projects";
+import { PILLARS, projects } from "@/data/projects";
 
 export const metadata = {
   alternates: { canonical: "/projekte" },
   title: "Projekte",
   description: "Eigene Marken und Projekte aus dem Aracle Studio: Marken & Produkte, Kanäle, Communitys & Server, Cloud & Hosting.",
 };
-
-const pillarText: Record<Pillar, string> = {
-  "Marken & Produkte": "Eigene Marken, Apps und Spiele.",
-  "Kanäle": "Content-Kanäle und Creator.",
-  "Communitys & Server": "Discord-Communities und Minecraft-Server.",
-  "Cloud & Hosting": "Hosting auf eigener Hardware.",
-};
-
-const posterTone: Record<string, "slate" | "glacier" | "glow"> = {
-  highside: "glow",
-  "beer-game": "glacier",
-};
-
-const anchor = (p: string) => p.toLowerCase().replace(/ & /g, "-").replace(/\s+/g, "-");
 
 export default function ProjektePage() {
   const used = PILLARS.filter((pl) => projects.some((p) => p.pillar === pl));
@@ -86,18 +72,6 @@ export default function ProjektePage() {
             </div>
           </div>
 
-          <nav aria-label="Bereiche" className="mt-10 flex flex-wrap gap-2" data-rise style={{ ["--i" as string]: 3 }}>
-            {used.map((pl) => (
-              <a
-                key={pl}
-                href={`#${anchor(pl)}`}
-                className="inline-flex min-h-10 items-center rounded-full border border-line bg-bg/60 px-4 text-[0.875rem] backdrop-blur transition-[border-color,color,transform] duration-200 hover:border-aqua hover:text-aqua focus-visible:border-aqua active:scale-[0.98]"
-              >
-                {pl}
-                <span className="nums ml-2 text-muted">{projects.filter((p) => p.pillar === pl).length}</span>
-              </a>
-            ))}
-          </nav>
         </div>
 
         <div className="relative mt-auto pt-16">
@@ -116,41 +90,9 @@ export default function ProjektePage() {
         </div>
       </header>
 
-      {/* Alle Projekte, ein einziges Raster pro Bereich. Hervorgehobene Projekte sind breiter, mehr nicht. */}
+      {/* Alle Projekte, gefiltert nach Bereich und Stand. Hervorgehobene Projekte sind breiter. */}
       <div className="wrap pb-[var(--section)]">
-        {used.map((pl, pi) => {
-          const group = projects.filter((p) => p.pillar === pl);
-          return (
-            <section
-              key={pl}
-              id={anchor(pl)}
-              aria-labelledby={`${anchor(pl)}-title`}
-              className={`scroll-mt-24 border-t border-line pt-8 ${pi === 0 ? "mt-[calc(var(--section)*0.6)]" : "mt-16"}`}
-            >
-              <div className="flex flex-wrap items-end justify-between gap-x-6 gap-y-2">
-                <div>
-                  <h2 id={`${anchor(pl)}-title`} className="kicker text-aqua">{pl}</h2>
-                  <p className="head mt-1">{pillarText[pl]}</p>
-                </div>
-                <p className="small text-muted">{group.length} {group.length === 1 ? "Projekt" : "Projekte"}</p>
-              </div>
-
-              <ul className="mt-8 grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-4 md:gap-x-6">
-                {group.map((p, i) => (
-                  <li key={p.slug} className={p.featured ? "col-span-2" : ""} data-reveal style={{ ["--i" as string]: i % 4 }}>
-                    <ProjectTile
-                      project={p}
-                      wide={p.featured}
-                      tone={posterTone[p.slug]}
-                      eager={pi === 0 && i < 2}
-                      showTagline
-                    />
-                  </li>
-                ))}
-              </ul>
-            </section>
-          );
-        })}
+        <ProjectBrowser projects={projects} />
       </div>
     </>
   );

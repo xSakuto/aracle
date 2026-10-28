@@ -14,7 +14,9 @@ export type Pillar =
 export type GalleryItem =
   | { kind: "photo"; src: string; alt: string; caption?: string; width: number; height: number }
   /** PLATZHALTER: grafisches Mockup, bis echte Bilder vorliegen. Später durch "photo" ersetzen. */
-  | { kind: "placeholder"; motif: "tee" | "hoodie" | "patch" | "label" | "wordmark"; caption: string };
+  | { kind: "placeholder"; motif: "tee" | "hoodie" | "patch" | "label" | "wordmark"; caption: string }
+  /** PLATZHALTER für Projektseiten: Screenshot, Handy-Screen, Foto oder Video. */
+  | { kind: "slot"; motif: "screen" | "phone" | "photo" | "video"; caption: string };
 
 export interface Project {
   slug: string;
@@ -50,6 +52,12 @@ export interface Project {
   landing?: string;
   /** Startjahr */
   year: string;
+  /** Was als Nächstes geplant ist. Erscheint im Verlauf gestrichelt. */
+  next?: string[];
+  /** Häufige Fragen, nur mit gesicherten Antworten */
+  faq?: { q: string; a: string }[];
+  /** Verwandte Projekte (Slugs), am Ende der Projektseite */
+  related?: string[];
 }
 
 const H = "/Brand_assets/images/heros";
@@ -128,6 +136,7 @@ export const projects: Project[] = [
       { date: "2024", label: "Start Swizzly als Content-Kanal für die Marke" },
     ],
     links: [{ label: "highside.ch", url: "https://highside.ch" }],
+    related: ["swizzly"],
     gallery: [
       { kind: "photo", src: `${H}/highside.jpg`, alt: "Zwei Motorräder in Schräglage auf der Rennstrecke", caption: "Die Welt von Highside: Rennstrecke, Kurve, Schräglage.", width: 1600, height: 1067 },
       // PLATZHALTER: durch echte Produktfotos ersetzen
@@ -166,6 +175,19 @@ export const projects: Project[] = [
     techStack: ["Flutter", "Dart"],
     timeline: [{ date: "2026", label: "Launch milvia.ch" }],
     links: [{ label: "milvia.ch", url: "https://milvia.ch" }, { label: "Über Milvia", url: "https://milvia.ch/ueber/" }],
+    // PLATZHALTER: durch echte Screenshots aus der App ersetzen
+    gallery: [
+      { kind: "slot", motif: "phone", caption: "Screenshot folgt: Reglemente" },
+      { kind: "slot", motif: "phone", caption: "Screenshot folgt: Dienstgrade" },
+      { kind: "slot", motif: "phone", caption: "Screenshot folgt: Fitnesstest" },
+      { kind: "slot", motif: "phone", caption: "Screenshot folgt: Meine Kompanie" },
+    ],
+    next: ["Apps für iOS und Android", "Neues Branding in Rot, Grau und Weiss"],
+    faq: [
+      { q: "Ist Milvia offiziell?", a: "Nein. Milvia ist eine inoffizielle App und vertritt die Schweizer Armee nicht." },
+      { q: "Wo läuft Milvia?", a: "Im Browser auf milvia.ch, auf dem Handy wie am Computer. Apps für iOS und Android sind geplant." },
+      { q: "Was passiert mit meinem Spielstand?", a: "Der Fortschritt in Meine Kompanie bleibt lokal auf deinem Gerät." },
+    ],
   },
   {
     slug: "swizzly",
@@ -302,6 +324,7 @@ export const projects: Project[] = [
       { date: "2021", label: "Rebranding zu Sakuto, erstes Videoessay" },
     ],
     links: [{ label: "YouTube", url: "https://www.youtube.com/@Sakuto.mp4" }],
+    related: ["zelda-de-server", "swizzly"],
   },
   {
     slug: "zelda-de-server",
@@ -362,6 +385,16 @@ export const projects: Project[] = [
     techStack: ["Minecraft", "Modrinth"],
     timeline: [{ date: "2023", label: "Erste Version auf Modrinth" }],
     links: [{ label: "All the Clients auf Modrinth", url: "https://modrinth.com/modpack/mc-atc" }],
+    gallery: [
+      { kind: "photo", src: "/images/smp/smp-world.webp", alt: "Spielwelt auf dem AracleSMP-Server", caption: "Im Einsatz auf AracleSMP", width: 1920, height: 1080 },
+      // PLATZHALTER: echte Screenshots einsetzen
+      { kind: "slot", motif: "screen", caption: "Screenshot folgt: Modliste auf Modrinth" },
+    ],
+    faq: [
+      { q: "Kann ich damit auf normalen Servern spielen?", a: "Ja. Das Pack bleibt vanilla-kompatibel, du brauchst keinen modifizierten Server." },
+      { q: "Wie installiere ich es?", a: "Über Modrinth: in der Modrinth App oder einem kompatiblen Launcher nach All the Clients suchen und installieren." },
+    ],
+    related: ["araclesmp", "aracle-cloud-hosting"],
   },
   {
     slug: "aracle-living",
@@ -390,6 +423,12 @@ export const projects: Project[] = [
     links: [],
     gallery: [
       { kind: "photo", src: `${H}/immo.jpg`, alt: "Wohnzimmer mit Holzdecke, Stufen und Essbereich", caption: "Testaufnahme", width: 1600, height: 1067 },
+      // PLATZHALTER: weitere Testaufnahmen
+      { kind: "slot", motif: "photo", caption: "Weitere Testaufnahme folgt" },
+      { kind: "slot", motif: "video", caption: "Idee: virtueller Rundgang" },
+    ],
+    faq: [
+      { q: "Kann ich Aracle Living buchen?", a: "Nein. Aracle Living ist ein Konzept und aktuell kein buchbares Angebot." },
     ],
   },
   {
@@ -447,6 +486,7 @@ export const projects: Project[] = [
       { date: "2023", label: "Eingestellt" },
     ],
     links: [],
+    related: ["zelda-de-server"],
   },
 ];
 
