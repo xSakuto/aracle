@@ -1,3 +1,4 @@
+import { formatStat, getProjectStats } from "@/lib/stats";
 import Link from "next/link";
 import ZeldaLayers from "@/components/zelda/ZeldaLayers";
 import { ZELDA_DISCORD_INVITE } from "@/data/zelda";
@@ -61,7 +62,10 @@ const faq = [
 ];
 
 // Zelda DE als eigene, suchmaschinenfreundliche Landing Page.
-export default function ZeldaDePage() {
+export const revalidate = 3600;
+
+export default async function ZeldaDePage() {
+  const stats = await getProjectStats("zelda-de-server");
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
@@ -116,7 +120,10 @@ export default function ZeldaDePage() {
         <div className="wrap relative mt-auto pb-14 pt-32 md:pb-20">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/images/zelda/zelda-de-logo.png" alt="" aria-hidden width={600} height={556} className="mb-6 h-20 w-auto bg-transparent md:h-24" data-rise />
-          <p className="kicker text-aqua" data-rise>Discord · seit 2022</p>
+          <p className="kicker text-aqua" data-rise>
+            Discord · seit 2022
+            {stats[0] && <span className="nums"> · {formatStat(stats[0].value)} {stats[0].label}</span>}
+          </p>
           <h1 className="mega mt-5 max-w-[12ch]" data-split="load">Zelda Community DE</h1>
           <div className="mt-8 flex flex-col gap-6 md:flex-row md:items-end md:justify-between" data-rise style={{ ["--i" as string]: 2 }}>
             <p className="lead max-w-[38ch] text-ink/90">

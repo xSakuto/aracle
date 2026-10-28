@@ -1,5 +1,9 @@
 import Link from "next/link";
 import { getProject } from "@/data/projects";
+import Changelog from "@/components/project/Changelog";
+import { getProjectUpdates } from "@/lib/projects";
+
+export const revalidate = 60;
 import { SITE_URL } from "@/lib/site";
 
 const TITLE = "BEER: The Rusty Mug · Eine kleine Online-Taverne für bis zu vier";
@@ -54,8 +58,9 @@ const faq: { q: string; a: string }[] = [
 ];
 
 // BEER: The Rusty Mug, eigene Landing Page: Kupfer und Taverne, auf Deutsch.
-export default function BeerPage() {
+export default async function BeerPage() {
   const p = getProject("beer-game");
+  const updates = await getProjectUpdates("beer-game");
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
@@ -226,6 +231,18 @@ export default function BeerPage() {
         </div>
       </section>
 
+      {updates.length > 0 && (
+        <section id="changelog" aria-labelledby="changelog-title" className="wrap grid scroll-mt-24 gap-10 border-t border-line py-[var(--section)] md:grid-cols-12">
+          <div className="md:col-span-4">
+            <h2 id="changelog-title" className="head">Changelog.</h2>
+            <p className="small mt-3 max-w-[30ch] text-muted">Was sich in der Taverne zuletzt geändert hat.</p>
+          </div>
+          <div className="md:col-span-7 md:col-start-6">
+            <Changelog updates={updates} />
+          </div>
+        </section>
+      )}
+
       <section aria-labelledby="faq-title" className="wrap grid gap-10 border-t border-line py-[var(--section)] md:grid-cols-12">
         <div className="md:col-span-4">
           <h2 id="faq-title" className="head">Fragen.</h2>
@@ -247,7 +264,7 @@ export default function BeerPage() {
             <ul className="mt-2 flex flex-wrap gap-x-6 text-[clamp(1.25rem,1rem+0.8vw,1.75rem)] font-[620] tracking-[-0.02em]">
               {p?.team.map((m) => (
                 <li key={m.slug}>
-                  <Link href={`/team#${m.slug}`} className="transition-colors hover:text-aqua">{m.name}</Link>
+                  <Link href={`/team/${m.slug}`} className="transition-colors hover:text-aqua">{m.name}</Link>
                 </li>
               ))}
             </ul>

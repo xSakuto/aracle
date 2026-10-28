@@ -87,7 +87,9 @@ export default function TeamDirectory({
               </div>
 
               <div className="flex min-w-0 flex-col md:col-span-5">
-                <h2 className="head">{m.name}</h2>
+                <h2 className="head">
+                  <Link href={`/team/${m.slug}`} className="transition-colors hover:text-aqua focus-visible:text-aqua">{m.name}</Link>
+                </h2>
                 <p className="mt-2 text-muted">{m.role}</p>
                 <p className="mt-6 hidden max-w-[44ch] text-ink/80 sm:block">{m.bio}</p>
 
@@ -95,7 +97,10 @@ export default function TeamDirectory({
                   <blockquote className="mt-6 max-w-[40ch] border-l border-aqua pl-4 text-ink/90">«{m.quote}»</blockquote>
                 )}
 
-                <ContactLinks name={m.name} socials={m.socials} email={m.contactEmail} className="mt-auto pt-6" />
+                <div className="mt-auto flex flex-wrap items-center justify-between gap-x-6 gap-y-2 pt-6">
+                  <ContactLinks name={m.name} socials={m.socials} email={m.contactEmail} />
+                  <Link href={`/team/${m.slug}`} className="link-under text-[0.9375rem]">Profil ansehen</Link>
+                </div>
               </div>
 
               <p className="col-span-2 -mt-2 max-w-[44ch] text-ink/80 sm:hidden">{m.bio}</p>

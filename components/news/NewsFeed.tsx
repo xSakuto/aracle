@@ -1,3 +1,4 @@
+import Link from "next/link";
 import Markdown, { Inline } from "@/components/news/Markdown";
 import { templateOf, topicOf, type NewsPost } from "@/data/news";
 
@@ -24,7 +25,7 @@ export default function NewsFeed({ posts }: { posts: NewsPost[] }) {
               )}
               {p.author && (
                 <p className="mt-4 text-[0.8125rem] text-muted">
-                  Von <span className="text-ink/90">{p.author.name}</span>
+                  Von <Link href={`/team/${p.author.slug}`} className="link text-ink/90">{p.author.name}</Link>
                 </p>
               )}
             </div>

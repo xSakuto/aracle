@@ -206,6 +206,20 @@ export default function ProfileForm({
           </div>
 
           <div>
+            <label htmlFor="location" className="dash-label">Ort</label>
+            <input
+              id="location"
+              name="location"
+              maxLength={80}
+              autoComplete="off"
+              defaultValue={profile.location}
+              placeholder="z. B. Glarus"
+              className="dash-input"
+            />
+            <p className="dash-help mt-1">Steht auf deinem Profil. Leer lassen, wenn du ihn nicht zeigen willst.</p>
+          </div>
+
+          <div>
             <p className="dash-label">Profilfarbe</p>
             <div className="flex flex-wrap items-center gap-2" role="radiogroup" aria-label="Profilfarbe">
               {ACCENTS.map((c) => (
@@ -447,7 +461,7 @@ export default function ProfileForm({
               <p className="dash-help mb-2">
                 Einzelne Bereiche freigeben, ohne Vollzugriff zu geben. Bei «Vollzugriff» oben unnötig.
               </p>
-              <div className="grid gap-3 sm:grid-cols-3">
+              <div className="grid gap-3 sm:grid-cols-2">
                 {PERMISSIONS.map((perm) => (
                   <label key={perm} className="flex min-h-10 cursor-pointer items-center gap-3 text-sm">
                     <input
@@ -461,6 +475,12 @@ export default function ProfileForm({
                   </label>
                 ))}
               </div>
+            </div>
+
+            <div className="max-w-[12rem]">
+              <label htmlFor="member_since" className="dash-label">Mitglied seit</label>
+              <input id="member_since" name="member_since" type="date" defaultValue={profile.member_since ?? ""} className="dash-input nums" />
+              <p className="dash-help mt-1">Steht auf dem öffentlichen Profil.</p>
             </div>
 
             <div className="max-w-[10rem]">

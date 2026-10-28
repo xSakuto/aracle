@@ -2,7 +2,7 @@ import { signOut } from "@/app/(site)/login/actions";
 import Overview from "@/components/dashboard/Overview";
 import ProfileForm from "@/components/dashboard/ProfileForm";
 import SocialIcon from "@/components/SocialIcon";
-import { projects } from "@/data/projects";
+import { getProjectRows, mergeProjects } from "@/lib/projects";
 import { requireMember } from "@/lib/session";
 import { linkDiscord, saveOwnProfile, unlinkDiscord } from "./actions";
 
@@ -19,6 +19,8 @@ export default async function DashboardPage({
   searchParams: Promise<{ fehler?: string }>;
 }) {
   const { user, me } = await requireMember();
+  // Auch versteckte und im Dashboard angelegte Projekte zum Zuordnen anbieten
+  const projects = mergeProjects((await getProjectRows()).map((r) => ({ ...r, hidden: false })));
   const { fehler } = await searchParams;
   const discordIdentity = user.identities?.find((i) => i.provider === "discord");
 

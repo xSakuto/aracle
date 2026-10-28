@@ -31,6 +31,13 @@ export interface TeamMember {
   listed: boolean;
 }
 
+/** Zusatzangaben fürs Profil, die erst mit supabase/2026-10-projects.sql in der Datenbank stehen. */
+export interface MemberExtras {
+  /** ISO-Datum, seit wann die Person dabei ist */
+  memberSince?: string;
+  location?: string;
+}
+
 const LEGACY_PUBLIC_COLUMNS =
   "id, slug, name, role, bio, accent, photo_url, socials, is_lead, visible, sort";
 export const PUBLIC_PROFILE_COLUMNS = `${LEGACY_PUBLIC_COLUMNS}, quote, contact_email, listed`;
@@ -129,4 +136,26 @@ export async function getProjectTeam(slug: string) {
       .filter((p) => p.slug === slug)
       .map((p) => ({ name: m.name, slug: m.slug, role: p.role || m.role })),
   );
+}
+
+// Zusatzangaben fürs Profil. Fehlen die Spalten noch, gelten die statischen Werte.
+export async function getMemberExtras(slug: string): Promise<MemberExtras> {
+  const fallback = staticTeam.find((m) => m.slug === slug);
+  const base: MemberExtras = { memberSince: fallback?.since, location: fallback?.location };
+  if (!supabaseConfigured) return base;
+  try {
+    const { data, error } = await createPublicClient()
+      .from("profiles")
+      .select("member_since, location")
+      .eq("slug", slug)
+      .maybeSingle();
+    if (error) throw error;
+    const row = data as { member_since: string | null; location: string | null } | null;
+    return {
+      memberSince: row?.member_since ?? base.memberSince,
+      location: row?.location || base.location,
+    };
+  } catch {
+    return base;
+  }
 }

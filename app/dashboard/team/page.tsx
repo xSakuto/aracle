@@ -1,7 +1,7 @@
 import Link from "next/link";
 import AddMember from "@/components/dashboard/AddMember";
 import Portrait from "@/components/Portrait";
-import { projects } from "@/data/projects";
+import { getProjectRows, mergeProjects } from "@/lib/projects";
 import { PERMISSION_LABELS, requireAdmin, toProfile, withProfileColumns, type FullProfile } from "@/lib/session";
 
 export default async function TeamAdminPage({
@@ -10,6 +10,8 @@ export default async function TeamAdminPage({
   searchParams: Promise<{ geloescht?: string }>;
 }) {
   const { supabase } = await requireAdmin();
+  // Auch versteckte und im Dashboard angelegte Projekte zum Zuordnen anbieten
+  const projects = mergeProjects((await getProjectRows()).map((r) => ({ ...r, hidden: false })));
   const { geloescht } = await searchParams;
   const [{ data: rows }, { data: members }, { data: logins }] = await Promise.all([
     withProfileColumns((cols) => supabase.from("profiles").select(cols).order("is_lead", { ascending: false }).order("sort").order("name")),

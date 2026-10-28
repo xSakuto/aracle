@@ -31,12 +31,18 @@ export interface FullProfile {
   /** Einzeln freigeschaltete Dashboard-Bereiche für Nicht-Admins, z. B. ["bot"]. */
   permissions: Permission[];
   sort: number;
+  /** ISO-Datum, seit wann dabei. Setzt nur ein Admin. Erst mit supabase/2026-10-projects.sql. */
+  member_since: string | null;
+  /** Ort fürs öffentliche Profil */
+  location: string;
   projects: { slug: string; role: string }[];
 }
 
 export const LEGACY_COLUMNS =
   "id, user_id, email, slug, name, role, bio, accent, photo_url, socials, is_lead, is_admin, visible, sort";
 export const FULL_COLUMNS = `${LEGACY_COLUMNS}, quote, contact_email, discord_username, permissions, listed`;
+/** Mit den Profilfeldern aus supabase/2026-10-projects.sql */
+export const PROFILE_V2_COLUMNS = `${FULL_COLUMNS}, member_since, location`;
 
 /** Spalte fehlt noch, weil supabase/2026-10-profile-quote.sql nicht ausgeführt ist. */
 export function missingColumn(err: { code?: string; message?: string } | null | undefined) {
@@ -47,14 +53,21 @@ export function missingColumn(err: { code?: string; message?: string } | null | 
 /** Führt eine Profil-Abfrage aus und fällt ohne die neuen Spalten zurück, falls die Datenbank sie noch nicht kennt. */
 export async function withProfileColumns<T extends { error: { code?: string; message?: string } | null }>(
   run: (columns: string) => PromiseLike<T>,
-  full = FULL_COLUMNS,
-  legacy = LEGACY_COLUMNS,
+  ...columnSets: string[]
 ): Promise<T> {
-  const res = await run(full);
-  return res.error && missingColumn(res.error) ? run(legacy) : res;
+  // Vom neusten zum ältesten Spaltensatz, bis die Datenbank ihn kennt.
+  const sets = columnSets.length ? columnSets : [PROFILE_V2_COLUMNS, FULL_COLUMNS, LEGACY_COLUMNS];
+  let res = await run(sets[0]);
+  for (const cols of sets.slice(1)) {
+    if (!(res.error && missingColumn(res.error))) break;
+    res = await run(cols);
+  }
+  return res;
 }
 
-type Row = Omit<FullProfile, "socials" | "projects" | "quote" | "contact_email" | "discord_username" | "permissions" | "listed"> & {
+type Row = Omit<FullProfile, "socials" | "projects" | "quote" | "contact_email" | "discord_username" | "permissions" | "listed" | "member_since" | "location"> & {
+  member_since?: string | null;
+  location?: string | null;
   socials: unknown;
   quote?: string | null;
   contact_email?: string | null;
@@ -75,6 +88,8 @@ export function toProfile(
     discord_username: row.discord_username ?? null,
     permissions: row.permissions ?? [],
     listed: row.listed ?? true,
+    member_since: row.member_since ?? null,
+    location: row.location ?? "",
     projects: members
       .filter((m) => m.profile_id === row.id)
       .map((m) => ({ slug: m.project_slug, role: m.role })),

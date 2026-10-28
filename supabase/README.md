@@ -82,3 +82,15 @@ INQUIRY_TO=info@aracle.ch
 Antworten auf die Benachrichtigung gehen direkt an die anfragende Person (Reply-To).
 Spam-Schutz: verstecktes Feld, Mindestzeit von 3 Sekunden, höchstens 5 Anfragen
 pro 10 Minuten und IP.
+
+## 7. Projekte, Changelog und Profile (Oktober 2026)
+
+`2026-10-projects.sql` einmal im SQL-Editor ausführen. Danach:
+
+- **Dashboard > Projekte**: Texte, Bilder, Status, Links und Fragen pflegen, neue Projekte anlegen.
+  Wer das darf, steuert die Berechtigung «Projekte» (oder Vollzugriff).
+- **Changelog**: Jede Person kann bei den Projekten, denen sie zugeordnet ist, Einträge schreiben.
+  Sie erscheinen auf der Projektseite (bei Beer auf /beer) und auf dem eigenen Profil.
+- **Profile** unter `/team/<slug>`: «Ort» pflegt jede Person selbst, «Mitglied seit» setzt ein Admin.
+
+Ohne das Update läuft die Website weiter mit den Projekten aus `data/projects.ts`.

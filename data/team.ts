@@ -15,6 +15,9 @@ export interface StaticMember {
   quote?: string;
   /** Öffentliche Kontaktadresse */
   email?: string;
+  /** Seit wann dabei, ISO-Datum. Nur echte Angaben. */
+  since?: string;
+  location?: string;
   socials: Social[];
 }
 
@@ -31,6 +34,8 @@ export const team: StaticMember[] = [
     photo: "/Brand_assets/images/heros/joel.jpg",
     lead: true,
     email: "j.nef@aracle.ch",
+    since: "2017-01-01",
+    location: "Glarus",
     socials: [
       { type: "x", url: "https://x.com/AracleCH" },
       { type: "discord", url: DISCORD },

@@ -12,7 +12,7 @@ export default function PeopleIndex({ members, titles }: { members: TeamMember[]
     <ul className="mt-12 grid gap-x-5 gap-y-12 sm:grid-cols-2 lg:grid-cols-4 md:mt-16">
       {members.map((m) => (
         <li key={m.id} className="duo-host flex flex-col">
-          <Link href={`/team#${m.slug}`} className="group relative block overflow-hidden rounded-[var(--radius)]">
+          <Link href={`/team/${m.slug}`} className="group relative block overflow-hidden rounded-[var(--radius)]">
             <DuoPortrait name={m.name} photo={m.photo} accent={m.accent} sizes="(min-width: 1024px) 24vw, (min-width: 640px) 45vw, 90vw" />
             <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[#0b1115]/95 via-[#0b1115]/55 to-transparent" />
             <div className="absolute inset-x-0 bottom-0 p-5">

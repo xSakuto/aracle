@@ -54,3 +54,23 @@ export async function getPublishedNews(limit = 50): Promise<NewsPost[]> {
     return [];
   }
 }
+
+// News einer Person, für ihr Profil. Gleiche Regeln wie oben, nur gefiltert.
+export async function getNewsByAuthor(profileId: string, limit = 20): Promise<NewsPost[]> {
+  if (!supabaseConfigured) return [];
+  try {
+    const { data, error } = await createPublicClient()
+      .from("news_posts")
+      .select(NEWS_COLUMNS)
+      .eq("published", true)
+      .eq("author_id", profileId)
+      .lte("publish_at", new Date().toISOString())
+      .order("publish_at", { ascending: false })
+      .limit(limit);
+    if (error) throw error;
+    return (data as unknown as NewsRow[]).map(rowToPost);
+  } catch (err) {
+    console.warn("News der Person nicht ladbar:", (err as Error).message ?? err);
+    return [];
+  }
+}

@@ -16,6 +16,7 @@ export default function DashNav({
   const can = (perm: string) => admin || permissions.includes(perm);
   const items = [
     { href: "/dashboard", label: "Mein Profil", active: pathname === "/dashboard" },
+    { href: "/dashboard/projekte", label: "Projekte", active: pathname.startsWith("/dashboard/projekte") },
     ...(can("news") ? [{ href: "/dashboard/news", label: "News", active: pathname.startsWith("/dashboard/news") }] : []),
     ...(can("bot") ? [{ href: "/dashboard/bot", label: "Discord-Bot", active: pathname.startsWith("/dashboard/bot") }] : []),
     ...(can("anfragen")

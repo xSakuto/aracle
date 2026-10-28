@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { projects } from "@/data/projects";
+import { getProjectRows } from "@/lib/projects";
 import { cleanSocials } from "@/data/socials";
 import { missingColumn, PERMISSIONS, requireAdmin, requireMember, type Permission } from "@/lib/session";
 import { siteUrl } from "@/lib/site-url";
@@ -10,7 +11,7 @@ import { siteUrl } from "@/lib/site-url";
 export type SaveState = { ok?: boolean; error?: string; at?: number };
 
 const HEX = /^#[0-9a-f]{6}$/i;
-const projectSlugs = new Set(projects.map((p) => p.slug));
+const staticSlugs = new Set(projects.map((p) => p.slug));
 
 function text(form: FormData, key: string, max: number) {
   return String(form.get(key) ?? "").trim().slice(0, max);
@@ -57,10 +58,11 @@ function extraFields(form: FormData) {
   return {
     quote: text(form, "quote", 200),
     contact_email: EMAIL.test(mail) ? mail : null,
+    location: text(form, "location", 80),
   };
 }
 
-const PENDING_DB = "Gespeichert. Zitat und Kontakt-Mail erscheinen erst, wenn das Datenbank-Update (supabase/2026-10-profile-quote.sql) ausgeführt ist.";
+const PENDING_DB = "Gespeichert. Einige Felder (Ort, Mitglied seit, Zitat) erscheinen erst nach dem Datenbank-Update (supabase/2026-10-projects.sql).";
 
 // Speichert, und ohne die neuen Spalten in der Datenbank den Rest trotzdem.
 async function updateProfile(
@@ -70,9 +72,13 @@ async function updateProfile(
 ) {
   const res = await supabase.from("profiles").update(fields).eq("id", id);
   if (res.error && missingColumn(res.error)) {
-    const { quote: _q, contact_email: _c, ...rest } = fields; // eslint-disable-line @typescript-eslint/no-unused-vars
-    const retry = await supabase.from("profiles").update(rest).eq("id", id);
-    return { error: retry.error, pending: !retry.error };
+    // Zuerst nur die neusten Felder weglassen, dann auch Zitat und Kontakt-Mail.
+    const { location: _l, member_since: _m, ...v1 } = fields; // eslint-disable-line @typescript-eslint/no-unused-vars
+    const retry = await supabase.from("profiles").update(v1).eq("id", id);
+    if (!(retry.error && missingColumn(retry.error))) return { error: retry.error, pending: !retry.error };
+    const { quote: _q, contact_email: _c, ...rest } = v1; // eslint-disable-line @typescript-eslint/no-unused-vars
+    const last = await supabase.from("profiles").update(rest).eq("id", id);
+    return { error: last.error, pending: !last.error };
   }
   return { error: res.error, pending: false };
 }
@@ -120,13 +126,15 @@ export async function saveMember(_prev: SaveState, form: FormData): Promise<Save
       listed: form.get("listed") === "on",
       permissions,
       sort: Number.parseInt(text(form, "sort", 6), 10) || 100,
+      member_since: /^\d{4}-\d{2}-\d{2}$/.test(text(form, "member_since", 10)) ? text(form, "member_since", 10) : null,
     });
   if (error) {
     const dup = /duplicate|unique/i.test(error.message);
     return { error: dup ? "Diese E-Mail ist schon einem anderen Profil zugeordnet." : `Speichern fehlgeschlagen: ${error.message}` };
   }
 
-  // Projekt-Tags komplett ersetzen.
+  // Projekt-Tags komplett ersetzen. Auch im Dashboard neu angelegte Projekte sind erlaubt.
+  const projectSlugs = new Set([...staticSlugs, ...(await getProjectRows()).map((r) => r.slug)]);
   const tags = (parseJson(form, "projects") as { slug?: string; role?: string }[])
     .filter((t) => t && projectSlugs.has(String(t.slug)))
     .map((t) => ({ profile_id: id, project_slug: String(t.slug), role: String(t.role ?? "").slice(0, 60) }));

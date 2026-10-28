@@ -232,7 +232,7 @@ export default function RexusModsPage() {
             <ul className="mt-2 flex flex-wrap gap-x-6 text-[clamp(1.25rem,1rem+0.8vw,1.75rem)] font-[620] tracking-[-0.02em]">
               {p?.team.map((m) => (
                 <li key={m.slug}>
-                  <Link href={`/team#${m.slug}`} className="transition-colors hover:text-aqua">{m.name}</Link>
+                  <Link href={`/team/${m.slug}`} className="transition-colors hover:text-aqua">{m.name}</Link>
                 </li>
               ))}
             </ul>

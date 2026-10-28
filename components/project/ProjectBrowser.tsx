@@ -31,7 +31,7 @@ const chip =
 
 // Übersicht aller Projekte mit Filter nach Bereich und Stand.
 // Eingestellte Projekte stehen ruhig im Archiv am Ende, nicht im Raster.
-export default function ProjectBrowser({ projects }: { projects: Project[] }) {
+export default function ProjectBrowser({ projects, stats = {} }: { projects: Project[]; stats?: Record<string, string> }) {
   const [pillar, setPillar] = useState<Pillar | null>(null);
   const [status, setStatus] = useState<StatusFilter>("alle");
 
@@ -127,7 +127,13 @@ export default function ProjectBrowser({ projects }: { projects: Project[] }) {
                     style={{ ["--i" as string]: i % 4 }}
                   >
                     <ProjectTile project={p} wide={wide} tone={posterTone[p.slug]} eager={pi === 0 && i < 2} showTagline />
-                    {!wide && <p className="small mt-1 text-muted">{p.category}</p>}
+                    {!wide && (
+                      <p className="small mt-1 flex flex-wrap justify-between gap-x-3 text-muted">
+                        <span>{p.category}</span>
+                        {stats[p.slug] && <span className="nums text-aqua">{stats[p.slug]}</span>}
+                      </p>
+                    )}
+                    {wide && stats[p.slug] && <p className="small nums mt-1 text-aqua">{stats[p.slug]}</p>}
                   </li>
                 );
               })}

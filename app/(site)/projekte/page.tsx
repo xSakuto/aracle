@@ -1,7 +1,11 @@
 import Panorama from "@/components/alpine/Panorama";
 import ProjectBrowser from "@/components/project/ProjectBrowser";
 import { TOEDI } from "@/data/panorama/toedi";
-import { PILLARS, projects } from "@/data/projects";
+import { PILLARS } from "@/data/projects";
+import { getProjects } from "@/lib/projects";
+import { formatStat, getHeadlineStats } from "@/lib/stats";
+
+export const revalidate = 60;
 
 export const metadata = {
   alternates: { canonical: "/projekte" },
@@ -9,7 +13,11 @@ export const metadata = {
   description: "Eigene Marken und Projekte aus dem Aracle Studio: Marken & Produkte, Kanäle, Communitys & Server, Cloud & Hosting.",
 };
 
-export default function ProjektePage() {
+export default async function ProjektePage() {
+  const [projects, headline] = await Promise.all([getProjects(), getHeadlineStats()]);
+  const stats = Object.fromEntries(
+    Object.entries(headline).map(([slug, s]) => [slug, `${formatStat(s.value, true)} ${s.label}`]),
+  );
   const used = PILLARS.filter((pl) => projects.some((p) => p.pillar === pl));
   const active = projects.filter((p) => p.status === "Aktiv").length;
   const first = Math.min(...projects.map((p) => Number(p.year)));
@@ -92,7 +100,7 @@ export default function ProjektePage() {
 
       {/* Alle Projekte, gefiltert nach Bereich und Stand. Hervorgehobene Projekte sind breiter. */}
       <div className="wrap pb-[var(--section)]">
-        <ProjectBrowser projects={projects} />
+        <ProjectBrowser projects={projects} stats={stats} />
       </div>
     </>
   );

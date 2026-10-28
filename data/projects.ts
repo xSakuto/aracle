@@ -298,7 +298,7 @@ export const projects: Project[] = [
     slug: "sakuto",
     mark: "/images/sakuto/sakuto-silver.png",
     markTile: "/images/sakuto/sakuto-silver.png",
-    year: "2021",
+    year: "2017",
     title: "Sakuto",
     tagline: "Video essays, streams and Nintendo culture.",
     pillar: "Kanäle",
@@ -404,7 +404,7 @@ export const projects: Project[] = [
     pillar: "Marken & Produkte",
     category: "Konzept",
     status: "Konzept",
-    owner: "Jan Waser",
+    owner: "Aracle",
     coverImage: `${H}/immo.jpg`,
     shortDescription:
       "Konzept für Immobilienfotografie und virtuelle Rundgänge. Noch kein buchbares Angebot.",

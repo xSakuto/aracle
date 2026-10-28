@@ -1,7 +1,11 @@
 import { notFound, redirect } from "next/navigation";
 import Link from "next/link";
 import ProjectPoster from "@/components/visuals/ProjectPoster";
-import { getProject, neighbours, projectHref, projects, type Project, type ProjectStatus } from "@/data/projects";
+import { projectHref, projects as staticProjects, type Project, type ProjectStatus } from "@/data/projects";
+import { getProjects, getProjectUpdates } from "@/lib/projects";
+import { formatStat, getExternalUpdates, getProjectStats } from "@/lib/stats";
+import Changelog from "@/components/project/Changelog";
+import { MemberChip } from "@/components/MemberLink";
 import Gallery from "@/components/project/Gallery";
 import SectionIndex from "@/components/project/SectionIndex";
 import ProjectTile from "@/components/project/ProjectTile";
@@ -13,12 +17,12 @@ import { SITE_URL } from "@/lib/site";
 export const revalidate = 60;
 
 export function generateStaticParams() {
-  return projects.filter((p) => !p.landing).map((p) => ({ slug: p.slug }));
+  return staticProjects.filter((p) => !p.landing).map((p) => ({ slug: p.slug }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const p = getProject(slug);
+  const p = (await getProjects()).find((x) => x.slug === slug);
   if (!p) return { title: "Projekt" };
   return {
     title: p.title,
@@ -105,11 +109,18 @@ function ExtLink({ url, label, className = "link-under" }: { url: string; label:
 // Eckdaten, das beim Lesen mitläuft. Abschnitte ohne Daten fallen weg.
 export default async function ProjectPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const p = getProject(slug);
+  const all = await getProjects();
+  const p = all.find((x) => x.slug === slug);
   if (!p) notFound();
   if (p.landing) redirect(p.landing);
 
-  const team = await getTeam();
+  const [team, ownUpdates, externalUpdates, stats] = await Promise.all([
+    getTeam(),
+    getProjectUpdates(slug),
+    getExternalUpdates(slug),
+    getProjectStats(slug),
+  ]);
+  const updates = [...ownUpdates, ...externalUpdates].sort((a, b) => b.publishedAt.localeCompare(a.publishedAt));
   const people = team.flatMap((m) => m.projects.filter((x) => x.slug === slug).map(() => m));
   const gallery = (p.gallery ?? []).filter((g) => !(g.kind === "photo" && g.src === p.coverImage));
   const primaryLink = p.links.find((l) => !l.url.startsWith("/")) ?? p.links[0];
@@ -118,12 +129,15 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
     { id: "ueberblick", label: "Überblick", show: true },
     { id: "bausteine", label: "Was dazugehört", show: p.includes.length > 0 },
     { id: "einblicke", label: "Einblicke", show: gallery.length > 0 },
+    { id: "changelog", label: "Changelog", show: updates.length > 0 },
     { id: "verlauf", label: "Verlauf", show: p.timeline.length + (p.next?.length ?? 0) > 1 },
     { id: "fragen", label: "Fragen", show: (p.faq?.length ?? 0) > 0 },
   ].filter((s) => s.show);
 
-  const related = (p.related ?? []).map(getProject).filter(Boolean) as Project[];
-  const { prev, next } = neighbours(p.slug);
+  const related = (p.related ?? []).map((s) => all.find((x) => x.slug === s)).filter(Boolean) as Project[];
+  const idx = all.findIndex((x) => x.slug === p.slug);
+  const prev = all[(idx - 1 + all.length) % all.length];
+  const next = all[(idx + 1) % all.length];
 
   const facts: [string, React.ReactNode][] = [
     [
@@ -141,10 +155,16 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
     [
       "Team",
       people.length ? (
-        <ul>
+        <ul className="-my-1">
           {people.map((m) => (
             <li key={m.id}>
-              <Link href={`/team#${m.slug}`} className="link">{m.name}</Link>
+              <MemberChip
+                slug={m.slug}
+                name={m.name}
+                photo={m.photo}
+                accent={m.accent}
+                sub={m.projects.find((x) => x.slug === slug)?.role || m.role}
+              />
             </li>
           ))}
         </ul>
@@ -262,6 +282,24 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
               )}
             </div>
 
+            {stats.length > 0 && (
+              <dl className="mt-10 grid grid-cols-2 gap-6 border-t border-line pt-6 sm:grid-cols-4">
+                {stats.map((s) => (
+                  <div key={s.label}>
+                    <dd className="nums text-[clamp(1.75rem,1.2rem+1.4vw,2.5rem)] font-[620] leading-none tracking-[-0.04em]">{formatStat(s.value)}</dd>
+                    <dt className="small mt-2 text-muted">
+                      {s.label}
+                      {s.url ? (
+                        <a href={s.url} target="_blank" rel="noopener noreferrer" className="link ml-1">auf {s.source}</a>
+                      ) : (
+                        <span className="ml-1">auf {s.source}</span>
+                      )}
+                    </dt>
+                  </div>
+                ))}
+              </dl>
+            )}
+
             {p.slug === "milvia" && (
               <ul className="mt-10 flex flex-wrap gap-3" aria-label="Apps und Store">
                 <li>
@@ -298,6 +336,13 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
             <section id="einblicke" aria-labelledby="einblicke-title" className="mt-[var(--section)] scroll-mt-28">
               <h2 id="einblicke-title" className="head mb-8">Einblicke.</h2>
               <Gallery items={gallery} />
+            </section>
+          )}
+
+          {updates.length > 0 && (
+            <section id="changelog" aria-labelledby="changelog-title" className="mt-[var(--section)] scroll-mt-28">
+              <h2 id="changelog-title" className="head mb-8">Changelog.</h2>
+              <Changelog updates={updates} />
             </section>
           )}
 
