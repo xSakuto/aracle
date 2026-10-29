@@ -1,86 +1,27 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
 import DuoPortrait from "@/components/DuoPortrait";
 import TouchLight from "@/components/TouchLight";
 import { APPLY_ROLES } from "@/data/apply";
 import ContactLinks from "@/components/ContactLinks";
 import type { TeamMember } from "@/lib/team";
 
-type ProjectRef = { slug: string; title: string; href: string; mark?: string };
-
-// Team als Register auf dem Raster: Porträt, Name und Rolle, kurze Bio,
-// Projekte als ruhige Liste. Der Filter blendet nicht aus, er nimmt zurück,
-// damit das Layout beim Filtern stehen bleibt.
-export default function TeamDirectory({
-  members,
-  projects,
-}: {
-  members: TeamMember[];
-  projects: ProjectRef[];
-}) {
-  const [filter, setFilter] = useState<string | null>(null);
-  const titleOf = useMemo(
-    () => Object.fromEntries(projects.map((p) => [p.slug, p.title])),
-    [projects],
-  );
-  const hrefOf = useMemo(
-    () => Object.fromEntries(projects.map((p) => [p.slug, p.href])),
-    [projects],
-  );
-  const markOf = useMemo(
-    () => Object.fromEntries(projects.map((p) => [p.slug, p.mark])),
-    [projects],
-  );
-  // Nur Projekte zeigen, an denen jemand beteiligt ist, in der Reihenfolge der Projektliste.
-  const used = projects.filter((p) =>
-    members.some((m) => m.projects.some((x) => x.slug === p.slug)),
-  );
-  const match = (m: TeamMember) => !filter || m.projects.some((p) => p.slug === filter);
-  // Nicht gelistete Personen (z. B. ein Discord-Mod) tauchen nur auf, solange genau
-  // ihr Projekt-Filter aktiv ist, nie unter "Alle" und nie bei einem anderen Filter.
-  const shown = members.filter((m) => m.listed || (filter !== null && m.projects.some((p) => p.slug === filter)));
-  const count = shown.filter(match).length;
+// Team als Register auf dem Raster: Porträt, Name und Rolle, kurze Bio und Zitat.
+// Wer woran arbeitet, steht auf den Projekten selbst und im Profil.
+export default function TeamDirectory({ members }: { members: TeamMember[] }) {
+  // Nicht gelistete Personen (z. B. ein Discord-Mod) stehen nur auf ihren Projektseiten.
+  const shown = members.filter((m) => m.listed);
 
   return (
     <>
-      <div className="mt-14 border-t border-line pt-5" role="group" aria-label="Nach Projekt filtern">
-        <p className="small text-muted">Wer arbeitet woran?</p>
-        <div className="mt-2 flex flex-wrap gap-x-6 gap-y-1">
-          {[{ slug: null as string | null, title: "Alle" }, ...used].map((p) => {
-            const on = filter === p.slug;
-            return (
-              <button
-                key={p.slug ?? "alle"}
-                type="button"
-                aria-pressed={on}
-                onClick={() => setFilter(on && p.slug ? null : p.slug)}
-                className={`seg-host relative inline-flex min-h-10 items-center text-[0.9375rem] transition-colors duration-200 active:opacity-70 ${
-                  on ? "text-ink" : "text-muted hover:text-ink"
-                }`}
-              >
-                {p.title}
-                <span aria-hidden className="seg" style={{ bottom: "0.375rem" }} />
-              </button>
-            );
-          })}
-        </div>
-        <p className="sr-only" aria-live="polite">
-          {filter ? `${count} von ${shown.length} Personen arbeiten an ${titleOf[filter]}` : `${shown.length} Personen`}
-        </p>
-      </div>
-
-      <ul className="mt-10 border-b border-line">
+      <ul className="mt-14 border-b border-line">
         {shown.map((m) => {
-          const on = match(m);
           return (
             <li
               key={m.id}
               id={m.slug}
-              className={`duo-host grid scroll-mt-24 grid-cols-[7.5rem_1fr] gap-x-5 gap-y-6 border-t border-line py-8 transition-opacity duration-500 sm:grid-cols-[10rem_1fr] md:grid-cols-12 md:gap-x-8 md:py-12 ${
-                on ? "opacity-100" : "opacity-25"
-              }`}
+              className="duo-host grid scroll-mt-24 grid-cols-[7.5rem_1fr] gap-x-5 gap-y-6 border-t border-line py-8 sm:grid-cols-[10rem_1fr] md:grid-cols-12 md:gap-x-8 md:py-12"
             >
               <div className="overflow-hidden rounded-[var(--radius)] md:col-span-3">
                 <DuoPortrait name={m.name} photo={m.photo} accent={m.accent} sizes="(min-width: 768px) 22vw, 10rem" />
@@ -93,10 +34,6 @@ export default function TeamDirectory({
                 <p className="mt-2 text-muted">{m.role}</p>
                 <p className="mt-6 hidden max-w-[44ch] text-ink/80 sm:block">{m.bio}</p>
 
-                {m.quote && (
-                  <blockquote className="mt-6 max-w-[40ch] border-l border-aqua pl-4 text-ink/90">«{m.quote}»</blockquote>
-                )}
-
                 <div className="mt-auto flex flex-wrap items-center justify-between gap-x-6 gap-y-2 pt-6">
                   <ContactLinks name={m.name} socials={m.socials} email={m.contactEmail} />
                   <Link href={`/team/${m.slug}`} className="link-under text-[0.9375rem]">Profil ansehen</Link>
@@ -105,44 +42,13 @@ export default function TeamDirectory({
 
               <p className="col-span-2 -mt-2 max-w-[44ch] text-ink/80 sm:hidden">{m.bio}</p>
 
-              {m.projects.length > 0 && (
-                <div className="col-span-2 md:col-span-4">
-                  {/* Nach Rolle gruppiert: die Rolle steht einmal, darunter die Projekte mit Logo */}
-                  {Object.entries(
-                    m.projects.reduce<Record<string, string[]>>((acc, p) => {
-                      (acc[p.role || m.role] ??= []).push(p.slug);
-                      return acc;
-                    }, {}),
-                  ).map(([role, slugs]) => (
-                    <div key={role} className="[&+&]:mt-6">
-                      <h3 className="small text-muted">
-                        {role} <span className="nums">· {slugs.length}</span>
-                      </h3>
-                      <ul className="mt-3 flex flex-wrap gap-1.5">
-                        {slugs.map((slug) => (
-                          <li key={slug}>
-                            <Link
-                              href={hrefOf[slug] ?? `/projekte/${slug}`}
-                              className={`group inline-flex min-h-9 items-center gap-2 rounded-[var(--radius)] border py-1 pl-1 pr-3 text-[0.875rem] transition-[border-color,color] duration-200 hover:border-aqua hover:text-aqua ${
-                                filter === slug ? "border-aqua text-ink" : "border-line"
-                              }`}
-                            >
-                              <span aria-hidden className="grid h-7 w-7 shrink-0 place-items-center overflow-hidden rounded-[4px] bg-raised">
-                                {markOf[slug] ? (
-                                  // eslint-disable-next-line @next/next/no-img-element
-                                  <img src={markOf[slug]} alt="" width={28} height={28} loading="lazy" className="max-h-5 max-w-5 bg-transparent object-contain" />
-                                ) : (
-                                  <span className="text-[0.6875rem] font-semibold text-muted">{(titleOf[slug] ?? slug).slice(0, 2)}</span>
-                                )}
-                              </span>
-                              {titleOf[slug] ?? slug}
-                            </Link>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  ))}
-                </div>
+              {m.quote && (
+                <blockquote
+                  className="col-span-2 max-w-[32ch] border-l-2 pl-5 text-[clamp(1.125rem,1rem+0.4vw,1.375rem)] leading-snug tracking-[-0.015em] text-ink/90 md:col-span-4 md:self-start"
+                  style={{ borderColor: m.accent }}
+                >
+                  «{m.quote}»
+                </blockquote>
               )}
             </li>
           );

@@ -3,6 +3,8 @@ import ProjectBrowser from "@/components/project/ProjectBrowser";
 import { TOEDI } from "@/data/panorama/toedi";
 import { PILLARS } from "@/data/projects";
 import { getProjects } from "@/lib/projects";
+import { getTeam } from "@/lib/team";
+import type { TilePerson } from "@/components/project/ProjectTile";
 import { formatStat, getHeadlineStats } from "@/lib/stats";
 
 export const revalidate = 60;
@@ -14,7 +16,14 @@ export const metadata = {
 };
 
 export default async function ProjektePage() {
-  const [projects, headline] = await Promise.all([getProjects(), getHeadlineStats()]);
+  const [projects, headline, team] = await Promise.all([getProjects(), getHeadlineStats(), getTeam()]);
+  // Wer an welchem Projekt arbeitet, für die Pille auf den Kacheln
+  const people: Record<string, TilePerson[]> = {};
+  for (const m of team) {
+    for (const x of m.projects) {
+      (people[x.slug] ??= []).push({ slug: m.slug, name: m.name, photo: m.photo, accent: m.accent });
+    }
+  }
   const stats = Object.fromEntries(
     Object.entries(headline).map(([slug, s]) => [slug, `${formatStat(s.value, true)} ${s.label}`]),
   );
@@ -100,7 +109,7 @@ export default async function ProjektePage() {
 
       {/* Alle Projekte, gefiltert nach Bereich und Stand. Hervorgehobene Projekte sind breiter. */}
       <div className="wrap pb-[var(--section)]">
-        <ProjectBrowser projects={projects} stats={stats} />
+        <ProjectBrowser projects={projects} stats={stats} people={people} />
       </div>
     </>
   );

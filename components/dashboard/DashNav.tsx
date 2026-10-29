@@ -23,6 +23,7 @@ export default function DashNav({
       ? [{ href: "/dashboard/anfragen", label: "Anfragen", active: pathname.startsWith("/dashboard/anfragen"), badge: badges.anfragen }]
       : []),
     ...(admin ? [{ href: "/dashboard/team", label: "Team verwalten", active: pathname.startsWith("/dashboard/team") }] : []),
+    ...(admin ? [{ href: "/dashboard/status", label: "Status & Alarm", active: pathname.startsWith("/dashboard/status") }] : []),
   ];
   return (
     <nav aria-label="Team-Bereich" className="mt-6 flex gap-1 overflow-x-auto md:flex-col">

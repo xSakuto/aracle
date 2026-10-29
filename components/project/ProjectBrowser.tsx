@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import ProjectTile from "@/components/project/ProjectTile";
+import ProjectTile, { type TilePerson } from "@/components/project/ProjectTile";
 import { PILLARS, projectHref, type Pillar, type Project } from "@/data/projects";
 
 const pillarText: Record<Pillar, string> = {
@@ -31,7 +31,15 @@ const chip =
 
 // Übersicht aller Projekte mit Filter nach Bereich und Stand.
 // Eingestellte Projekte stehen ruhig im Archiv am Ende, nicht im Raster.
-export default function ProjectBrowser({ projects, stats = {} }: { projects: Project[]; stats?: Record<string, string> }) {
+export default function ProjectBrowser({
+  projects,
+  stats = {},
+  people = {},
+}: {
+  projects: Project[];
+  stats?: Record<string, string>;
+  people?: Record<string, TilePerson[]>;
+}) {
   const [pillar, setPillar] = useState<Pillar | null>(null);
   const [status, setStatus] = useState<StatusFilter>("alle");
 
@@ -126,7 +134,7 @@ export default function ProjectBrowser({ projects, stats = {} }: { projects: Pro
                     data-reveal
                     style={{ ["--i" as string]: i % 4 }}
                   >
-                    <ProjectTile project={p} wide={wide} tone={posterTone[p.slug]} eager={pi === 0 && i < 2} showTagline />
+                    <ProjectTile project={p} wide={wide} tone={posterTone[p.slug]} eager={pi === 0 && i < 2} showTagline people={people[p.slug]} />
                     {!wide && (
                       <p className="small mt-1 flex flex-wrap justify-between gap-x-3 text-muted">
                         <span>{p.category}</span>

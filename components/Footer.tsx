@@ -8,7 +8,7 @@ const columns: { title: string; links: [string, string][] }[] = [
   { title: "Studio", links: [["Projekte", "/projekte"], ["Team", "/team"], ["Journey", "/history"], ["Brand", "/brand"], ["Mitmachen", "/apply"]] },
   { title: "Marken", links: [["Aracle Cloud", "/hosting"], ["Highside", "/highside"], ["Swizzly", "/swizzly"], ["Beer Game", "/projekte/beer-game"], ["RexusMods", "/rexusmods"], ["AracleSMP", "/smp"], ["Zelda DE", "/zelda-de"]] },
   { title: "Kontakt", links: [["Projekt anfragen", "/kontakt"], ["info@aracle.ch", "mailto:info@aracle.ch"], ["Discord", "https://discord.gg/BgpKdzBYtD"], ["Instagram", "https://www.instagram.com/aracle.ch/"]] },
-  { title: "Intern", links: [["Team-Login", "/login"], ["Impressum", "/impressum"], ["Datenschutz", "/datenschutz"]] },
+  { title: "Intern", links: [["Team-Login", "/login"], ["Status", "/status"], ["Impressum", "/impressum"], ["Datenschutz", "/datenschutz"]] },
 ];
 
 export default function Footer() {

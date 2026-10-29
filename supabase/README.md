@@ -94,3 +94,22 @@ pro 10 Minuten und IP.
 - **Profile** unter `/team/<slug>`: «Ort» pflegt jede Person selbst, «Mitglied seit» setzt ein Admin.
 
 Ohne das Update läuft die Website weiter mit den Projekten aus `data/projects.ts`.
+
+## 8. Statusseite und Ausfall-Alarm (Oktober 2026)
+
+`2026-10-status.sql` einmal im SQL-Editor ausführen. Das schaltet pg_cron und pg_net ein,
+legt die Tabellen an und ruft ab dann jede Minute `https://aracle.ch/api/status/run` auf.
+Welche Dienste geprüft werden, steht in `data/status.ts`.
+
+Alarm-Kanäle in Vercel (Settings > Environment Variables), jeder ist optional:
+
+```
+STATUS_ALERT_EMAIL=j.nef@aracle.ch          # Mail über Resend (RESEND_API_KEY ist schon da)
+CALLMEBOT_PHONE=+4179...                    # WhatsApp über callmebot.com
+CALLMEBOT_APIKEY=...
+NTFY_TOPIC=aracle-status-<zufall>           # Push über die App ntfy
+STATUS_DISCORD_WEBHOOK=https://discord.com/api/webhooks/...
+```
+
+Im Dashboard unter *Status & Alarm* sieht man, welche Kanäle eingerichtet sind, kann einen
+Test-Alarm schicken und zu einer Störung einen Hinweis für die Statusseite schreiben.

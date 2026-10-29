@@ -1,6 +1,6 @@
-import Link from "next/link";
 import Hud from "@/components/visuals/Hud";
 import { getProject } from "@/data/projects";
+import ProjectCredits from "@/components/project/ProjectCredits";
 import { SITE_URL } from "@/lib/site";
 
 const TITLE = "RexusMods · Mods für GTA V und Flugsimulatoren";
@@ -229,13 +229,7 @@ export default function RexusModsPage() {
         <div className="wrap flex flex-col gap-8 py-16 md:flex-row md:items-end md:justify-between">
           <div>
             <p className="small text-muted">Gemacht von</p>
-            <ul className="mt-2 flex flex-wrap gap-x-6 text-[clamp(1.25rem,1rem+0.8vw,1.75rem)] font-[620] tracking-[-0.02em]">
-              {p?.team.map((m) => (
-                <li key={m.slug}>
-                  <Link href={`/team/${m.slug}`} className="transition-colors hover:text-aqua">{m.name}</Link>
-                </li>
-              ))}
-            </ul>
+            <ProjectCredits slug="rexusmods" fallback={p?.team} />
           </div>
           <a href="mailto:info@aracle.ch?subject=RexusMods" className="btn-quiet self-start md:self-auto">Schreib uns</a>
         </div>

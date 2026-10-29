@@ -396,7 +396,11 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
           <ul className="mt-8 grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-4 md:gap-x-6">
             {related.map((r, i) => (
               <li key={r.slug} data-reveal style={{ ["--i" as string]: i }}>
-                <ProjectTile project={r} tone={posterTone[r.slug]} />
+                <ProjectTile
+                  project={r}
+                  tone={posterTone[r.slug]}
+                  people={team.filter((m) => m.projects.some((x) => x.slug === r.slug)).map((m) => ({ slug: m.slug, name: m.name, photo: m.photo, accent: m.accent }))}
+                />
               </li>
             ))}
           </ul>
