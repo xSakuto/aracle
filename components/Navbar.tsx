@@ -14,9 +14,10 @@ const links = [
   { href: "/history", label: "Journey" },
 ];
 
-// Desktop: eine Leiste auf dem 12er-Raster, das A in der Mitte, getragen von einer Haarlinie.
+// Eine Leiste auf dem Raster, das A in der Mitte, getragen von einer Haarlinie.
 // Der aktive Punkt ist ein Segment in Gletscherblau auf dieser Linie, wie die
-// Gipfelmarken im Panorama. Mobile: die bewährte Glasleiste mit Vollbild-Menü.
+// Gipfelmarken im Panorama. Auf dem Handy dieselbe Leiste: links der aktuelle
+// Bereich, rechts das Menü, das sich als Liste auf denselben Haarlinien öffnet.
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -48,16 +49,24 @@ export default function Navbar() {
   }, []);
 
   const isActive = (href: string) => !href.includes("#") && pathname.startsWith(href);
+  const menu = [{ href: "/", label: "Start" }, ...links, ...(loggedIn ? [{ href: "/dashboard", label: "Dashboard" }] : [])];
+  const current = links.find((l) => isActive(l.href))?.label;
 
   return (
     <>
-      <header className="fixed inset-x-0 top-0 z-50 px-[calc(var(--margin)-0.75rem)] pt-3 md:p-0">
+      <header className="fixed inset-x-0 top-0 z-50">
         <div
           data-scrolled={scrolled || undefined}
-          className={`nav-glass nav-bar relative flex h-14 items-center justify-between rounded-[14px] px-3 md:grid md:h-16 md:grid-cols-12 md:gap-x-8 md:rounded-none md:px-[var(--margin)] ${open ? "is-open" : ""}`}
+          className={`nav-bar relative flex h-14 items-center justify-between px-[var(--margin)] md:grid md:h-16 md:grid-cols-12 md:gap-x-8 ${open ? "is-open" : ""}`}
         >
           {/* Ticks auf der Haarlinie, im Takt des Hintergrundrasters */}
-          <span aria-hidden className="nav-ticks hidden md:block" />
+          <span aria-hidden className="nav-ticks" />
+
+          {/* Handy: wo man gerade ist, als Segment auf der Linie wie am Desktop */}
+          <p className="seg-host is-current relative flex h-full items-center text-[0.8125rem] text-ink md:hidden">
+            {current ?? "Aracle"}
+            {current && <span aria-hidden className="seg" style={{ bottom: "-1px" }} />}
+          </p>
 
           <nav aria-label="Hauptnavigation" className="hidden h-full items-stretch gap-7 md:col-span-5 md:flex">
             {links.map((l) => {
@@ -90,7 +99,7 @@ export default function Navbar() {
               alt="Aracle"
               width={512}
               height={413}
-              className="h-7 w-auto bg-transparent md:h-8"
+              className="h-6 w-auto bg-transparent md:h-8"
             />
           </Link>
 
@@ -119,46 +128,70 @@ export default function Navbar() {
             </Link>
           </div>
 
-          <span aria-hidden className="w-11 md:hidden" />
           <button
             type="button"
             aria-label={open ? "Menü schliessen" : "Menü öffnen"}
             aria-expanded={open}
             aria-controls="mobile-menu"
             onClick={() => setOpen((v) => !v)}
-            className="flex h-11 items-center px-2 text-[0.9375rem] transition-opacity active:opacity-60 md:hidden"
+            className="-mr-2 flex h-11 items-center gap-2.5 px-2 text-[0.8125rem] text-ink transition-opacity active:opacity-60 md:hidden"
           >
             {open ? "Schliessen" : "Menü"}
+            {/* Zwei Linien, die sich zum Kreuz drehen */}
+            <span aria-hidden className="relative block h-2.5 w-4">
+              <span className={`absolute left-0 top-0 h-px w-full bg-current transition-transform duration-300 ease-[var(--ease-out)] ${open ? "translate-y-[5px] rotate-45" : ""}`} />
+              <span className={`absolute bottom-0 left-0 h-px w-full bg-current transition-transform duration-300 ease-[var(--ease-out)] ${open ? "-translate-y-[4px] -rotate-45" : ""}`} />
+            </span>
           </button>
         </div>
       </header>
 
       <div
         id="mobile-menu"
-        className={`wrap fixed inset-0 z-40 flex flex-col justify-between overscroll-contain bg-bg pb-8 pt-24 transition-[opacity,visibility] duration-300 md:hidden ${
+        className={`fixed inset-0 z-40 flex flex-col overscroll-contain bg-bg pt-14 transition-[opacity,visibility] duration-300 md:hidden ${
           open ? "visible opacity-100" : "pointer-events-none invisible opacity-0"
         }`}
         aria-hidden={!open}
       >
-        <nav aria-label="Mobile Navigation" className="flex flex-col gap-2">
-          {[{ href: "/", label: "Start" }, ...links, ...(loggedIn ? [{ href: "/dashboard", label: "Dashboard" }] : [])].map((l) => (
-            <Link
-              key={l.href}
-              href={l.href}
-              tabIndex={open ? 0 : -1}
-              className={`text-[2rem] font-semibold leading-tight tracking-[-0.03em] transition-colors active:opacity-60 ${
-                (l.href === "/" ? pathname === "/" : isActive(l.href))
-                  ? "text-aqua"
-                  : "text-ink"
-              }`}
-            >
-              {l.label}
-            </Link>
-          ))}
+        <div aria-hidden className="swiss-grid pointer-events-none absolute inset-0 opacity-50" />
+        <nav aria-label="Mobile Navigation" className="wrap relative mt-6">
+          <ul className="border-b border-line">
+            {menu.map((l, i) => {
+              const on = l.href === "/" ? pathname === "/" : isActive(l.href);
+              return (
+                <li key={l.href}>
+                  <Link
+                    href={l.href}
+                    tabIndex={open ? 0 : -1}
+                    aria-current={on ? "page" : undefined}
+                    className={`seg-host menu-item relative flex min-h-14 items-center justify-between border-t border-line text-[1.75rem] font-semibold leading-none tracking-[-0.03em] transition-colors active:opacity-60 ${
+                      on ? "text-ink" : "text-ink/70"
+                    }`}
+                    style={{ ["--i" as string]: i }}
+                  >
+                    {l.label}
+                    {on && <span className="small font-normal tracking-normal text-aqua">Hier</span>}
+                    <span aria-hidden className="seg seg-top" />
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
         </nav>
-        <Link href="/kontakt" tabIndex={open ? 0 : -1} className="btn w-full">
-          Projekt anfragen
-        </Link>
+
+        <div className="wrap relative mt-auto pb-8">
+          <div className="small flex items-center justify-between border-t border-line pt-4 text-muted">
+            <p className="nums">
+              <span className="text-ink/80">Glarus</span>
+              <span className="ml-2">47°02′ N</span>
+              <span className="ml-2">9°04′ E</span>
+            </p>
+            <Link href="/status" tabIndex={open ? 0 : -1} className="transition-colors hover:text-ink">Status</Link>
+          </div>
+          <Link href="/kontakt" tabIndex={open ? 0 : -1} className="btn mt-5 w-full">
+            Projekt anfragen
+          </Link>
+        </div>
       </div>
     </>
   );
