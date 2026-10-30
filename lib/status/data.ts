@@ -23,7 +23,7 @@ export interface Incident {
 }
 
 export interface ServiceStatus extends Service {
-  state: "up" | "down" | "unknown";
+  state: "up" | "down" | "unknown" | "planned";
   lastCheck: { ok: boolean; at: string; latency: number | null; detail: string } | null;
   days: DayBar[];
   uptime90: number | null;
@@ -66,7 +66,7 @@ export async function getStatus(): Promise<StatusOverview> {
   const days = lastDays(DAYS);
   const empty = (s: Service): ServiceStatus => ({
     ...s,
-    state: "unknown",
+    state: s.planned ? "planned" : "unknown",
     lastCheck: null,
     days: days.map((day) => ({ day, checks: 0, ok: 0, uptime: null, avgLatency: null })),
     uptime90: null,
@@ -100,9 +100,12 @@ export async function getStatus(): Promise<StatusOverview> {
 
     const checks = (latest.data ?? []) as CheckRow[];
     const dailyRows = (daily.data ?? []) as DailyRow[];
-    const inc = ((incidents.data ?? []) as IncidentRow[]).map(toIncident);
+    // Störungen geplanter Dienste zählen nicht (z. B. ein Server, der noch gar nicht läuft)
+    const planned = new Set(visible.filter((s) => s.planned).map((s) => s.id));
+    const inc = ((incidents.data ?? []) as IncidentRow[]).map(toIncident).filter((i) => !planned.has(i.service));
 
     const services = visible.map((s): ServiceStatus => {
+      if (s.planned) return { ...empty(s), state: "planned" };
       const last = checks.find((c) => c.service === s.id) ?? null;
       const open = inc.find((i) => i.service === s.id && !i.resolvedAt) ?? null;
       const bars = days.map((day): DayBar => {

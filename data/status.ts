@@ -21,6 +21,8 @@ export interface Service {
   public: boolean;
   /** Link zum Dienst auf der Statusseite */
   href?: string;
+  /** Noch nicht in Betrieb: wird gezeigt, aber nicht geprüft und nicht alarmiert. Zum Start einfach entfernen. */
+  planned?: boolean;
 }
 
 export const SERVICES: Service[] = [
@@ -67,6 +69,7 @@ export const SERVICES: Service[] = [
     check: { type: "minecraft", host: "play.aracle.ch" },
     public: true,
     href: "/smp",
+    planned: true,
   },
   // Weitere Dienste aus dem Homelab, sobald sie eine öffentliche Adresse haben, z. B.:
   // { id: "panel", name: "Game-Panel", description: "Pterodactyl", group: "Infrastruktur",

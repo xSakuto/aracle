@@ -27,6 +27,7 @@ const STATE = {
   up: { label: "Läuft", dot: "bg-aqua", text: "text-aqua" },
   down: { label: "Ausgefallen", dot: "bg-danger", text: "text-danger" },
   unknown: { label: "Noch keine Daten", dot: "bg-muted", text: "text-muted" },
+  planned: { label: "Startet bald", dot: "border border-muted bg-transparent", text: "text-muted" },
 } as const;
 
 // Statusseite: ein Satz, ob alles läuft, darunter jeder Dienst mit 90 Tagen
@@ -158,7 +159,7 @@ function ServiceRow({ s }: { s: ServiceStatus }) {
         </div>
         <div>
           <dt className="sr-only">Verfügbarkeit 90 Tage</dt>
-          <dd className="small nums text-muted">{s.uptime90 === null ? "–" : `${pct(s.uptime90)} in 90 Tagen`}</dd>
+          <dd className="small nums text-muted">{s.state === "planned" ? "noch nicht in Betrieb" : s.uptime90 === null ? "–" : `${pct(s.uptime90)} in 90 Tagen`}</dd>
         </div>
         {s.state === "up" && s.lastCheck?.detail && (
           <div>

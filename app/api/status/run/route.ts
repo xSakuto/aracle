@@ -20,7 +20,7 @@ export async function POST(req: Request) {
   if (!valid) return new Response("forbidden", { status: 403 });
 
   const { data: botSecret } = await db.rpc("status_bot_secret", { p_secret: secret });
-  const results = await runChecks(SERVICES, (botSecret as string | null) ?? null);
+  const results = await runChecks(SERVICES.filter((s) => !s.planned), (botSecret as string | null) ?? null);
 
   const { data: events, error } = await db.rpc("record_status_run", {
     p_secret: secret,
