@@ -520,3 +520,35 @@ html.lenis, html.lenis body { height: auto; }
 @media (prefers-reduced-motion: reduce) {
   #mobile-menu .menu-item { transform: none; transition: opacity 200ms ease; transition-delay: 0ms; }
 }
+
+/* Zelda DE: Sheikah-Tablet. Tiefes Petrol statt Schwarz, Sheikah-Türkis,
+   ein Hauch Triforce-Gold nur am Beitreten-Button. */
+.zelda-page {
+  --zelda-bg: #07161a;
+  --zelda-surface: #0c2227;
+  background: var(--zelda-bg);
+}
+.zelda-join {
+  background: var(--color-aqua);
+  color: #03140f;
+  box-shadow: 0 0 0 1px rgb(63 224 197 / 0.5), 0 10px 36px -8px rgb(63 224 197 / 0.55), inset 0 -2px 0 rgb(232 196 106 / 0.55);
+  transition: transform 140ms var(--ease-out), background-color 180ms ease, box-shadow 220ms ease;
+}
+.zelda-join:hover { background: #7cf0db; box-shadow: 0 0 0 1px rgb(63 224 197 / 0.7), 0 14px 44px -8px rgb(63 224 197 / 0.7), inset 0 -2px 0 rgb(232 196 106 / 0.8); }
+.zelda-join:active { transform: scale(0.97); }
+.zelda-join:focus-visible { outline: 2px solid #e8c46a; outline-offset: 3px; }
+.zelda-swipe { scrollbar-width: none; scroll-padding-inline: var(--margin); }
+.zelda-swipe::-webkit-scrollbar { display: none; }
+
+/* Sheikah-Ring: die Bahnen zeichnen sich einmal nach, dann glimmt er leise */
+.sheikah-trace { stroke-dasharray: 1; stroke-dashoffset: 1; animation: sheikah-draw 900ms var(--ease-out) forwards; animation-delay: calc(150ms + var(--i, 0) * 90ms); }
+.sheikah-node { opacity: 0; animation: sheikah-node 400ms ease forwards; animation-delay: calc(500ms + var(--i, 0) * 90ms); }
+.sheikah-glow { opacity: 0.1; filter: blur(14px); animation: sheikah-pulse 4s ease-in-out 1.4s infinite; }
+@keyframes sheikah-draw { to { stroke-dashoffset: 0; } }
+@keyframes sheikah-node { to { opacity: 1; } }
+@keyframes sheikah-pulse { 0%, 100% { opacity: 0.08; } 50% { opacity: 0.2; } }
+@media (prefers-reduced-motion: reduce) {
+  .sheikah-trace { animation: none; stroke-dashoffset: 0; }
+  .sheikah-node { animation: none; opacity: 1; }
+  .sheikah-glow { animation: none; }
+}

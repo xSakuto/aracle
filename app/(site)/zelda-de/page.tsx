@@ -1,6 +1,8 @@
-import { formatStat, getProjectStats } from "@/lib/stats";
 import Link from "next/link";
+import SheikahRing from "@/components/zelda/SheikahRing";
+import StickyJoin from "@/components/zelda/StickyJoin";
 import ZeldaLayers from "@/components/zelda/ZeldaLayers";
+import { getProjectStats } from "@/lib/stats";
 import { ZELDA_DISCORD_INVITE } from "@/data/zelda";
 import { SITE_URL } from "@/lib/site";
 
@@ -52,10 +54,17 @@ const metadata = {
 };
 
 const topics = [
-  { title: "Theorien", text: "Timeline, Lore und die grossen Fragen um Hyrule, Zelda und Ganon. Gemeinsam gedacht, ausführlich diskutiert." },
-  { title: "Spiele", text: "Von The Legend of Zelda auf dem NES über Ocarina of Time und Breath of the Wild bis Tears of the Kingdom." },
-  { title: "Speedruns", text: "Routen, Tricks und Bestzeiten. Für alle, die Hyrule so schnell wie möglich durchqueren wollen." },
-  { title: "Nostalgie", text: "Erinnerungen an die ersten Dungeons, die alten Konsolen und die Musik, die man nie mehr vergisst." },
+  { title: "Theorien", text: "Timeline, Lore und die grossen Fragen um Hyrule, Zelda und Ganon." },
+  { title: "Spiele", text: "Vom NES-Original über Ocarina of Time bis Tears of the Kingdom und Echoes of Wisdom." },
+  { title: "Speedruns", text: "Routen, Tricks und Bestzeiten, für alle, die Hyrule schnell durchqueren wollen." },
+  { title: "Nostalgie", text: "Die ersten Dungeons, die alten Konsolen und die Musik, die man nie vergisst." },
+];
+
+// Ein echter Ablauf, darum nummeriert
+const steps = [
+  { title: "Auf «Discord beitreten» tippen", text: "Auf dem Handy öffnet sich direkt die Discord-App, am Computer der Browser." },
+  { title: "Einladung annehmen", text: "Noch kein Discord? Den Account machst du in einer Minute, kostenlos." },
+  { title: "Regeln bestätigen und loslegen", text: "Kurz das Regelwerk lesen, Rollen wählen, Hallo sagen." },
 ];
 
 const games = [
@@ -98,11 +107,43 @@ const faq = [
   },
 ];
 
-// Zelda DE als eigene, suchmaschinenfreundliche Landing Page.
+// Zelda DE als eigene Landing Page mit einem Ziel: möglichst viele Leute
+// möglichst einfach in den Discord bringen. Auf dem Handy gebaut wie eine App:
+// grosse Schrift, ein grosser Button, unten eine mitlaufende Beitreten-Leiste.
 export const revalidate = 3600;
+
+const fmt = new Intl.NumberFormat("de-CH");
+
+function JoinButton({ id, className = "" }: { id?: string; className?: string }) {
+  if (!ZELDA_DISCORD_INVITE) return null;
+  return (
+    <a
+      id={id}
+      href={ZELDA_DISCORD_INVITE}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={`zelda-join inline-flex h-[3.75rem] w-full items-center justify-center gap-3 rounded-[14px] px-8 text-[1.1875rem] font-semibold tracking-[-0.01em] sm:w-auto ${className}`}
+    >
+      <DiscordGlyph />
+      Discord beitreten
+    </a>
+  );
+}
+
+function DiscordGlyph() {
+  return (
+    <svg aria-hidden viewBox="0 0 24 24" className="h-6 w-6 shrink-0" fill="currentColor">
+      <path d="M20.3 4.4A19.7 19.7 0 0 0 15.4 3l-.6 1.3a18.3 18.3 0 0 0-5.6 0L8.6 3a19.6 19.6 0 0 0-4.9 1.4C.6 9.1-.3 13.6.1 18.1a19.9 19.9 0 0 0 6 3l1.3-2.1a12.9 12.9 0 0 1-2-1l.5-.4a14.2 14.2 0 0 0 12.2 0l.5.4c-.6.4-1.3.7-2 1l1.3 2.1a19.8 19.8 0 0 0 6-3c.5-5.2-.8-9.7-3.6-13.7ZM8.3 15.3c-1.2 0-2.2-1.1-2.2-2.4s1-2.4 2.2-2.4 2.2 1.1 2.2 2.4-1 2.4-2.2 2.4Zm7.4 0c-1.2 0-2.2-1.1-2.2-2.4s1-2.4 2.2-2.4 2.2 1.1 2.2 2.4-1 2.4-2.2 2.4Z" />
+    </svg>
+  );
+}
 
 export default async function ZeldaDePage() {
   const stats = await getProjectStats("zelda-de-server");
+  const members = stats.find((s) => s.label === "Mitglieder")?.value;
+  const online = stats.find((s) => s.label === "gerade online")?.value;
+  const onlineText = online ? `${fmt.format(online)} gerade online` : undefined;
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
@@ -133,108 +174,181 @@ export default async function ZeldaDePage() {
   };
 
   return (
-    <div className="theme-zelda">
+    <div className="theme-zelda zelda-page">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
-      <header className="relative flex min-h-[88svh] flex-col overflow-hidden">
-        <div aria-hidden className="absolute inset-0">
+      {/* ── Hero ───────────────────────────────────────────── */}
+      <header className="relative overflow-hidden md:flex md:min-h-[92svh] md:items-end">
+        {/* Hyrule als Bildband oben (Handy) oder als Hintergrund (Desktop) */}
+        <div aria-hidden className="absolute inset-x-0 top-0 h-[40svh] md:inset-0 md:h-auto">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/images/zelda/zelda-cover.png"
             alt=""
-            width={960}
-            height={540}
+            width={735}
+            height={418}
             fetchPriority="high"
-            data-parallax="0.08"
-            className="h-[110%] w-full object-cover opacity-50 blur-[2px]"
+            className="h-full w-full object-cover object-[50%_40%] md:opacity-45 md:blur-[2px]"
           />
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_70%_at_25%_70%,var(--color-bg)_30%,rgb(11_17_21/0.6)_70%,rgb(11_17_21/0.3))]" />
-          <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-bg to-transparent" />
+          <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgb(7_22_26/0.35),rgb(7_22_26/0.15)_35%,var(--zelda-bg)_96%)] md:bg-[radial-gradient(ellipse_65%_80%_at_25%_75%,var(--zelda-bg)_35%,rgb(7_22_26/0.55)_75%,rgb(7_22_26/0.25))]" />
         </div>
 
-        <ZeldaLayers />
-        {/* Handy: Text liegt über den Figuren, darum unten abdunkeln */}
-        <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-[70%] bg-gradient-to-t from-bg via-bg/80 to-transparent md:hidden" />
+        {/* Desktop: Zelda und Navi rechts, wie gehabt */}
+        <div aria-hidden className="hidden md:block">
+          <ZeldaLayers />
+        </div>
 
-        <div className="wrap relative mt-auto pb-14 pt-32 md:pb-20">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/images/zelda/zelda-de-logo.png" alt="" aria-hidden width={600} height={556} className="mb-6 h-20 w-auto bg-transparent md:h-24" data-rise />
-          <p className="kicker text-aqua" data-rise>
-            Discord · seit 2022
-            {stats[0] && <span className="nums"> · {formatStat(stats[0].value)} {stats[0].label}</span>}
-          </p>
-          <h1
-            className="mega mt-5 max-w-[14ch] !text-[clamp(2.9rem,1.1rem+6.4vw,7.75rem)] !leading-[0.9]"
-            data-split="load"
-          >
+        <div className="wrap relative pb-14 pt-[calc(40svh-7rem)] text-center md:w-full md:pb-20 md:pt-40 md:text-left">
+          <SheikahRing className="mx-auto w-36 md:mx-0 md:w-32" />
+
+          <h1 className="mx-auto mt-6 max-w-[13ch] font-[family-name:var(--font-display)] text-[clamp(2.75rem,1.6rem+5.2vw,6.5rem)] font-bold leading-[0.92] tracking-[-0.045em] md:mx-0">
             Zelda Discord Community DE
           </h1>
-          <div className="mt-8 flex flex-col gap-6 md:flex-row md:items-end md:justify-between" data-rise style={{ ["--i" as string]: 2 }}>
-            <p className="lead max-w-[40ch] text-ink/90">
-              Der deutsche Zelda Discord und die grösste deutschsprachige Zelda-Community. Tauche ein in die Welt
-              von Hyrule und diskutiere über Theorien, Spiele, Speedruns und Nostalgie.
-            </p>
-            <div className="flex flex-wrap gap-3">
-              {ZELDA_DISCORD_INVITE && (
-                <a href={ZELDA_DISCORD_INVITE} target="_blank" rel="noopener noreferrer" className="btn">
-                  Discord beitreten <span aria-hidden>↗</span>
-                </a>
-              )}
-              <Link href="/zelda-de/regelwerk" className={ZELDA_DISCORD_INVITE ? "btn-quiet" : "btn"}>Regelwerk</Link>
-            </div>
+
+          <p className="mx-auto mt-5 max-w-[30ch] text-[1.1875rem] leading-[1.45] text-ink/85 md:mx-0 md:max-w-[40ch] md:text-[1.375rem]">
+            Die grösste deutsche Zelda-Community. Theorien, Spiele, Speedruns und Nostalgie, mit Fans aus Deutschland, Österreich und der Schweiz.
+          </p>
+
+          {(members || online) && (
+            <ul className="mt-7 flex flex-wrap justify-center gap-x-6 gap-y-2 text-[1.0625rem] md:justify-start" aria-label="Live auf Discord">
+              {online ? (
+                <li className="flex items-center gap-2">
+                  <span aria-hidden className="relative flex h-2.5 w-2.5">
+                    <span className="status-ping absolute inset-0 rounded-full bg-[#3ddc84]" />
+                    <span className="relative h-2.5 w-2.5 rounded-full bg-[#3ddc84]" />
+                  </span>
+                  <span><span className="nums font-semibold">{fmt.format(online)}</span> gerade online</span>
+                </li>
+              ) : null}
+              {members ? (
+                <li className="flex items-center gap-2">
+                  <span aria-hidden className="h-2.5 w-2.5 rounded-full bg-ink/40" />
+                  <span><span className="nums font-semibold">{fmt.format(members)}</span> Mitglieder</span>
+                </li>
+              ) : null}
+            </ul>
+          )}
+
+          <div className="mt-8 flex flex-col items-stretch gap-3 sm:flex-row sm:justify-center md:justify-start">
+            <JoinButton id="join-top" />
+            <Link href="/zelda-de/regelwerk" className="inline-flex h-[3.75rem] items-center justify-center rounded-[14px] px-7 text-[1.0625rem] font-medium text-ink/85 transition-colors hover:text-ink active:opacity-70">
+              Regelwerk lesen
+            </Link>
           </div>
+          <p className="mt-3 text-[0.9375rem] text-ink/60">Kostenlos. Du brauchst nur einen Discord-Account.</p>
         </div>
       </header>
 
-      <section aria-labelledby="themen" className="wrap pb-[var(--section)]">
-        <h2 id="themen" className="sr-only">Worüber wir reden</h2>
-        <ul className="grid border-y border-line sm:grid-cols-2 lg:grid-cols-4">
+      {/* ── So kommst du rein ──────────────────────────────── */}
+      <section aria-labelledby="so-gehts" className="wrap py-16 md:py-24">
+        <h2 id="so-gehts" className="text-[clamp(2rem,1.4rem+2.4vw,3.25rem)] font-bold leading-[1] tracking-[-0.035em]">
+          In 30 Sekunden drin.
+        </h2>
+        <ol className="mt-8 grid gap-3 md:grid-cols-3 md:gap-5">
+          {steps.map((s, i) => (
+            <li key={s.title} className="flex gap-4 rounded-[18px] border border-aqua/15 bg-[var(--zelda-surface)] p-5 md:flex-col md:p-7">
+              <span aria-hidden className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-aqua/40 text-[1.0625rem] font-semibold text-aqua nums">
+                {i + 1}
+              </span>
+              <div>
+                <h3 className="text-[1.25rem] font-semibold leading-tight tracking-[-0.02em]">{s.title}</h3>
+                <p className="mt-1.5 text-[1.0625rem] leading-[1.5] text-ink/75">{s.text}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      {/* ── Worüber wir reden: auf dem Handy zum Wischen ───── */}
+      <section aria-labelledby="themen" className="py-4 md:py-8">
+        <div className="wrap flex items-end justify-between gap-4">
+          <h2 id="themen" className="text-[clamp(2rem,1.4rem+2.4vw,3.25rem)] font-bold leading-[1] tracking-[-0.035em]">
+            Worüber wir reden.
+          </h2>
+          <p aria-hidden className="pb-1 text-[0.9375rem] text-ink/55 md:hidden">Wischen</p>
+        </div>
+        <ul className="zelda-swipe mt-8 flex snap-x snap-mandatory gap-3 overflow-x-auto px-[var(--margin)] pb-2 md:grid md:grid-cols-4 md:gap-5 md:overflow-visible">
           {topics.map((t) => (
-            <li key={t.title} className="border-b border-line py-8 last:border-b-0 sm:px-6 sm:[&:nth-child(odd)]:border-r sm:[&:nth-child(odd)]:pl-0 lg:border-b-0 lg:border-r lg:first:pl-0 lg:last:border-r-0 lg:last:pr-0">
-              <h3 className="text-[clamp(1.5rem,1rem+1vw,2rem)] font-[620] tracking-[-0.03em]">{t.title}</h3>
-              <p className="mt-3 text-ink/75">{t.text}</p>
+            <li
+              key={t.title}
+              className="w-[78%] shrink-0 snap-start rounded-[18px] bg-[var(--zelda-surface)] p-6 ring-1 ring-aqua/15 md:w-auto md:p-7"
+            >
+              <h3 className="text-[1.75rem] font-bold tracking-[-0.03em] text-aqua">{t.title}</h3>
+              <p className="mt-3 text-[1.0625rem] leading-[1.5] text-ink/80">{t.text}</p>
             </li>
           ))}
         </ul>
       </section>
 
-      <section aria-labelledby="spiele" className="wrap grid gap-6 pb-[var(--section)] md:grid-cols-12">
-        <h2 id="spiele" className="head md:col-span-4">Alle Zelda-Spiele.</h2>
-        <ul className="flex flex-wrap gap-2 md:col-span-8">
-          {games.map((g) => (
-            <li key={g} className="rounded-full border border-line px-3.5 py-1.5 text-[0.9375rem] text-ink/85">{g}</li>
+      {/* ── Alle Spiele (auch für die Suche wichtig) ───────── */}
+      <section aria-labelledby="spiele" className="wrap py-16 md:py-24">
+        <h2 id="spiele" className="text-[clamp(2rem,1.4rem+2.4vw,3.25rem)] font-bold leading-[1] tracking-[-0.035em]">
+          Jedes Zelda-Spiel.
+        </h2>
+        <p className="mt-3 max-w-[40ch] text-[1.0625rem] leading-[1.5] text-ink/75">
+          Egal ob du 1986 angefangen hast oder mit Breath of the Wild: hier findest du Leute, die dasselbe spielen.
+        </p>
+        <ul className="mt-7 flex flex-wrap gap-2">
+          {games.map((g, i) => (
+            <li
+              key={g}
+              className={`rounded-full px-4 py-2 text-[1rem] ${
+                i >= games.length - 3 ? "bg-aqua/12 text-aqua ring-1 ring-aqua/35" : "text-ink/85 ring-1 ring-ink/15"
+              }`}
+            >
+              {g}
+            </li>
           ))}
         </ul>
       </section>
 
-      <section aria-labelledby="faq-title" className="wrap grid gap-10 pb-[var(--section)] md:grid-cols-12">
+      {/* ── Fragen ─────────────────────────────────────────── */}
+      <section aria-labelledby="faq-title" className="wrap pb-16 md:grid md:grid-cols-12 md:gap-10 md:pb-24">
         <div className="md:col-span-4">
-          <h2 id="faq-title" className="head">Fragen und Antworten.</h2>
-          <p className="mt-4 text-ink/80">
-            Alles Wichtige zum Discord-Server. Für die Details gibt es das{" "}
-            <Link href="/zelda-de/regelwerk" className="link-under">Regelwerk</Link>.
+          <h2 id="faq-title" className="text-[clamp(2rem,1.4rem+2.4vw,3.25rem)] font-bold leading-[1] tracking-[-0.035em]">
+            Fragen.
+          </h2>
+          <p className="mt-3 text-[1.0625rem] text-ink/75">
+            Die Details stehen im <Link href="/zelda-de/regelwerk" className="link-under">Regelwerk</Link>.
           </p>
         </div>
-        <dl className="border-b border-line md:col-span-7 md:col-start-6">
+        <div className="mt-7 border-b border-aqua/15 md:col-span-7 md:col-start-6 md:mt-0">
           {faq.map((f) => (
-            <div key={f.q} className="border-t border-line py-5">
-              <dt className="font-medium">{f.q}</dt>
-              <dd className="mt-2 text-ink/75">{f.a}</dd>
-            </div>
+            <details key={f.q} className="group border-t border-aqua/15">
+              <summary className="flex min-h-[4rem] cursor-pointer list-none items-center justify-between gap-5 py-4 text-[1.125rem] font-semibold leading-snug tracking-[-0.015em] transition-colors hover:text-aqua focus-visible:text-aqua [&::-webkit-details-marker]:hidden">
+                {f.q}
+                <span aria-hidden className="grid h-8 w-8 shrink-0 place-items-center rounded-full border border-ink/20 text-[1.25rem] font-normal transition-transform duration-300 ease-[var(--ease-out)] group-open:rotate-45">+</span>
+              </summary>
+              <p className="max-w-[56ch] pb-5 text-[1.0625rem] leading-[1.55] text-ink/80">{f.a}</p>
+            </details>
           ))}
-        </dl>
+        </div>
       </section>
 
-      <div aria-hidden className="pointer-events-none relative h-[min(60vw,22rem)] overflow-hidden">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/images/zelda/link.webp" alt="" loading="lazy" width={806} height={900} data-parallax="0.05" className="bg-transparent absolute bottom-[-30%] right-[6%] h-[120%] w-auto max-w-none opacity-90 md:right-[14%]" />
-        <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-bg to-transparent" />
-      </div>
+      {/* ── Schluss: zweiter grosser Button ────────────────── */}
+      <section aria-labelledby="schluss" className="relative overflow-hidden">
+        <div aria-hidden className="pointer-events-none absolute inset-0">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/images/zelda/link.webp" alt="" loading="lazy" width={894} height={1000} className="absolute -right-[18%] bottom-[-8%] h-[105%] w-auto max-w-none bg-transparent opacity-35 md:right-[8%] md:opacity-80" />
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,var(--zelda-bg)_35%,transparent)] md:bg-[linear-gradient(to_right,var(--zelda-bg)_40%,transparent_80%)]" />
+        </div>
+        <div className="wrap relative py-20 md:py-32">
+          <h2 id="schluss" className="max-w-[12ch] text-[clamp(2.5rem,1.6rem+4vw,5rem)] font-bold leading-[0.95] tracking-[-0.04em]">
+            Hyrule wartet auf dich.
+          </h2>
+          {onlineText && <p className="mt-4 text-[1.125rem] text-ink/80">{onlineText}. Sag einfach Hallo.</p>}
+          <div className="mt-8 max-w-sm sm:max-w-none">
+            <JoinButton id="join-bottom" />
+          </div>
+        </div>
+      </section>
 
-      <p className="wrap small pb-12 text-muted">
-        Fan-Community. The Legend of Zelda ist eine Marke von Nintendo. Betreut von{" "}
+      <p className="wrap pb-28 pt-6 text-[0.875rem] text-ink/50 md:pb-12">
+        Fan-Community, nicht mit Nintendo verbunden. The Legend of Zelda ist eine Marke von Nintendo. Betreut von{" "}
         <Link href="/" className="link-under">Aracle</Link>.
       </p>
+
+      {ZELDA_DISCORD_INVITE && <StickyJoin href={ZELDA_DISCORD_INVITE} online={onlineText} />}
     </div>
   );
 }
