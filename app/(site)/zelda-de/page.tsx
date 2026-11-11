@@ -3,7 +3,9 @@ import SheikahRing from "@/components/zelda/SheikahRing";
 import StickyJoin from "@/components/zelda/StickyJoin";
 import ZeldaLayers from "@/components/zelda/ZeldaLayers";
 import { getProjectStats } from "@/lib/stats";
-import { ZELDA_DISCORD_INVITE } from "@/data/zelda";
+import { ZELDA_DISCORD_INVITE, ZELDA_GUILD_ID } from "@/data/zelda";
+import { LiveNow, LiveOnline, LiveOnlineText } from "@/components/zelda/Live";
+import { getLiveSummary } from "@/lib/discordWidget";
 import { SITE_URL } from "@/lib/site";
 
 // Titel und Überschrift fangen mit dem an, was Leute suchen: "Zelda Discord".
@@ -110,7 +112,7 @@ const faq = [
 // Zelda DE als eigene Landing Page mit einem Ziel: möglichst viele Leute
 // möglichst einfach in den Discord bringen. Auf dem Handy gebaut wie eine App:
 // grosse Schrift, ein grosser Button, unten eine mitlaufende Beitreten-Leiste.
-export const revalidate = 3600;
+export const revalidate = 300;
 
 const fmt = new Intl.NumberFormat("de-CH");
 
@@ -139,9 +141,12 @@ function DiscordGlyph() {
 }
 
 export default async function ZeldaDePage() {
-  const stats = await getProjectStats("zelda-de-server");
+  const [stats, widget] = await Promise.all([getProjectStats("zelda-de-server"), getLiveSummary(ZELDA_GUILD_ID)]);
   const members = stats.find((s) => s.label === "Mitglieder")?.value;
-  const online = stats.find((s) => s.label === "gerade online")?.value;
+  // Online lieber aus dem Widget (genauer), sonst aus der Einladung
+  const inviteOnline = stats.find((s) => s.label === "gerade online")?.value;
+  const live = widget ?? (inviteOnline ? { online: inviteOnline, avatars: [], playing: [], voice: [] } : null);
+  const online = live?.online;
   const onlineText = online ? `${fmt.format(online)} gerade online` : undefined;
 
   const jsonLd = {
@@ -209,25 +214,7 @@ export default async function ZeldaDePage() {
             Die grösste deutsche Zelda-Community. Theorien, Spiele, Speedruns und Nostalgie, mit Fans aus Deutschland, Österreich und der Schweiz.
           </p>
 
-          {(members || online) && (
-            <ul className="mt-7 flex flex-wrap justify-center gap-x-6 gap-y-2 text-[1.0625rem] md:justify-start" aria-label="Live auf Discord">
-              {online ? (
-                <li className="flex items-center gap-2">
-                  <span aria-hidden className="relative flex h-2.5 w-2.5">
-                    <span className="status-ping absolute inset-0 rounded-full bg-[#3ddc84]" />
-                    <span className="relative h-2.5 w-2.5 rounded-full bg-[#3ddc84]" />
-                  </span>
-                  <span><span className="nums font-semibold">{fmt.format(online)}</span> gerade online</span>
-                </li>
-              ) : null}
-              {members ? (
-                <li className="flex items-center gap-2">
-                  <span aria-hidden className="h-2.5 w-2.5 rounded-full bg-ink/40" />
-                  <span><span className="nums font-semibold">{fmt.format(members)}</span> Mitglieder</span>
-                </li>
-              ) : null}
-            </ul>
-          )}
+          <LiveOnline guildId={ZELDA_GUILD_ID} initial={live} members={members} />
 
           <div className="mt-8 flex flex-col items-stretch gap-3 sm:flex-row sm:justify-center md:justify-start">
             <JoinButton id="join-top" />
@@ -258,6 +245,9 @@ export default async function ZeldaDePage() {
           ))}
         </ol>
       </section>
+
+      {/* ── Live aus dem Discord: Spiele und Sprachkanäle ─── */}
+      <LiveNow guildId={ZELDA_GUILD_ID} initial={live} />
 
       {/* ── Worüber wir reden: auf dem Handy zum Wischen ───── */}
       <section aria-labelledby="themen" className="py-4 md:py-8">
@@ -348,7 +338,7 @@ export default async function ZeldaDePage() {
         <Link href="/" className="link-under">Aracle</Link>.
       </p>
 
-      {ZELDA_DISCORD_INVITE && <StickyJoin href={ZELDA_DISCORD_INVITE} online={onlineText} />}
+      {ZELDA_DISCORD_INVITE && <StickyJoin href={ZELDA_DISCORD_INVITE} online={<LiveOnlineText guildId={ZELDA_GUILD_ID} initial={live} />} />}
     </div>
   );
 }

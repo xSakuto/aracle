@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 
 // Handy: sobald der grosse Button oben nicht sichtbar ist, steht unten eine
 // Leiste mit "Beitreten". Am Ende der Seite, wo der zweite grosse Button steht,
 // verschwindet sie wieder, damit nichts doppelt ist.
-export default function StickyJoin({ href, online }: { href: string; online?: string }) {
+export default function StickyJoin({ href, online }: { href: string; online?: ReactNode }) {
   const [show, setShow] = useState(false);
 
   useEffect(() => {
@@ -38,12 +38,7 @@ export default function StickyJoin({ href, online }: { href: string; online?: st
         <img src="/images/zelda/zelda-de-icon.webp" alt="" width={40} height={40} className="h-10 w-10 shrink-0 rounded-[10px]" />
         <p className="min-w-0 flex-1 leading-tight">
           <span className="block truncate text-[0.9375rem] font-semibold">Zelda Community DE</span>
-          {online && (
-            <span className="flex items-center gap-1.5 text-[0.8125rem] text-ink/70">
-              <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-[#3ddc84]" />
-              {online}
-            </span>
-          )}
+          {online}
         </p>
         <a
           href={href}
