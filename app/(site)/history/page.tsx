@@ -25,9 +25,8 @@ export default function HistoryPage() {
             </h1>
           </div>
           <p className="text-ink/80 md:col-span-4" data-rise style={{ ["--i" as string]: 2 }}>
-            Vom YouTube-Kanal über Minecraft-Server und Communities bis zum
-            Studio für Creative Production, Web und Infrastruktur. Folge dem
-            Weg, Station für Station.
+            Angefangen hat alles 2017 mit einem YouTube-Kanal, und hier kannst
+            du Station für Station nachverfolgen, wie daraus ein Studio wurde.
           </p>
         </div>
       </header>

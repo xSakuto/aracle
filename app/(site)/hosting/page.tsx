@@ -10,8 +10,8 @@ export const metadata = {
 
 const offers = [
   { name: "Game-Server mieten", text: "Wir vermieten Game-Server, vor allem Minecraft. Wie wir sie für AracleSMP und unsere Communities betreiben, kannst du auch für dein Projekt bekommen." },
-  { name: "Custom Hosting", text: "Individuelle Wünsche setzen wir um: ein eigener Server, eine spezielle Konfiguration, eine Lösung, die zu deinem Projekt passt." },
-  { name: "Webhosting", text: "Websites und Web-Apps, schnell und zuverlässig. Wir richten ein, du kümmerst dich um den Inhalt." },
+  { name: "Custom Hosting", text: "Du brauchst einen eigenen Server oder eine spezielle Konfiguration? Sag uns, was dein Projekt braucht, und wir setzen es um." },
+  { name: "Webhosting", text: "Wir richten deine Website oder Web-App ein, und du kümmerst dich nur noch um den Inhalt." },
 ];
 
 const showcase = [

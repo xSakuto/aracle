@@ -130,7 +130,7 @@ export default function SwizzlyPage() {
           </h1>
           <div className="mt-8 flex flex-col gap-6 border-t border-ink/15 pt-6 md:flex-row md:items-end md:justify-between" data-rise style={{ ["--i" as string]: 2 }}>
             <p className="lead max-w-[34ch] text-ink/90">
-              Motorrad, Entertainment und alles rund um die RS. Kurze Videos, ehrlich und ohne Filter.
+              Kurze Videos über Motorrad, Entertainment und alles rund um die RS, ehrlich und ohne Filter.
             </p>
             <a href="https://www.youtube.com/@swizzly690" target="_blank" rel="noopener noreferrer" className="btn self-start md:self-auto">
               Auf YouTube ansehen <span aria-hidden>↗</span>

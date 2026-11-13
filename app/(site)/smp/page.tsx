@@ -39,7 +39,7 @@ const faq: { q: string; a: string }[] = [
 
 const facts: { title: string; text: string; href?: string }[] = [
   { title: "Kein Pay-to-Win", text: "Ohne regelmässige Welt-Resets und ohne unnötigen Plugin-Ballast. Was du baust, bleibt." },
-  { title: "Shop und AraCoins", text: "Gründe einen Shop, verdiene AraCoins und verwirkliche Projekte mit anderen Spielern." },
+  { title: "Shop und AraCoins", text: "Gründe einen Shop, verdien dir AraCoins oder bau mit anderen an grossen Projekten." },
   { title: "Proximity Voice", text: "Optionaler Sprachchat: Wer näher steht, hört dich besser." },
 ];
 
@@ -100,8 +100,8 @@ export default function SmpPage() {
           </p>
           <p className="lead mt-4 max-w-[46ch] text-ink/85" data-rise style={{ ["--i" as string]: 2 }}>
             AracleSMP ist ein langfristiger Vanilla+ Minecraft-Survival-Server, auf dem eine kleine Community
-            gemeinsam eine grosse Welt erschafft. Baue deine eigene Basis, gründe einen Shop, verdiene AraCoins
-            und verwirkliche Projekte mit anderen Spielern.
+            zusammen an einer grossen Welt baut, und ob du dort eine Basis hochziehst, einen Shop gründest
+            oder AraCoins sammelst, entscheidest du selbst.
           </p>
           <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center" data-rise style={{ ["--i" as string]: 3 }}>
             <div className="mc-slot flex items-center gap-4 px-4 py-2">

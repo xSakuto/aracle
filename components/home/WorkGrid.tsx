@@ -11,7 +11,7 @@ export default function WorkGrid({ items, total }: { items: Project[]; total: nu
           More work.
         </h2>
         <p className="max-w-[24rem] text-ink/80">
-          Kanäle, Communities und Experimente. Vieles davon ist der Grund, warum es Aracle heute gibt.
+          Kanäle, Communities und Experimente, ohne die es Aracle heute gar nicht geben würde.
         </p>
       </div>
 
@@ -29,7 +29,7 @@ export default function WorkGrid({ items, total }: { items: Project[]; total: nu
             <span className="font-[family-name:var(--font-display)] text-[clamp(1.5rem,1rem+1.4vw,2.25rem)] font-bold leading-[1] tracking-[-0.03em] transition-colors group-hover:text-aqua">
               All {total} projects
             </span>
-            <span className="small mt-2 text-muted">Von Streetwear bis Server</span>
+            <span className="small mt-2 text-muted">Alles, was bei uns läuft</span>
           </Link>
         </li>
       </ul>

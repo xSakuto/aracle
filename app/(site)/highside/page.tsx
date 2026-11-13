@@ -116,7 +116,7 @@ export default function HighsidePage() {
       <section aria-label="Weiter" className="border-t border-white/15">
         <div className="wrap hs-sans flex flex-col gap-8 py-16 md:flex-row md:items-center md:justify-between">
           <p className="max-w-[36ch] text-white/80">
-            Bis zum ersten Drop läuft die Marke über Content. Fahrten, Strecke und Strasse auf Swizzly.
+            Bis zum ersten Drop läuft die Marke über Content, also Fahrten auf der Strecke und auf der Strasse bei Swizzly.
           </p>
           <div className="flex flex-wrap gap-3">
             <a href="https://highside.ch" target="_blank" rel="noopener noreferrer" className="btn rounded-[2px] font-semibold uppercase tracking-[0.04em]">

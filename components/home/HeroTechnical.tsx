@@ -54,9 +54,9 @@ export default function HeroTechnical() {
           </div>
           <div className="md:col-span-4 md:col-start-9 md:self-end" data-rise style={{ ["--i" as string]: 3 }}>
             <p className="text-ink/85">
-              Aracle ist ein Studio aus dem Glarnerland für Creative Production,
-              Digital Experiences und Cloud-Infrastruktur. Wir gestalten,
-              entwickeln und betreiben, mit Präzision bis ins Detail.
+              Aracle ist ein Studio aus dem Glarnerland für Design und Technik,
+              und alles, was wir bauen, läuft am Ende auf unserer eigenen
+              Hardware.
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               <Link href="/projekte" className="btn">Projekte ansehen</Link>

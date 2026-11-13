@@ -18,8 +18,8 @@ export default async function ApplyPage({ searchParams }: { searchParams: Promis
           <h1 className="mega mt-5" data-split="load">Join Aracle.</h1>
         </div>
         <p className="text-ink/85 md:col-span-4" data-rise style={{ ["--i" as string]: 2 }}>
-          Aracle steht für Zusammenarbeit, Leidenschaft und Kreativität. Egal ob du designst,
-          programmierst, baust oder einfach mithelfen willst, hier kannst du deine Ideen sichtbar machen.
+          Egal ob du designst, programmierst oder einfach mithelfen willst, bei Aracle arbeitest du
+          an Projekten, die am Ende wirklich online gehen.
         </p>
       </div>
 
@@ -27,8 +27,8 @@ export default async function ApplyPage({ searchParams }: { searchParams: Promis
         <div className="md:col-span-4">
           <h2 className="head">Wie kannst du mitmachen?</h2>
           <p className="mt-4 text-ink/80">
-            Wir suchen motivierte Leute mit Skills in Programmierung, Grafik, Webdesign, Moderation
-            oder Community-Management. Such dir einen Bereich aus und bewirb dich direkt.
+            Wir suchen Leute für Programmierung, Grafik, Webdesign, Moderation oder Community-Management,
+            also such dir einen Bereich aus und bewirb dich direkt.
           </p>
           <ul className="mt-8 border-b border-line">
             {APPLY_ROLES.map((r) => (

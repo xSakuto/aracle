@@ -12,9 +12,9 @@ export default function Manifesto() {
         data-scrub-words
         className="max-w-[28ch] text-[clamp(1.75rem,1rem+2.4vw,3.5rem)] font-[540] leading-[1.08] tracking-[-0.035em] md:col-span-8"
       >
-        Wir sind ein kleines Studio zwischen Glärnisch und Linth. Wir filmen,
-        gestalten, entwickeln und betreiben unsere eigenen Server. Ohne leere
-        Versprechen, dafür mit Sorgfalt in jedem Detail.
+        Wir sind ein kleines Studio zwischen Glärnisch und Linth, wir filmen,
+        gestalten und programmieren, und die Server dafür betreiben wir gleich
+        selbst.
       </p>
     </section>
   );

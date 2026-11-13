@@ -120,7 +120,7 @@ export const projects: Project[] = [
     shortDescription:
       "Schweizer Bikerstreetwear rund um Motorrad-Kultur und urbanen Street-Style.",
     longDescription:
-      "Highside ist eine eigenständige Schweizer Streetwear-Marke aus der Motorrad-Szene. Sie verbindet die Kultur auf der Rennstrecke mit urbanem Street-Style. Aracle verantwortet die Marke vollständig: Idee, Branding, Content und Shop.",
+      "Highside ist eine eigenständige Schweizer Streetwear-Marke aus der Motorrad-Szene, gemacht für Leute, die auf der Rennstrecke genauso zuhause sind wie in der Stadt. Aracle verantwortet die Marke vollständig: Idee, Branding, Content und Shop.",
     scope: ["Brand Identity", "Content Production", "Social Media", "Webshop"],
     goal: "Eine eigenständige Schweizer Streetwear-Marke aufbauen, die die Motorrad-Kultur von der Rennstrecke in den Alltag trägt.",
     includes: [
@@ -204,7 +204,7 @@ export const projects: Project[] = [
     shortDescription:
       "Motorrad, Entertainment und RS-Content auf YouTube, TikTok und Instagram.",
     longDescription:
-      "Swizzly ist der Content-Kanal rund ums Motorrad auf TikTok und Instagram. Er verbindet Community und Marke durch authentischen Content und dient gleichzeitig als Werbefläche für Highside.",
+      "Swizzly ist der Content-Kanal rund ums Motorrad auf TikTok und Instagram. Gleichzeitig ist er die Bühne für Highside.",
     scope: ["Kurzvideo", "Schnitt", "Social Media"],
     goal: "Die Motorrad-Community auf TikTok und Instagram erreichen und gleichzeitig der Marke Highside eine Bühne geben.",
     includes: [
@@ -275,7 +275,7 @@ export const projects: Project[] = [
     shortDescription:
       "Modifikationen für GTA V, neu erweitert um Add-ons für Flugsimulatoren.",
     longDescription:
-      "RexusMods ist wieder aktiv. Angefangen mit 3D-Modelling für GTA V, von MLO-Maps bis zu Fahrzeuglackierungen. Jetzt kommen Add-ons für Flugsimulatoren dazu. Eine Zusammenarbeit von Joel Nef und Tim Mockweiss.",
+      "RexusMods ist wieder aktiv. Angefangen hat es mit 3D-Modelling für GTA V, vor allem MLO-Maps und Fahrzeuglackierungen. Jetzt kommen Add-ons für Flugsimulatoren dazu. Eine Zusammenarbeit von Joel Nef und Tim Mockweiss.",
     scope: ["3D-Modelling", "Texturen", "Flugsimulator-Add-ons"],
     goal: "Mods für GTA V weiterführen und das Projekt um Add-ons für Flugsimulatoren erweitern.",
     includes: [
@@ -307,9 +307,9 @@ export const projects: Project[] = [
     owner: "Joel Nef",
     coverImage: "/images/sakuto/sakuto-hero-purple.png",
     shortDescription:
-      "Nintendo-Content, Videoessays und Streams. Herzstück der Creator-Sparte.",
+      "Nintendo-Content, Videoessays und Streams auf dem Kanal, mit dem alles angefangen hat.",
     longDescription:
-      "Sakuto ist der Kanal, aus dem Aracle hervorgegangen ist. Nintendo-Content, Videoessays und Streams, mit Fokus auf Community-Aufbau und sorgfältig produzierte Unterhaltung.",
+      "Sakuto ist der Kanal, aus dem Aracle hervorgegangen ist, und dreht sich bis heute um Nintendo, mit Videoessays, Shorts und Streams für die Community.",
     scope: ["Videoessays", "Streaming", "Schnitt"],
     goal: "Mit sorgfältig produzierten Videos eine Community rund um Nintendo aufbauen.",
     includes: [
@@ -342,7 +342,7 @@ export const projects: Project[] = [
     shortDescription:
       "Grösste deutsche Zelda-Community auf Discord: Theorien, Spiele, Speedruns und Nostalgie.",
     longDescription:
-      "Die grösste deutschsprachige The-Legend-of-Zelda-Community auf Discord. Im Fokus stehen Theorien, Speedruns und Nostalgie. Aracle übernimmt die technische Pflege und das Community-Management.",
+      "Die grösste deutschsprachige The-Legend-of-Zelda-Community auf Discord. Geredet wird über Theorien, Speedruns und Nostalgie, und Aracle kümmert sich um Technik und Moderation.",
     scope: ["Community-Management", "Discord-Setup", "Moderation"],
     goal: "Deutschsprachigen Fans von The Legend of Zelda einen gemeinsamen Ort geben.",
     includes: [

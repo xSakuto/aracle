@@ -12,7 +12,7 @@ import { SITE_URL } from "@/lib/site";
 // Kein Mittelpunkt im Titel, sonst schreibt Google ihn gern selbst um.
 const TITLE = "Zelda Discord Community DE: Grösste deutsche Zelda-Community";
 const DESCRIPTION =
-  "Der deutsche Zelda Discord: Die grösste deutschsprachige The-Legend-of-Zelda-Community für Deutschland, Österreich und die Schweiz. Theorien, Spiele, Speedruns und Nostalgie, von Ocarina of Time bis Tears of the Kingdom. Kostenlos beitreten.";
+  "Der deutsche Zelda Discord: Die grösste deutschsprachige The-Legend-of-Zelda-Community für Deutschland, Österreich und die Schweiz. Theorien, Spiele, Speedruns und Nostalgie, egal ob Ocarina of Time oder Tears of the Kingdom. Kostenlos beitreten.";
 
 const thousands = new Intl.NumberFormat("de-CH");
 
@@ -21,7 +21,7 @@ export async function generateMetadata() {
   const stats = await getProjectStats("zelda-de-server");
   const members = stats.find((s) => s.label === "Mitglieder");
   const description = members
-    ? `Der deutsche Zelda Discord mit über ${thousands.format(Math.floor(members.value / 50) * 50)} Mitgliedern: die grösste deutschsprachige The-Legend-of-Zelda-Community. Theorien, Spiele, Speedruns und Nostalgie, von Ocarina of Time bis Tears of the Kingdom. Kostenlos beitreten.`
+    ? `Der deutsche Zelda Discord mit über ${thousands.format(Math.floor(members.value / 50) * 50)} Mitgliedern: die grösste deutschsprachige The-Legend-of-Zelda-Community. Theorien, Spiele, Speedruns und Nostalgie, egal ob Ocarina of Time oder Tears of the Kingdom. Kostenlos beitreten.`
     : DESCRIPTION;
   return { ...metadata, description, openGraph: { ...metadata.openGraph, description } };
 }
@@ -57,7 +57,7 @@ const metadata = {
 
 const topics = [
   { title: "Theorien", text: "Timeline, Lore und die grossen Fragen um Hyrule, Zelda und Ganon." },
-  { title: "Spiele", text: "Vom NES-Original über Ocarina of Time bis Tears of the Kingdom und Echoes of Wisdom." },
+  { title: "Spiele", text: "Jeder Teil hat hier seine Fans, egal ob das NES-Original oder Echoes of Wisdom." },
   { title: "Speedruns", text: "Routen, Tricks und Bestzeiten, für alle, die Hyrule schnell durchqueren wollen." },
   { title: "Nostalgie", text: "Die ersten Dungeons, die alten Konsolen und die Musik, die man nie vergisst." },
 ];
