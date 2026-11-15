@@ -33,6 +33,16 @@ export interface Overview {
   top_voice: (Person & { seconds: number })[];
 }
 
+/** Rangliste über alle Server zusammen (gemeinsame Datenbank der Bots). */
+export interface GlobalBoard {
+  voice_total_seconds: number;
+  top_xp: (Person & { xp: number; level: number })[];
+  top_voice: (Person & { seconds: number })[];
+}
+
+/** Wert von ?g= für die Ansicht über alle Server. */
+export const GLOBAL_SCOPE = "global";
+
 export interface ModAction {
   action: string;
   target_name: string | null;
