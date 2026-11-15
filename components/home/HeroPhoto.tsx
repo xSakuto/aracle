@@ -94,10 +94,10 @@ export default function HeroPhoto() {
           <div className="mt-auto grid gap-8 md:grid-cols-12 md:items-end">
             <div className="md:col-span-8">
               <p className="kicker text-aqua" data-rise style={{ ["--i" as string]: 1 }}>
-                Create. Connect. Inspire.
-              </p>
-              <h1 id="hero-title" className="display mt-5" data-split="load">
                 Creative thinking. Technical execution.
+              </p>
+              <h1 id="hero-title" className="mega mt-4" data-split="load">
+                Create. Connect. Inspire.
               </h1>
             </div>
             <div className="md:col-span-4" data-rise style={{ ["--i" as string]: 3 }}>

@@ -32,9 +32,10 @@ export async function middleware(request: NextRequest) {
     },
   });
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  // getClaims() erneuert eine abgelaufene Session und prüft das Token wenn möglich lokal,
+  // ohne zusätzliche Anfrage an Supabase. Die verbindliche Prüfung macht requireMember().
+  const { data } = await supabase.auth.getClaims();
+  const user = data?.claims ?? null;
 
   if (!user && request.nextUrl.pathname.startsWith("/dashboard")) {
     const url = new URL("/login", request.url);

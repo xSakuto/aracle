@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { redirect } from "next/navigation";
 import { cleanSocials, type Social } from "@/data/socials";
 import { PERMISSIONS, PERMISSION_LABELS, type Permission } from "@/lib/permissions";
@@ -96,19 +97,40 @@ export function toProfile(
   };
 }
 
+type Membership = { profile_id: string; project_slug: string; role: string };
+
 // Eingeloggte Person samt ihrem Teamprofil. Ohne Login geht es zur Anmeldung.
-export async function requireMember() {
+// cache(): Layout, Seite und Unterkomponenten teilen sich pro Anfrage ein Ergebnis,
+// statt Login und Profil jedes Mal neu bei Supabase abzufragen.
+export const requireMember = cache(async () => {
   const supabase = await createSessionClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) redirect("/login");
 
-  const { data: row } = await withProfileColumns((cols) =>
-    supabase.from("profiles").select(cols).eq("user_id", user.id).maybeSingle(),
+  // Profil und Projekt-Zuordnungen in einer einzigen Abfrage.
+  const joined = await withProfileColumns((cols) =>
+    supabase
+      .from("profiles")
+      .select(`${cols}, project_members(profile_id, project_slug, role)`)
+      .eq("user_id", user.id)
+      .maybeSingle(),
   );
 
   let me: FullProfile | null = null;
+  if (!joined.error) {
+    if (joined.data) {
+      const { project_members, ...row } = joined.data as unknown as Row & { project_members: Membership[] | null };
+      me = toProfile(row as Row, project_members ?? []);
+    }
+    return { supabase, user, me };
+  }
+
+  // Rückfall auf zwei Abfragen, falls die Datenbank die Verknüpfung nicht auflösen kann.
+  const { data: row } = await withProfileColumns((cols) =>
+    supabase.from("profiles").select(cols).eq("user_id", user.id).maybeSingle(),
+  );
   if (row) {
     const { data: members } = await supabase
       .from("project_members")
@@ -117,7 +139,7 @@ export async function requireMember() {
     me = toProfile(row as unknown as Row, members ?? []);
   }
   return { supabase, user, me };
-}
+});
 
 export async function requireAdmin() {
   const ctx = await requireMember();

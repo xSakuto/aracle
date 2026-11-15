@@ -6,6 +6,7 @@ import type { FullProfile } from "@/lib/session";
 
 function refresh() {
   revalidatePath("/dashboard/anfragen");
+  revalidatePath("/dashboard");
 }
 
 async function logEvent(

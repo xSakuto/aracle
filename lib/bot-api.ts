@@ -1,7 +1,8 @@
 import { createHash, createHmac } from "node:crypto";
+import { cache } from "react";
 import { createSessionClient } from "@/lib/supabase/server";
 
-// Aufrufe an die Schnittstelle des Discord-Bots (Tunnel auf dem Heimserver).
+// Aufrufe an die Schnittstelle des Discord-Bots (site_api.py auf dem Bot-Server, erreichbar über BOT_API_URL).
 // Jede Anfrage wird mit einem Geheimnis signiert, das nur eingeloggte Admins aus der Datenbank bekommen.
 
 const BASE = process.env.BOT_API_URL ?? "https://bot.aracle.ch";
@@ -15,17 +16,18 @@ export class BotApiError extends Error {
   }
 }
 
-async function secret(): Promise<string> {
+// Pro Anfrage nur einmal aus der Datenbank holen, auch wenn mehrere Bot-Aufrufe folgen.
+const secret = cache(async (): Promise<string> => {
   if (process.env.BOT_API_SECRET) return process.env.BOT_API_SECRET; // nur für lokale Entwicklung
   const supabase = await createSessionClient();
   const { data, error } = await supabase.rpc("get_bot_api_secret");
   if (error || !data) throw new BotApiError("Der Zugang zum Bot ist nicht eingerichtet.", 500);
   return data as string;
-}
+});
 
 export async function botFetch<T>(
   path: string,
-  opts: { method?: "GET" | "POST"; body?: unknown; user: string },
+  opts: { method?: "GET" | "POST"; body?: unknown; user: string; timeoutMs?: number },
 ): Promise<T> {
   const method = opts.method ?? "GET";
   const body = opts.body === undefined ? "" : JSON.stringify(opts.body);
@@ -39,7 +41,7 @@ export async function botFetch<T>(
       method,
       body: body || undefined,
       cache: "no-store",
-      signal: AbortSignal.timeout(25_000),
+      signal: AbortSignal.timeout(opts.timeoutMs ?? 25_000),
       headers: {
         "Content-Type": "application/json",
         "X-Site-Ts": ts,

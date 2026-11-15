@@ -46,10 +46,10 @@ export default function HeroTechnical() {
         <div className="grid gap-8 pt-16 md:grid-cols-12 md:pt-24">
           <div className="md:col-span-8">
             <p className="kicker text-aqua" data-rise style={{ ["--i" as string]: 1 }}>
-              Create. Connect. Inspire.
-            </p>
-            <h1 id="hero-title" className="display mt-5" data-split="load">
               Creative thinking. Technical execution.
+            </p>
+            <h1 id="hero-title" className="mega mt-4" data-split="load">
+              Create. Connect. Inspire.
             </h1>
           </div>
           <div className="md:col-span-4 md:col-start-9 md:self-end" data-rise style={{ ["--i" as string]: 3 }}>

@@ -19,11 +19,11 @@ export function Flash({ ok, fehler }: { ok?: string; fehler?: string }) {
 export function BotDown({ message }: { message: string }) {
   return (
     <div className="dash-panel">
-      <p className="font-medium">Der Bot ist gerade nicht verfügbar</p>
+      <p className="font-medium">Keine Verbindung zum Bot</p>
       <p className="dash-help mt-1">{message}</p>
       <p className="dash-help mt-3">
-        Läuft der Bot-Server und ist der Tunnel <code>bot.aracle.ch</code> aktiv? Das alte Panel im Heimnetz
-        (10.1.1.6:5001) geht in der Zwischenzeit weiter.
+        Die Bots selbst laufen auf dem Server weiter. Hier fehlt nur die Verbindung vom Dashboard zur
+        Schnittstelle unter <code>bot.aracle.ch</code>.
       </p>
     </div>
   );
