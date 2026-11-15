@@ -6,7 +6,8 @@ import { usePathname } from "next/navigation";
 export default function DashNav({ admin }: { admin: boolean }) {
   const pathname = usePathname();
   const items = [
-    { href: "/dashboard", label: "Mein Profil", active: pathname === "/dashboard" },
+    { href: "/dashboard", label: "Übersicht", active: pathname === "/dashboard" },
+    { href: "/dashboard/profil", label: "Mein Profil", active: pathname.startsWith("/dashboard/profil") },
     ...(admin
       ? [
           { href: "/dashboard/news", label: "News", active: pathname.startsWith("/dashboard/news") },

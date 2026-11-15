@@ -90,7 +90,7 @@ export async function saveOwnProfile(_prev: SaveState, form: FormData): Promise<
   const { error, pending } = await updateProfile(supabase, me.id, fields);
   if (error) return { error: `Speichern fehlgeschlagen: ${error.message}` };
   refreshPublic();
-  revalidatePath("/dashboard");
+  revalidatePath("/dashboard", "layout");
   return pending ? { error: PENDING_DB } : { ok: true, at: Date.now() };
 }
 
@@ -176,10 +176,10 @@ export async function linkDiscord() {
   const { supabase } = await requireMember();
   const { data, error } = await supabase.auth.linkIdentity({
     provider: "discord",
-    options: { redirectTo: `${await siteUrl()}/auth/callback?weiter=%2Fdashboard` },
+    options: { redirectTo: `${await siteUrl()}/auth/callback?weiter=%2Fdashboard%2Fprofil` },
   });
   if (error || !data?.url) {
-    redirect(`/dashboard?fehler=${error && /manual linking/i.test(error.message) ? "discord-manual" : "discord-link"}`);
+    redirect(`/dashboard/profil?fehler=${error && /manual linking/i.test(error.message) ? "discord-manual" : "discord-link"}`);
   }
   redirect(data.url);
 }
@@ -191,14 +191,14 @@ export async function unlinkDiscord() {
   const discord = data?.identities.find((i) => i.provider === "discord");
   if (discord) {
     const { error } = await supabase.auth.unlinkIdentity(discord);
-    if (error) redirect("/dashboard?fehler=discord-unlink");
+    if (error) redirect("/dashboard/profil?fehler=discord-unlink");
     await supabase
       .from("profiles")
       .update({ discord_id: null, discord_username: null })
       .eq("user_id", (await supabase.auth.getUser()).data.user?.id ?? "");
   }
-  revalidatePath("/dashboard");
-  redirect("/dashboard");
+  revalidatePath("/dashboard", "layout");
+  redirect("/dashboard/profil");
 }
 
 export async function deleteMember(form: FormData) {

@@ -17,6 +17,7 @@ function refresh() {
   revalidatePath("/news");
   revalidatePath("/api/news");
   revalidatePath("/dashboard/news");
+  revalidatePath("/dashboard");
 }
 
 const TABLE_MISSING =

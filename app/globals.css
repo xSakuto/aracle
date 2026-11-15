@@ -194,7 +194,19 @@ img { background: var(--color-surface); }
   .dash-btn-quiet:hover { background: #2e3238; }
   .dash-btn-quiet:active { transform: scale(0.97); }
   .dash-panel { background: var(--color-surface); border-radius: 14px; padding: 1.25rem; }
+  a.dash-panel, .dash-tile { transition: background-color 150ms ease, transform 120ms var(--ease-out); }
+  .dash-tile:hover { background: #161f25; }
+  .dash-tile:active { transform: scale(0.985); }
+  .dash-skeleton { background: var(--color-surface); border-radius: 14px; animation: dash-pulse 1.4s ease-in-out infinite; }
+  .dash-pill {
+    display: inline-flex; align-items: center; gap: 0.375rem; height: 1.5rem; padding: 0 0.625rem;
+    border-radius: 999px; background: var(--color-raised);
+    font-size: 0.75rem; letter-spacing: 0; white-space: nowrap;
+  }
+  .dash-dot { width: 0.5rem; height: 0.5rem; border-radius: 999px; background: currentColor; flex-shrink: 0; }
 }
+@keyframes dash-pulse { 50% { opacity: 0.45; } }
+@media (prefers-reduced-motion: reduce) { .dash-skeleton { animation: none; } }
 
 /* Initialen im Platzhalter-Porträt: reine Deko, deshalb per CSS. */
 .portrait-initials::before { content: attr(data-initials); }

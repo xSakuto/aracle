@@ -12,4 +12,5 @@ export async function setInquiryStatus(form: FormData) {
   if (!id || !STATES.includes(status)) return;
   await supabase.from("inquiries").update({ status }).eq("id", id);
   revalidatePath("/dashboard/anfragen");
+  revalidatePath("/dashboard");
 }
