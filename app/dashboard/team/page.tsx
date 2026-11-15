@@ -1,8 +1,8 @@
 import Link from "next/link";
 import AddMember from "@/components/dashboard/AddMember";
 import Portrait from "@/components/Portrait";
-import { projects } from "@/data/projects";
-import { requireAdmin, toProfile, withProfileColumns, type FullProfile } from "@/lib/session";
+import { getProjectRows, mergeProjects } from "@/lib/projects";
+import { PERMISSION_LABELS, requireAdmin, toProfile, withProfileColumns, type FullProfile } from "@/lib/session";
 
 export default async function TeamAdminPage({
   searchParams,
@@ -10,13 +10,20 @@ export default async function TeamAdminPage({
   searchParams: Promise<{ geloescht?: string }>;
 }) {
   const { supabase } = await requireAdmin();
+  // Auch versteckte und im Dashboard angelegte Projekte zum Zuordnen anbieten
+  const projects = mergeProjects((await getProjectRows()).map((r) => ({ ...r, hidden: false })));
   const { geloescht } = await searchParams;
-  const [{ data: rows }, { data: members }] = await Promise.all([
+  const [{ data: rows }, { data: members }, { data: logins }] = await Promise.all([
     withProfileColumns((cols) => supabase.from("profiles").select(cols).order("is_lead", { ascending: false }).order("sort").order("name")),
     supabase.from("project_members").select("profile_id, project_slug, role"),
+    supabase.rpc("team_logins"),
   ]);
   const team: FullProfile[] = (rows ?? []).map((r) => toProfile(r as unknown as Parameters<typeof toProfile>[0], members ?? []));
   const titleOf = Object.fromEntries(projects.map((p) => [p.slug, p.title]));
+  const lastLogin = Object.fromEntries(
+    ((logins ?? []) as { profile_id: string; last_sign_in_at: string | null }[]).map((r) => [r.profile_id, r.last_sign_in_at]),
+  );
+  const fmtLogin = new Intl.DateTimeFormat("de-CH", { dateStyle: "medium", timeStyle: "short", timeZone: "Europe/Zurich" });
 
   return (
     <div className="max-w-[72rem]">
@@ -39,6 +46,7 @@ export default async function TeamAdminPage({
               <tr className="border-b border-[#24272c] text-xs text-muted">
                 <th scope="col" className="py-2 pr-4 font-normal">Person</th>
                 <th scope="col" className="py-2 pr-4 font-normal">Projekte</th>
+                <th scope="col" className="py-2 pr-4 font-normal">Rechte</th>
                 <th scope="col" className="py-2 pr-4 font-normal">Login</th>
                 <th scope="col" className="py-2 pr-4 font-normal">Website</th>
                 <th scope="col" className="py-2 font-normal"><span className="sr-only">Aktion</span></th>
@@ -69,15 +77,31 @@ export default async function TeamAdminPage({
                     )}
                   </td>
                   <td className="py-3 pr-4">
+                    {m.is_admin ? (
+                      <span>Vollzugriff</span>
+                    ) : m.permissions.length ? (
+                      <span>{m.permissions.map((p) => PERMISSION_LABELS[p]).join(", ")}</span>
+                    ) : (
+                      <span className="text-muted">–</span>
+                    )}
+                  </td>
+                  <td className="py-3 pr-4">
                     {m.user_id ? (
-                      <span>Aktiv</span>
+                      <>
+                        <span>Aktiv</span>
+                        <span className="block text-xs text-muted">
+                          {lastLogin[m.id] ? `Zuletzt ${fmtLogin.format(new Date(lastLogin[m.id] as string))}` : "Noch nie eingeloggt"}
+                        </span>
+                      </>
                     ) : m.email ? (
                       <span className="text-muted">Eingeladen</span>
                     ) : (
                       <span className="text-muted">Keine E-Mail</span>
                     )}
                   </td>
-                  <td className="py-3 pr-4">{m.visible ? "Sichtbar" : <span className="text-muted">Versteckt</span>}</td>
+                  <td className="py-3 pr-4">
+                    {m.visible ? (m.listed ? "Sichtbar" : <span title="Nur auf eigenen Projektseiten, nicht auf /team">Nur Projektseiten</span>) : <span className="text-muted">Versteckt</span>}
+                  </td>
                   <td className="py-3 text-right">
                     <Link href={`/dashboard/team/${m.id}`} className="dash-btn-quiet h-8">
                       Bearbeiten

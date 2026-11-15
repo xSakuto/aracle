@@ -1,9 +1,13 @@
 import type { MetadataRoute } from "next";
-import { projects } from "@/data/projects";
+import { getProjects } from "@/lib/projects";
+import { getTeam } from "@/lib/team";
 import { SITE_URL } from "@/lib/site";
 
 // Alle öffentlichen Seiten. Projekte mit eigener Landing Page erscheinen nur einmal, unter der Landing Page.
-export default function sitemap(): MetadataRoute.Sitemap {
+export const revalidate = 3600;
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const [projects, team] = await Promise.all([getProjects(), getTeam()]);
   const now = new Date();
   const page = (path: string, priority: number, changeFrequency: "weekly" | "monthly" | "yearly" = "monthly") => ({
     url: `${SITE_URL}${path}`,
@@ -22,6 +26,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     page("/zelda-de", 0.8),
     page("/zelda-de/regelwerk", 0.6),
     page("/news", 0.7, "weekly"),
+    page("/status", 0.4, "weekly"),
     page("/team", 0.7),
     page("/apply", 0.6),
     page("/history", 0.5),
@@ -29,6 +34,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     page("/kontakt", 0.7),
     page("/impressum", 0.2, "yearly"),
     page("/datenschutz", 0.2, "yearly"),
+    page("/beer", 0.8),
     ...projects.filter((p) => !p.landing).map((p) => page(`/projekte/${p.slug}`, 0.6)),
+    ...team.map((m) => page(`/team/${m.slug}`, 0.5)),
   ];
 }

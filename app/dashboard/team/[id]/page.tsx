@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import ProfileForm from "@/components/dashboard/ProfileForm";
-import { projects } from "@/data/projects";
+import { getProjectRows, mergeProjects } from "@/lib/projects";
 import { requireAdmin, toProfile, withProfileColumns } from "@/lib/session";
 import { deleteMember, saveMember } from "../../actions";
 
@@ -13,6 +13,8 @@ export default async function EditMemberPage({
   searchParams: Promise<{ neu?: string; fehler?: string }>;
 }) {
   const { supabase, me } = await requireAdmin();
+  // Auch versteckte und im Dashboard angelegte Projekte zum Zuordnen anbieten
+  const projects = mergeProjects((await getProjectRows()).map((r) => ({ ...r, hidden: false })));
   const { id } = await params;
   const { neu, fehler } = await searchParams;
   const [{ data: row }, { data: members }] = await Promise.all([

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import SocialIcon from "@/components/SocialIcon";
+import YouTubeFeed from "@/components/swizzly/YouTubeFeed";
 import type { SocialType } from "@/data/socials";
 import { SITE_URL } from "@/lib/site";
 
@@ -11,7 +12,7 @@ export const metadata = {
   title: { absolute: TITLE },
   description: DESCRIPTION,
   keywords: [
-    "Swizzly",
+    "Swizzly", "Swizzly690", "@swizzly690", "Swizzly Aracle", "Swizzly YouTube", "Swizzly TikTok",
     "Motorrad Content Schweiz",
     "Motovlog Schweiz",
     "RS Content",
@@ -83,7 +84,7 @@ export default function SwizzlyPage() {
         "@type": "Person",
         "@id": `${SITE_URL}/swizzly#person`,
         name: "Joel-Sananda Nef",
-        alternateName: "Swizzly",
+        alternateName: ["Swizzly", "Swizzly690"],
         url: `${SITE_URL}/swizzly`,
         jobTitle: "Content Creator",
         knowsAbout: ["Motorrad", "Content Creation", "Schweizer Armee RS"],
@@ -129,7 +130,7 @@ export default function SwizzlyPage() {
           </h1>
           <div className="mt-8 flex flex-col gap-6 border-t border-ink/15 pt-6 md:flex-row md:items-end md:justify-between" data-rise style={{ ["--i" as string]: 2 }}>
             <p className="lead max-w-[34ch] text-ink/90">
-              Motorrad, Entertainment und alles rund um die RS. Kurze Videos, ehrlich und ohne Filter.
+              Kurze Videos über Motorrad, Entertainment und alles rund um die RS, ehrlich und ohne Filter.
             </p>
             <a href="https://www.youtube.com/@swizzly690" target="_blank" rel="noopener noreferrer" className="btn self-start md:self-auto">
               Auf YouTube ansehen <span aria-hidden>↗</span>
@@ -159,6 +160,22 @@ export default function SwizzlyPage() {
             </li>
           ))}
         </ul>
+      </section>
+
+      <div className="wrap"><div className="rounded-[var(--radius)] border border-line bg-[#0b1115]/60 p-6 md:p-10"><YouTubeFeed channelId="UCM7MsGKJAniBSAloifLcJ-Q" handle="@swizzly690" /></div></div>
+
+      <section aria-label="Unterwegs" className="wrap py-[var(--section)]">
+        <div className="overflow-hidden rounded-[var(--radius)] border border-line bg-[#0b1115]">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/images/swizzly/moto-sunset.webp"
+            alt="Motorrad im Sonnenuntergang auf einem Bergkamm"
+            width={1200}
+            height={2132}
+            loading="lazy"
+            className="mx-auto aspect-[4/5] w-full max-w-[32rem] object-cover object-[50%_58%]"
+          />
+        </div>
       </section>
 
       <section aria-labelledby="rs-title" className="wrap grid gap-10 py-[var(--section)] md:grid-cols-12">

@@ -1,9 +1,9 @@
 import { botFetch, pickGuild, type Health } from "@/lib/bot-api";
-import { requireAdmin } from "@/lib/session";
+import { requirePermission } from "@/lib/session";
 
 // Gemeinsamer Einstieg aller Bot-Seiten: Admin prüfen, Bot fragen, Server wählen.
 export async function botContext(wanted?: string) {
-  const { user } = await requireAdmin();
+  const { user } = await requirePermission("bot");
   const who = user.email ?? user.id;
   try {
     const health = await botFetch<Health>("/api/site/health", { user: who });

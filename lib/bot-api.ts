@@ -2,7 +2,7 @@ import { createHash, createHmac } from "node:crypto";
 import { cache } from "react";
 import { createSessionClient } from "@/lib/supabase/server";
 
-// Aufrufe an die Schnittstelle des Discord-Bots (Tunnel auf dem Heimserver).
+// Aufrufe an die Schnittstelle des Discord-Bots (site_api.py auf dem Bot-Server, erreichbar über BOT_API_URL).
 // Jede Anfrage wird mit einem Geheimnis signiert, das nur eingeloggte Admins aus der Datenbank bekommen.
 
 const BASE = process.env.BOT_API_URL ?? "https://bot.aracle.ch";

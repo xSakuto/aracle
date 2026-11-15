@@ -2,8 +2,9 @@ import { asTemplate, type NewsPost } from "@/data/news";
 import { supabaseConfigured } from "@/lib/supabase/config";
 import { createPublicClient } from "@/lib/supabase/server";
 
+// Der Autor kommt über author_id aus dem Teamprofil (öffentlich lesbar: Name und Slug).
 export const NEWS_COLUMNS =
-  "id, topic, template, title, body, signature, use_embed, published, publish_at, created_at";
+  "id, topic, template, title, body, signature, use_embed, image_url, published, publish_at, created_at, author:profiles(name, slug)";
 
 export type NewsRow = {
   id: string;
@@ -13,9 +14,11 @@ export type NewsRow = {
   body: string;
   signature: string | null;
   use_embed: boolean;
+  image_url: string | null;
   published: boolean;
   publish_at: string;
   created_at: string;
+  author: { name: string; slug: string } | null;
 };
 
 export function rowToPost(r: NewsRow): NewsPost {
@@ -27,6 +30,8 @@ export function rowToPost(r: NewsRow): NewsPost {
     body: r.body,
     signature: r.signature ?? "",
     useEmbed: r.use_embed,
+    imageUrl: r.image_url,
+    author: r.author ?? null,
     publishedAt: r.publish_at,
   };
 }
@@ -43,9 +48,29 @@ export async function getPublishedNews(limit = 50): Promise<NewsPost[]> {
       .order("publish_at", { ascending: false })
       .limit(limit);
     if (error) throw error;
-    return (data as NewsRow[]).map(rowToPost);
+    return (data as unknown as NewsRow[]).map(rowToPost);
   } catch (err) {
     console.error("News aus Supabase nicht ladbar:", err);
+    return [];
+  }
+}
+
+// News einer Person, für ihr Profil. Gleiche Regeln wie oben, nur gefiltert.
+export async function getNewsByAuthor(profileId: string, limit = 20): Promise<NewsPost[]> {
+  if (!supabaseConfigured) return [];
+  try {
+    const { data, error } = await createPublicClient()
+      .from("news_posts")
+      .select(NEWS_COLUMNS)
+      .eq("published", true)
+      .eq("author_id", profileId)
+      .lte("publish_at", new Date().toISOString())
+      .order("publish_at", { ascending: false })
+      .limit(limit);
+    if (error) throw error;
+    return (data as unknown as NewsRow[]).map(rowToPost);
+  } catch (err) {
+    console.warn("News der Person nicht ladbar:", (err as Error).message ?? err);
     return [];
   }
 }

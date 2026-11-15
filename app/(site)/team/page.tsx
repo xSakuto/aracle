@@ -1,5 +1,4 @@
 import TeamDirectory from "@/components/TeamDirectory";
-import { projectHref, projects } from "@/data/projects";
 import { getTeam } from "@/lib/team";
 
 export const revalidate = 60;
@@ -26,10 +25,7 @@ export default async function TeamPage() {
               Bereiche und packt dort mit an, wo es gerade nötig ist.
             </p>
           </div>
-          <TeamDirectory
-            members={team}
-            projects={projects.map((p) => ({ slug: p.slug, title: p.title, href: projectHref(p), mark: p.mark }))}
-          />
+          <TeamDirectory members={team} />
         </div>
       </div>
     </>

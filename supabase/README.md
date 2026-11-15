@@ -82,3 +82,34 @@ INQUIRY_TO=info@aracle.ch
 Antworten auf die Benachrichtigung gehen direkt an die anfragende Person (Reply-To).
 Spam-Schutz: verstecktes Feld, Mindestzeit von 3 Sekunden, höchstens 5 Anfragen
 pro 10 Minuten und IP.
+
+## 7. Projekte, Changelog und Profile (Oktober 2026)
+
+`2026-10-projects.sql` einmal im SQL-Editor ausführen. Danach:
+
+- **Dashboard > Projekte**: Texte, Bilder, Status, Links und Fragen pflegen, neue Projekte anlegen.
+  Wer das darf, steuert die Berechtigung «Projekte» (oder Vollzugriff).
+- **Changelog**: Jede Person kann bei den Projekten, denen sie zugeordnet ist, Einträge schreiben.
+  Sie erscheinen auf der Projektseite (bei Beer auf /beer) und auf dem eigenen Profil.
+- **Profile** unter `/team/<slug>`: «Ort» pflegt jede Person selbst, «Mitglied seit» setzt ein Admin.
+
+Ohne das Update läuft die Website weiter mit den Projekten aus `data/projects.ts`.
+
+## 8. Statusseite und Ausfall-Alarm (Oktober 2026)
+
+`2026-10-status.sql` einmal im SQL-Editor ausführen. Das schaltet pg_cron und pg_net ein,
+legt die Tabellen an und ruft ab dann jede Minute `https://aracle.ch/api/status/run` auf.
+Welche Dienste geprüft werden, steht in `data/status.ts`.
+
+Alarm-Kanäle in Vercel (Settings > Environment Variables), jeder ist optional:
+
+```
+STATUS_ALERT_EMAIL=j.nef@aracle.ch          # Mail über Resend (RESEND_API_KEY ist schon da)
+CALLMEBOT_PHONE=+4179...                    # WhatsApp über callmebot.com
+CALLMEBOT_APIKEY=...
+NTFY_TOPIC=aracle-status-<zufall>           # Push über die App ntfy
+STATUS_DISCORD_WEBHOOK=https://discord.com/api/webhooks/...
+```
+
+Im Dashboard unter *Status & Alarm* sieht man, welche Kanäle eingerichtet sind, kann einen
+Test-Alarm schicken und zu einer Störung einen Hinweis für die Statusseite schreiben.

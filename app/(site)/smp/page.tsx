@@ -1,6 +1,5 @@
 import Link from "next/link";
 import CopyValue from "@/components/brand/CopyValue";
-import ApplyForm from "@/components/smp/ApplyForm";
 import PixelGround from "@/components/smp/PixelGround";
 import { SMP_DISCORD_INVITE } from "@/data/smp";
 import { SITE_URL } from "@/lib/site";
@@ -38,16 +37,16 @@ const faq: { q: string; a: string }[] = [
   },
 ];
 
-const facts = [
-  { title: "Vanilla+", text: "Minecraft nah am Original, mit ein paar Addons, die das Spiel besser machen, nicht anders." },
-  { title: "Modpack", text: "All the Clients auf Modrinth: schneller, aber vanilla-kompatibel.", href: "/projekte/all-the-clients" },
-  { title: "Langzeit", text: "Ein Server, der bleibt. Betrieben auf eigener Hardware von Aracle Cloud.", href: "/hosting" },
+const facts: { title: string; text: string; href?: string }[] = [
+  { title: "Kein Pay-to-Win", text: "Ohne regelmässige Welt-Resets und ohne unnötigen Plugin-Ballast. Was du baust, bleibt." },
+  { title: "Shop und AraCoins", text: "Gründe einen Shop, verdien dir AraCoins oder bau mit anderen an grossen Projekten." },
+  { title: "Proximity Voice", text: "Optionaler Sprachchat: Wer näher steht, hört dich besser." },
 ];
 
-const steps = [
-  ["Discord beitreten", "Tritt unserem Discord-Server bei. Das ist der Treffpunkt der Community."],
-  ["Minecraft-Account verknüpfen", "Verknüpfe dort deinen Minecraft-Account mit deinem Discord-Profil."],
-  ["Mitspielen", "Sobald verknüpft, verbindest du dich direkt mit play.aracle.ch."],
+const steps: [string, string, string][] = [
+  ["Discord beitreten", "Tritt unserem Discord-Server bei. Das ist der Treffpunkt der Community.", "/images/smp/smp-banner.png"],
+  ["Minecraft-Account verknüpfen", "Verknüpfe dort deinen Minecraft-Account mit deinem Discord-Profil.", "/images/smp/smp-cherry.png"],
+  ["Mitspielen", "Sobald verknüpft, verbindest du dich direkt mit play.aracle.ch.", "/images/smp/smp-banner.png"],
 ];
 
 // AracleSMP: eigene Landing Page im Minecraft-Stil, mit Bewerbung statt offener Tür.
@@ -96,8 +95,13 @@ export default function SmpPage() {
           <h1 className="mc-title mt-4 text-[clamp(3rem,1rem+8vw,8.5rem)] leading-[0.95]" data-rise style={{ ["--i" as string]: 1 }}>
             AracleSMP
           </h1>
-          <p className="lead mt-6 max-w-[34ch] text-ink/85" data-rise style={{ ["--i" as string]: 2 }}>
-            Ein Langzeit-Server für Freunde und Mitglieder. Wer mitspielen will, bewirbt sich.
+          <p className="mt-6 text-[clamp(1.5rem,1rem+2vw,2.5rem)] font-[620] leading-[1.1] tracking-[-0.03em] text-ink" data-rise style={{ ["--i" as string]: 2 }}>
+            Deine Welt. Deine Geschichte.
+          </p>
+          <p className="lead mt-4 max-w-[46ch] text-ink/85" data-rise style={{ ["--i" as string]: 2 }}>
+            AracleSMP ist ein langfristiger Vanilla+ Minecraft-Survival-Server, auf dem eine kleine Community
+            zusammen an einer grossen Welt baut, und ob du dort eine Basis hochziehst, einen Shop gründest
+            oder AraCoins sammelst, entscheidest du selbst.
           </p>
           <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center" data-rise style={{ ["--i" as string]: 3 }}>
             <div className="mc-slot flex items-center gap-4 px-4 py-2">
@@ -136,12 +140,14 @@ export default function SmpPage() {
             <h2 id="bewerben-title" className="mc-title text-[clamp(2rem,1rem+2.6vw,3.25rem)] leading-[1]">Join the server.</h2>
             <p className="mt-4 text-ink/80">Der Server läuft über Discord: dort verknüpfst du deinen Minecraft-Account und spielst sofort mit.</p>
             <ol className="mt-8 border-b border-line">
-              {steps.map(([k, v], i) => (
+              {steps.map(([k, v, img], i) => (
                 <li key={k} className="grid grid-cols-[2.5rem_1fr] gap-x-3 border-t border-line py-4">
                   <span className="mc-title text-aqua">{i + 1}</span>
                   <span>
                     <span className="block font-medium">{k}</span>
                     <span className="small block text-ink/70">{v}</span>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={img} alt="" loading="lazy" width={640} height={360} className="mt-3 aspect-video w-full rounded-[var(--radius)] object-cover" />
                   </span>
                 </li>
               ))}
@@ -151,14 +157,6 @@ export default function SmpPage() {
                 Discord beitreten <span aria-hidden>↗</span>
               </a>
             )}
-          </div>
-          <div className="md:col-span-7 md:col-start-6">
-            {!SMP_DISCORD_INVITE && (
-              <p className="small mb-4 text-muted">
-                Noch kein öffentlicher Einladungslink. Schreib uns kurz, dann schicken wir dir die Einladung zum Discord.
-              </p>
-            )}
-            <ApplyForm />
           </div>
         </div>
       </section>

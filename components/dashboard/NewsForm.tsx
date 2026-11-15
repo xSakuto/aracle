@@ -7,6 +7,7 @@ import Markdown, { Inline } from "@/components/news/Markdown";
 import { composeMessage, TEMPLATES, TOPICS, topicOf } from "@/data/news";
 import { NEWS_TEMPLATES, templatesFor } from "@/data/news-templates";
 import { convertShortcodes, type CustomEmoji } from "@/lib/emoji";
+import { createBrowserSupabase } from "@/lib/supabase/browser";
 
 export interface NewsFormValues {
   id: string;
@@ -16,9 +17,13 @@ export interface NewsFormValues {
   body: string;
   signature: string;
   useEmbed: boolean;
+  imageUrl: string;
   published: boolean;
   publishLocal: string;
 }
+
+const IMAGE_TYPES = /^image\/(jpeg|png|webp|gif)$/;
+const MAX_IMAGE = 8 * 1024 * 1024;
 
 const MENTIONS = Object.fromEntries(TOPICS.map((t) => [t.key, t.label]));
 
@@ -39,11 +44,14 @@ export default function NewsForm({
   action,
   emojis,
   defaultSignature,
+  canEditSignature,
 }: {
   post: NewsFormValues;
   action: (prev: SaveState, form: FormData) => Promise<SaveState>;
   emojis: CustomEmoji[];
   defaultSignature: string;
+  /** Nur die Leitung darf die Signatur ändern. Der Server erzwingt das ebenfalls. */
+  canEditSignature: boolean;
 }) {
   const [state, formAction, pending] = useActionState(action, {});
   const [topic, setTopic] = useState(post.topic);
@@ -52,11 +60,15 @@ export default function NewsForm({
   const [body, setBody] = useState(post.body);
   const [signature, setSignature] = useState(post.signature);
   const [useEmbed, setUseEmbed] = useState(post.useEmbed);
+  const [imageUrl, setImageUrl] = useState(post.imageUrl);
+  const [upload, setUpload] = useState<{ busy: boolean; error?: string }>({ busy: false });
+  const [dragging, setDragging] = useState(false);
   const [tplId, setTplId] = useState("");
   const [dirty, setDirty] = useState(false);
 
   const titleRef = useRef<HTMLInputElement>(null);
   const bodyRef = useRef<HTMLTextAreaElement>(null);
+  const fileRef = useRef<HTMLInputElement>(null);
   const lastField = useRef<"title" | "body">("body");
 
   useEffect(() => {
@@ -99,6 +111,44 @@ export default function NewsForm({
     });
   }
 
+  async function uploadImage(file: File) {
+    if (!IMAGE_TYPES.test(file.type)) {
+      setUpload({ busy: false, error: "Bitte ein Bild wählen (JPG, PNG, WebP oder GIF)." });
+      return;
+    }
+    if (file.size > MAX_IMAGE) {
+      setUpload({ busy: false, error: "Das Bild ist grösser als 8 MB." });
+      return;
+    }
+    setUpload({ busy: true });
+    try {
+      const ext = file.type === "image/jpeg" ? "jpg" : file.type.split("/")[1];
+      const path = `${new Date().getFullYear()}/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+      const supabase = createBrowserSupabase();
+      const { error } = await supabase.storage.from("news").upload(path, file, {
+        cacheControl: "31536000",
+        contentType: file.type,
+        upsert: false,
+      });
+      if (error) throw error;
+      setImageUrl(supabase.storage.from("news").getPublicUrl(path).data.publicUrl);
+      setUpload({ busy: false });
+      touch();
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "Unbekannter Fehler";
+      setUpload({ busy: false, error: `Hochladen fehlgeschlagen: ${msg}` });
+    }
+  }
+
+  // Ein Bild in der Zwischenablage (Screenshot, kopiertes Bild) wird hochgeladen. Reiner Text wird normal eingefügt.
+  function onPaste(e: React.ClipboardEvent) {
+    const file = Array.from(e.clipboardData.files).find((f) => f.type.startsWith("image/"));
+    if (file && !e.clipboardData.getData("text/plain")) {
+      e.preventDefault();
+      void uploadImage(file);
+    }
+  }
+
   // Vorschau mit denselben Umwandlungen wie beim Speichern
   const conv = (s: string) => convertShortcodes(s, emojis);
   const pTitle = conv(title);
@@ -108,8 +158,9 @@ export default function NewsForm({
   const parts = Math.max(1, Math.ceil(message.length / 1900));
 
   return (
-    <form action={formAction} onChange={touch} className="grid gap-10 xl:grid-cols-[1fr_24rem]">
+    <form action={formAction} onChange={touch} onPaste={onPaste} className="grid gap-10 xl:grid-cols-[1fr_24rem]">
       <input type="hidden" name="id" value={post.id} />
+      <input type="hidden" name="image_url" value={imageUrl} />
 
       <div className="min-w-0">
         <Section title="Thema und Vorlage" help="Das Thema bestimmt Farbe und welche Discord-Rolle gepingt wird.">
@@ -207,6 +258,89 @@ export default function NewsForm({
           </div>
         </Section>
 
+        <Section title="Bild" help="Erscheint auf der Webseite und in Discord. Max. 8 MB.">
+          <div
+            onDragOver={(e) => {
+              e.preventDefault();
+              setDragging(true);
+            }}
+            onDragLeave={() => setDragging(false)}
+            onDrop={(e) => {
+              e.preventDefault();
+              setDragging(false);
+              const file = e.dataTransfer.files[0];
+              if (file) void uploadImage(file);
+            }}
+            className={`rounded-[10px] border border-dashed p-4 transition-colors ${
+              dragging ? "border-aqua bg-[#16222a]" : "border-[#2e3238]"
+            }`}
+          >
+            <input
+              ref={fileRef}
+              type="file"
+              accept="image/jpeg,image/png,image/webp,image/gif"
+              className="sr-only"
+              aria-label="Bild auswählen"
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (file) void uploadImage(file);
+                e.target.value = "";
+              }}
+            />
+            {imageUrl ? (
+              <div className="flex flex-wrap items-start gap-4">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={imageUrl} alt="" className="max-h-40 max-w-full rounded-[8px] object-contain" />
+                <div className="flex flex-col items-start gap-2">
+                  <button type="button" onClick={() => fileRef.current?.click()} disabled={upload.busy} className="dash-btn-quiet">
+                    {upload.busy ? "Lädt hoch…" : "Anderes Bild wählen"}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setImageUrl("");
+                      touch();
+                    }}
+                    className="text-sm text-muted underline-offset-4 hover:text-ink hover:underline"
+                  >
+                    Bild entfernen
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <p className="text-sm text-muted">
+                {upload.busy ? (
+                  "Lädt hoch…"
+                ) : (
+                  <>
+                    Bild mit <kbd className="rounded-[4px] bg-[#24272c] px-1.5 py-0.5 text-xs text-ink">Strg + V</kbd> einfügen,
+                    hierher ziehen oder{" "}
+                    <button type="button" onClick={() => fileRef.current?.click()} className="text-ink underline underline-offset-4">
+                      auswählen
+                    </button>
+                    .
+                  </>
+                )}
+              </p>
+            )}
+          </div>
+          {upload.error && <p role="alert" className="text-sm text-danger">{upload.error}</p>}
+          <div>
+            <label htmlFor="image_link" className="dash-label">Oder Bild-Link</label>
+            <input
+              id="image_link"
+              type="url"
+              inputMode="url"
+              spellCheck={false}
+              autoComplete="off"
+              value={imageUrl}
+              onChange={(e) => setImageUrl(e.target.value)}
+              placeholder="https://"
+              className="dash-input"
+            />
+          </div>
+        </Section>
+
         <Section title="Signatur und Format" help="Die Signatur kommt automatisch unter die Nachricht.">
           <div>
             <label htmlFor="signature" className="dash-label">Signatur</label>
@@ -216,15 +350,22 @@ export default function NewsForm({
                 name="signature"
                 maxLength={160}
                 value={signature}
+                readOnly={!canEditSignature}
                 onChange={(e) => setSignature(e.target.value)}
                 placeholder="Leer lassen für keine Signatur"
-                className="dash-input max-w-[18rem] flex-1"
+                className={`dash-input max-w-[18rem] flex-1 ${canEditSignature ? "" : "cursor-not-allowed opacity-70"}`}
               />
-              <button type="button" onClick={() => { setSignature(defaultSignature); touch(); }} className="dash-btn-quiet">
-                Standard
-              </button>
+              {canEditSignature && (
+                <button type="button" onClick={() => { setSignature(defaultSignature); touch(); }} className="dash-btn-quiet">
+                  Standard
+                </button>
+              )}
             </div>
-            <p className="dash-help mt-1">Standard bist du: Joel als Sakuto mit 🪽, alle anderen mit 🔥.</p>
+            <p className="dash-help mt-1">
+              {canEditSignature
+                ? "Standard bist du: Joel als Sakuto mit 🪽, alle anderen mit 🔥. Nur du darfst die Signatur ändern."
+                : "Deine Signatur wird automatisch gesetzt und kann nur von der Leitung geändert werden."}
+            </p>
           </div>
 
           <label className="flex min-h-10 cursor-pointer items-start gap-3 text-sm">
@@ -250,7 +391,10 @@ export default function NewsForm({
           <div className="max-w-[16rem]">
             <label htmlFor="publish_at" className="dash-label">Zeitpunkt</label>
             <input id="publish_at" name="publish_at" type="datetime-local" required defaultValue={post.publishLocal} className="dash-input nums" />
-            <p className="dash-help mt-1">Schweizer Zeit. Der Bot postet kurz danach in Discord (alle 5 Minuten).</p>
+            <p className="dash-help mt-1">
+              Schweizer Zeit. Der Bot prüft jede Minute und postet danach in Discord, meist innerhalb von 1 bis 2 Minuten.
+              Sofort geht es mit <code>/newssync</code> in Discord.
+            </p>
           </div>
         </Section>
 
@@ -294,11 +438,21 @@ export default function NewsForm({
                     />
                   )}
                 </div>
+                {/^https:\/\//i.test(imageUrl) && (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={imageUrl} alt="" className="mt-2.5 max-h-56 w-full rounded-[4px] object-cover" />
+                )}
                 <p className="mt-2 text-[0.6875rem] text-[#949ba4]">aracle.ch/news</p>
               </div>
             </>
           ) : (
-            <Markdown text={message} variant="discord" mentions={MENTIONS} />
+            <>
+              <Markdown text={message} variant="discord" mentions={MENTIONS} />
+              {/^https:\/\//i.test(imageUrl) && (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={imageUrl} alt="" className="mt-2 max-h-72 max-w-full rounded-[8px] object-contain" />
+              )}
+            </>
           )}
         </div>
         {parts > 1 && !useEmbed && (

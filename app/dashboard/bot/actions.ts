@@ -2,7 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { botFetch } from "@/lib/bot-api";
-import { requireAdmin } from "@/lib/session";
+import { requirePermission } from "@/lib/session";
 
 type Result = { ok: string } | { fehler: string };
 
@@ -18,7 +18,7 @@ function needId(form: FormData, key: string) {
 }
 
 async function call(path: string, payload: Record<string, unknown>): Promise<Result> {
-  const { user } = await requireAdmin();
+  const { user } = await requirePermission("bot");
   try {
     const res = await botFetch<{ message: string }>(path, {
       method: "POST",

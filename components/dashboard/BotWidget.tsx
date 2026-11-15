@@ -41,8 +41,8 @@ function Mini({ label, value }: { label: string; value: string }) {
   );
 }
 
-// Kurzstatus des Bots für die Übersicht. Kurze Wartezeit, damit ein ausgeschalteter
-// Heimserver die Seite nicht blockiert.
+// Kurzstatus des Bots für die Übersicht. Kurze Wartezeit, damit eine nicht erreichbare
+// Schnittstelle die Seite nicht blockiert.
 export default async function BotWidget({ who }: { who: string }) {
   try {
     const health = await botFetch<Health>("/api/site/health", { user: who, timeoutMs: 6000 });
@@ -74,8 +74,11 @@ export default async function BotWidget({ who }: { who: string }) {
   } catch (err) {
     return (
       <section className="dash-panel">
-        <Head state="Nicht erreichbar" tone="text-danger" />
-        <p className="dash-help mt-2">{err instanceof Error ? err.message : "Unbekannter Fehler"}</p>
+        <Head state="Keine Verbindung" tone="text-danger" />
+        <p className="dash-help mt-2">
+          Das Dashboard erreicht die Schnittstelle nicht. Die Bots selbst können trotzdem online sein.
+        </p>
+        <p className="dash-help mt-1">{err instanceof Error ? err.message : "Unbekannter Fehler"}</p>
       </section>
     );
   }

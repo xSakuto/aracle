@@ -4,7 +4,7 @@ import NewsForm from "@/components/dashboard/NewsForm";
 import { defaultSignature } from "@/data/news";
 import { getDiscordEmojis } from "@/lib/discord-emojis";
 import { NEWS_COLUMNS, rowToPost, type NewsRow } from "@/lib/news";
-import { requireAdmin } from "@/lib/session";
+import { requirePermission } from "@/lib/session";
 import { isoToZurichLocal } from "@/lib/zurich-time";
 import { deleteNews, saveNews } from "../actions";
 
@@ -17,13 +17,13 @@ export default async function EditNewsPage({
   params: Promise<{ id: string }>;
   searchParams: Promise<{ neu?: string }>;
 }) {
-  const { supabase, me } = await requireAdmin();
+  const { supabase, me } = await requirePermission("news");
   const { id } = await params;
   const { neu } = await searchParams;
 
   const { data } = await supabase.from("news_posts").select(NEWS_COLUMNS).eq("id", id).maybeSingle();
   if (!data) notFound();
-  const row = data as NewsRow;
+  const row = data as unknown as NewsRow;
   const post = rowToPost(row);
   const emojis = await getDiscordEmojis(supabase);
 
@@ -42,6 +42,7 @@ export default async function EditNewsPage({
           action={saveNews}
           emojis={emojis}
           defaultSignature={defaultSignature(me.slug, me.name, me.is_lead)}
+          canEditSignature={me.is_lead}
           post={{
             id: row.id,
             topic: post.topic,
@@ -50,6 +51,7 @@ export default async function EditNewsPage({
             body: post.body,
             signature: post.signature,
             useEmbed: post.useEmbed,
+            imageUrl: post.imageUrl ?? "",
             published: row.published,
             publishLocal: isoToZurichLocal(row.publish_at),
           }}

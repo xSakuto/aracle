@@ -6,7 +6,7 @@ import Portrait from "@/components/Portrait";
 import { typeLabel } from "@/data/inquiry";
 import { topicOf } from "@/data/news";
 import { projects } from "@/data/projects";
-import { requireMember, type FullProfile } from "@/lib/session";
+import { requireMember, type FullProfile, type Permission } from "@/lib/session";
 
 export const metadata = { title: "Übersicht" };
 
@@ -23,7 +23,7 @@ type Todo = { text: string; href: string };
 const inquiryStatus: Record<string, { label: string; tone: string }> = {
   neu: { label: "Neu", tone: "text-aqua" },
   in_bearbeitung: { label: "In Bearbeitung", tone: "text-[#d9a441]" },
-  erledigt: { label: "Erledigt", tone: "text-muted" },
+  archiviert: { label: "Archiviert", tone: "text-muted" },
 };
 
 function newsState(n: News, now: number) {
@@ -162,8 +162,13 @@ export default async function DashboardPage() {
     </header>
   );
 
-  // Teammitglieder ohne Admin-Rechte: eigenes Profil und was daran noch fehlt.
-  if (!me.is_admin) {
+  const can = (perm: Permission) => me.is_admin || me.permissions.includes(perm);
+  const canInq = can("anfragen");
+  const canNews = can("news");
+  const canBot = can("bot");
+
+  // Teammitglieder ohne freigeschaltete Bereiche: eigenes Profil und was daran noch fehlt.
+  if (!canInq && !canNews && !canBot) {
     return (
       <div className="max-w-[72rem]">
         {head}
@@ -175,19 +180,25 @@ export default async function DashboardPage() {
     );
   }
 
-  // Alle Zahlen gleichzeitig laden. Fehlt eine Tabelle, bleibt der Bereich einfach leer.
+  // Alle Zahlen gleichzeitig laden, aber nur für Bereiche, die diese Person sehen darf.
+  // Fehlt eine Tabelle, bleibt der Bereich einfach leer.
+  const none = { data: null, error: null };
   const [inq, news, people] = await Promise.all([
-    supabase
-      .from("inquiries")
-      .select("id, created_at, name, company, project_type, status")
-      .order("created_at", { ascending: false })
-      .limit(200),
-    supabase
-      .from("news_posts")
-      .select("id, title, topic, published, publish_at")
-      .order("publish_at", { ascending: false })
-      .limit(100),
-    supabase.from("profiles").select("id, user_id, email, visible"),
+    canInq
+      ? supabase
+          .from("inquiries")
+          .select("id, created_at, name, company, project_type, status")
+          .order("created_at", { ascending: false })
+          .limit(200)
+      : none,
+    canNews
+      ? supabase
+          .from("news_posts")
+          .select("id, title, topic, published, publish_at")
+          .order("publish_at", { ascending: false })
+          .limit(100)
+      : none,
+    me.is_admin ? supabase.from("profiles").select("id, user_id, email, visible") : none,
   ]);
   const inquiries = (inq.data ?? []) as Inquiry[];
   const posts = (news.data ?? []) as News[];
@@ -195,7 +206,8 @@ export default async function DashboardPage() {
 
   const fresh = inquiries.filter((r) => r.status === "neu");
   const inProgress = inquiries.filter((r) => r.status === "in_bearbeitung");
-  const openInquiries = inquiries.filter((r) => r.status !== "erledigt").slice(0, 5);
+  const active = inquiries.filter((r) => r.status !== "archiviert");
+  const openInquiries = active.slice(0, 5);
 
   const t = now.getTime();
   const drafts = posts.filter((p) => !p.published);
@@ -223,31 +235,31 @@ export default async function DashboardPage() {
       <div className="flex flex-wrap items-end justify-between gap-4">
         {head}
         <div className="flex flex-wrap gap-2">
-          <Link href="/dashboard/news/neu" className="dash-btn">Neue News</Link>
-          <Link href="/dashboard/team" className="dash-btn-quiet">Mitglied hinzufügen</Link>
+          {canNews && <Link href="/dashboard/news/neu" className="dash-btn">Neue News</Link>}
+          {me.is_admin && <Link href="/dashboard/team" className="dash-btn-quiet">Mitglied hinzufügen</Link>}
         </div>
       </div>
 
       <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        <Tile
+        {canInq && <Tile
           href="/dashboard/anfragen"
           label="Neue Anfragen"
           value={fresh.length}
-          sub={inq.error ? "Nicht ladbar" : `${inProgress.length} in Bearbeitung, ${inquiries.length} gesamt`}
+          sub={inq.error ? "Nicht ladbar" : `${inProgress.length} in Bearbeitung, ${active.length} offen`}
           alert={fresh.length > 0}
-        />
-        <Tile
+        />}
+        {canNews && <Tile
           href="/dashboard/news"
           label="News veröffentlicht"
           value={live}
           sub={news.error ? "Nicht ladbar" : `${drafts.length} ${drafts.length === 1 ? "Entwurf" : "Entwürfe"}, ${planned.length} geplant`}
-        />
-        <Tile
+        />}
+        {me.is_admin && <Tile
           href="/dashboard/team"
           label="Teamprofile"
           value={team.length}
           sub={people.error ? "Nicht ladbar" : `${visible} sichtbar, ${noLogin} ohne Login`}
-        />
+        />}
         <Tile
           href="#todo"
           label="Zu erledigen"
@@ -257,7 +269,7 @@ export default async function DashboardPage() {
       </div>
 
       <div className="mt-3 grid gap-3 lg:grid-cols-2">
-        <section className="dash-panel">
+        {canInq && <section className="dash-panel">
           <PanelHead title="Offene Anfragen" href="/dashboard/anfragen" link="Alle ansehen" />
           {openInquiries.length === 0 ? (
             <p className="dash-help mt-2">
@@ -289,9 +301,9 @@ export default async function DashboardPage() {
               })}
             </ul>
           )}
-        </section>
+        </section>}
 
-        <section className="dash-panel">
+        {canNews && <section className="dash-panel">
           <PanelHead title="News" href="/dashboard/news" link="Alle ansehen" />
           {newsRows.length === 0 ? (
             <p className="dash-help mt-2">{news.error ? "News konnten nicht geladen werden." : "Noch keine News geschrieben."}</p>
@@ -317,15 +329,17 @@ export default async function DashboardPage() {
               })}
             </ul>
           )}
-        </section>
+        </section>}
       </div>
 
       <div className="mt-3 grid gap-3 lg:grid-cols-2">
         <TodoList todos={todos} />
-        {/* Der Bot läuft auf dem Heimserver und antwortet langsamer: er wird nachgeladen, statt die Seite aufzuhalten. */}
-        <Suspense fallback={<BotWidgetSkeleton />}>
-          <BotWidget who={user.email ?? user.id} />
-        </Suspense>
+        {/* Die Bot-Schnittstelle antwortet langsamer als die Datenbank: sie wird nachgeladen, statt die Seite aufzuhalten. */}
+        {canBot && (
+          <Suspense fallback={<BotWidgetSkeleton />}>
+            <BotWidget who={user.email ?? user.id} />
+          </Suspense>
+        )}
       </div>
     </div>
   );

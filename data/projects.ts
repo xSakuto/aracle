@@ -14,7 +14,9 @@ export type Pillar =
 export type GalleryItem =
   | { kind: "photo"; src: string; alt: string; caption?: string; width: number; height: number }
   /** PLATZHALTER: grafisches Mockup, bis echte Bilder vorliegen. Später durch "photo" ersetzen. */
-  | { kind: "placeholder"; motif: "tee" | "hoodie" | "patch" | "label" | "wordmark"; caption: string };
+  | { kind: "placeholder"; motif: "tee" | "hoodie" | "patch" | "label" | "wordmark"; caption: string }
+  /** PLATZHALTER für Projektseiten: Screenshot, Handy-Screen, Foto oder Video. */
+  | { kind: "slot"; motif: "screen" | "phone" | "photo" | "video"; caption: string };
 
 export interface Project {
   slug: string;
@@ -26,6 +28,8 @@ export interface Project {
   status: ProjectStatus;
   owner: string;
   coverImage?: string;
+  /** object-position für Cover-Ausschnitt, z. B. um das Motiv mittig zu halten */
+  coverPosition?: string;
   shortDescription: string;
   longDescription: string;
   /** Was Aracle konkret beiträgt (Rollen, Disziplinen) */
@@ -48,6 +52,12 @@ export interface Project {
   landing?: string;
   /** Startjahr */
   year: string;
+  /** Was als Nächstes geplant ist. Erscheint im Verlauf gestrichelt. */
+  next?: string[];
+  /** Häufige Fragen, nur mit gesicherten Antworten */
+  faq?: { q: string; a: string }[];
+  /** Verwandte Projekte (Slugs), am Ende der Projektseite */
+  related?: string[];
 }
 
 const H = "/Brand_assets/images/heros";
@@ -56,7 +66,8 @@ const STEAM = "https://shared.fastly.steamstatic.com/store_item_assets/steam/app
 export const projects: Project[] = [
   {
     slug: "aracle-cloud-hosting",
-    mark: "/images/cloud/aracle-cloud-logo.png",
+    mark: "/images/cloud/aracle-cloud-hosting-logo.png",
+    markTile: "/images/cloud/aracle-cloud-hosting-logo.png",
     landing: "/hosting",
     year: "2022",
     title: "Aracle Cloud",
@@ -109,7 +120,7 @@ export const projects: Project[] = [
     shortDescription:
       "Schweizer Bikerstreetwear rund um Motorrad-Kultur und urbanen Street-Style.",
     longDescription:
-      "Highside ist eine eigenständige Schweizer Streetwear-Marke aus der Motorrad-Szene. Sie verbindet die Kultur auf der Rennstrecke mit urbanem Street-Style. Aracle verantwortet die Marke vollständig: Idee, Branding, Content und Shop.",
+      "Highside ist eine eigenständige Schweizer Streetwear-Marke aus der Motorrad-Szene, gemacht für Leute, die auf der Rennstrecke genauso zuhause sind wie in der Stadt. Aracle verantwortet die Marke vollständig: Idee, Branding, Content und Shop.",
     scope: ["Brand Identity", "Content Production", "Social Media", "Webshop"],
     goal: "Eine eigenständige Schweizer Streetwear-Marke aufbauen, die die Motorrad-Kultur von der Rennstrecke in den Alltag trägt.",
     includes: [
@@ -125,6 +136,7 @@ export const projects: Project[] = [
       { date: "2024", label: "Start Swizzly als Content-Kanal für die Marke" },
     ],
     links: [{ label: "highside.ch", url: "https://highside.ch" }],
+    related: ["swizzly"],
     gallery: [
       { kind: "photo", src: `${H}/highside.jpg`, alt: "Zwei Motorräder in Schräglage auf der Rennstrecke", caption: "Die Welt von Highside: Rennstrecke, Kurve, Schräglage.", width: 1600, height: 1067 },
       // PLATZHALTER: durch echte Produktfotos ersetzen
@@ -137,7 +149,8 @@ export const projects: Project[] = [
   },
   {
     slug: "milvia",
-    mark: "/images/milvia/milvia-mark.png",
+    mark: "/images/milvia/milvia-logo-white.png",
+    markTile: "/images/milvia/milvia-logo-white.png",
     coverImage: "/images/milvia/forest.webp",
     year: "2026",
     title: "Milvia",
@@ -147,20 +160,34 @@ export const projects: Project[] = [
     status: "Aktiv",
     owner: "Joel Nef",
     shortDescription:
-      "Schweizer-Armee-Companion-App für die RS: Reglemente, Grade, Fitnesstests und ein Kompaniebau-Game.",
+      "Inoffizielle Companion-App für RS und WK: Reglemente, Armeewissen, Vorbereitung und ein Kompaniebau-Game.",
     longDescription:
-      "Milvia begleitet durch die RS: Reglemente und Vorschriften zum Nachschlagen, Dienstgrade, Fitnesstests und ein eigenes Kompaniebau-Game, alles in einer App. Entwickelt mit Flutter, nativ für iOS und Android.",
+      "Milvia ist eine inoffizielle Begleit-App für Rekrutenschule und Wiederholungskurs. Original-Reglemente zum Nachlesen und Durchsuchen, Dienstgrade und Abkürzungen zum Nachschlagen, der Fitnesstest zum Festhalten, Packliste und Marschbefehl zur Vorbereitung, dazu ein eigenes Kompaniebau-Game. Läuft im Browser, auf dem Handy wie am Computer.",
     scope: ["App-Entwicklung", "Branding", "Content"],
-    goal: "Angehörigen der Schweizer Armee die RS mit einer App erleichtern, die Wissen und ein wenig Motivation an einem Ort bündelt.",
+    goal: "Angehörigen der Schweizer Armee RS und WK mit einer App erleichtern, die Wissen und Vorbereitung an einem Ort bündelt, ohne die Armee offiziell zu vertreten.",
     includes: [
-      { title: "Reglemente", text: "Vorschriften und Regularien zum schnellen Nachschlagen." },
-      { title: "Grade & Fitness", text: "Dienstgrade der Armee und die Fitnesstests der RS." },
-      { title: "Kompaniebau-Game", text: "Ein kleines Spiel für zwischendurch, direkt in der App." },
+      { title: "Reglemente", text: "Original-Reglemente als PDF, mit Zoom, Volltextsuche und gemerkter letzter Seite." },
+      { title: "Armeewissen", text: "Dienstgrade erkennen, die Laufbahn erkunden und Abkürzungen im Glossar nachschlagen, dazu der Kader-Corner mit Auszügen aus den Reglementen." },
+      { title: "Vorbereitung", text: "Fitnesstest-Resultate festhalten und den Fortschritt verfolgen, dazu Packliste und Marschbefehl." },
+      { title: "Meine Kompanie", text: "Ein Bauspiel: eigene Kompanie benennen, Rekruten ausbilden und den Waffenplatz ausbauen. Spielregeln sind frei erfunden, Fortschritt bleibt lokal auf dem Gerät." },
     ],
     team: [{ name: "Joel Nef", role: "Director", slug: "joel" }],
     techStack: ["Flutter", "Dart"],
     timeline: [{ date: "2026", label: "Launch milvia.ch" }],
-    links: [{ label: "milvia.ch", url: "https://milvia.ch" }],
+    links: [{ label: "milvia.ch", url: "https://milvia.ch" }, { label: "Über Milvia", url: "https://milvia.ch/ueber/" }],
+    // PLATZHALTER: durch echte Screenshots aus der App ersetzen
+    gallery: [
+      { kind: "slot", motif: "phone", caption: "Screenshot folgt: Reglemente" },
+      { kind: "slot", motif: "phone", caption: "Screenshot folgt: Dienstgrade" },
+      { kind: "slot", motif: "phone", caption: "Screenshot folgt: Fitnesstest" },
+      { kind: "slot", motif: "phone", caption: "Screenshot folgt: Meine Kompanie" },
+    ],
+    next: ["Apps für iOS und Android", "Neues Branding in Rot, Grau und Weiss"],
+    faq: [
+      { q: "Ist Milvia offiziell?", a: "Nein. Milvia ist eine inoffizielle App und vertritt die Schweizer Armee nicht." },
+      { q: "Wo läuft Milvia?", a: "Im Browser auf milvia.ch, auf dem Handy wie am Computer. Apps für iOS und Android sind geplant." },
+      { q: "Was passiert mit meinem Spielstand?", a: "Der Fortschritt in Meine Kompanie bleibt lokal auf deinem Gerät." },
+    ],
   },
   {
     slug: "swizzly",
@@ -172,11 +199,12 @@ export const projects: Project[] = [
     category: "Content, Social Media",
     status: "Aktiv",
     owner: "Joel Nef",
-    coverImage: "/images/swizzly/helmet.webp",
+    coverImage: "/images/swizzly/moto-sunset.webp",
+    coverPosition: "50% 47%",
     shortDescription:
       "Motorrad, Entertainment und RS-Content auf YouTube, TikTok und Instagram.",
     longDescription:
-      "Swizzly ist der Content-Kanal rund ums Motorrad auf TikTok und Instagram. Er verbindet Community und Marke durch authentischen Content und dient gleichzeitig als Werbefläche für Highside.",
+      "Swizzly ist der Content-Kanal rund ums Motorrad auf TikTok und Instagram. Gleichzeitig ist er die Bühne für Highside.",
     scope: ["Kurzvideo", "Schnitt", "Social Media"],
     goal: "Die Motorrad-Community auf TikTok und Instagram erreichen und gleichzeitig der Marke Highside eine Bühne geben.",
     includes: [
@@ -199,6 +227,7 @@ export const projects: Project[] = [
     slug: "beer-game",
     mark: "/images/beer/beer-logo.png",
     markTile: "/images/beer/beer-logo.png",
+    landing: "/beer",
     year: "2025",
     title: "Beer Game",
     tagline: "A tiny online tavern for up to four.",
@@ -208,9 +237,9 @@ export const projects: Project[] = [
     owner: "Joel Nef",
     coverImage: "/images/beer/rusty-mug.webp",
     shortDescription:
-      "Kleine Online-Taverne für bis zu vier Leute. Free to Play, bald auf Steam.",
+      "The Rusty Mug: kleine Online-Taverne für bis zu vier Leute. Free to Play, bald auf Steam.",
     longDescription:
-      "Ihr seid Fässer und Bierkrüge mit Wackelaugen. Bier zapfen, anstossen, Roulette, Blackjack, Würfel und Darts spielen und euch Bierdeckel an den Kopf werfen. BEER erscheint als Free-to-Play-Spiel auf Steam, entwickelt und veröffentlicht von Aracle.",
+      "Ihr seid Fässer und Bierkrüge mit Wackelaugen. Bier zapfen, anstossen, Roulette, Blackjack, Meiern und Darts spielen und euch Bierdeckel an den Kopf werfen. BEER: The Rusty Mug erscheint als Free-to-Play-Spiel auf Steam, entwickelt und veröffentlicht von Aracle.",
     scope: ["Game Design", "Entwicklung", "Steam-Seite"],
     goal: "Ein eigenes kleines Online-Spiel für Freunde entwickeln und auf Steam veröffentlichen.",
     includes: [
@@ -234,7 +263,6 @@ export const projects: Project[] = [
   {
     slug: "rexusmods",
     mark: "/images/rexusmods/rexusmods-logo.png",
-    markTile: "/images/rexusmods/rexusmods-logo-white.png",
     landing: "/rexusmods",
     year: "2021",
     title: "RexusMods",
@@ -247,7 +275,7 @@ export const projects: Project[] = [
     shortDescription:
       "Modifikationen für GTA V, neu erweitert um Add-ons für Flugsimulatoren.",
     longDescription:
-      "RexusMods ist wieder aktiv. Angefangen mit 3D-Modelling für GTA V, von MLO-Maps bis zu Fahrzeuglackierungen. Jetzt kommen Add-ons für Flugsimulatoren dazu. Eine Zusammenarbeit von Joel Nef und Tim Mockweiss.",
+      "RexusMods ist wieder aktiv. Angefangen hat es mit 3D-Modelling für GTA V, vor allem MLO-Maps und Fahrzeuglackierungen. Jetzt kommen Add-ons für Flugsimulatoren dazu. Eine Zusammenarbeit von Joel Nef und Tim Mockweiss.",
     scope: ["3D-Modelling", "Texturen", "Flugsimulator-Add-ons"],
     goal: "Mods für GTA V weiterführen und das Projekt um Add-ons für Flugsimulatoren erweitern.",
     includes: [
@@ -268,20 +296,20 @@ export const projects: Project[] = [
   },
   {
     slug: "sakuto",
-    mark: "/images/sakuto/sakuto-white.png",
-    markTile: "/images/sakuto/sakuto-white-trim.png",
-    year: "2021",
+    mark: "/images/sakuto/sakuto-silver.png",
+    markTile: "/images/sakuto/sakuto-silver.png",
+    year: "2017",
     title: "Sakuto",
     tagline: "Video essays, streams and Nintendo culture.",
     pillar: "Kanäle",
     category: "Content, Gaming",
     status: "Aktiv",
     owner: "Joel Nef",
-    coverImage: "/images/sakuto/sakuto.webp",
+    coverImage: "/images/sakuto/sakuto-hero-purple.png",
     shortDescription:
-      "Nintendo-Content, Videoessays und Streams. Herzstück der Creator-Sparte.",
+      "Nintendo-Content, Videoessays und Streams auf dem Kanal, mit dem alles angefangen hat.",
     longDescription:
-      "Sakuto ist der Kanal, aus dem Aracle hervorgegangen ist. Nintendo-Content, Videoessays und Streams, mit Fokus auf Community-Aufbau und sorgfältig produzierte Unterhaltung.",
+      "Sakuto ist der Kanal, aus dem Aracle hervorgegangen ist, und dreht sich bis heute um Nintendo, mit Videoessays, Shorts und Streams für die Community.",
     scope: ["Videoessays", "Streaming", "Schnitt"],
     goal: "Mit sorgfältig produzierten Videos eine Community rund um Nintendo aufbauen.",
     includes: [
@@ -295,7 +323,8 @@ export const projects: Project[] = [
       { date: "2017", label: "Start als YouTube-Kanal xSakuto" },
       { date: "2021", label: "Rebranding zu Sakuto, erstes Videoessay" },
     ],
-    links: [],
+    links: [{ label: "YouTube", url: "https://www.youtube.com/@Sakuto.mp4" }],
+    related: ["zelda-de-server", "swizzly"],
   },
   {
     slug: "zelda-de-server",
@@ -309,11 +338,11 @@ export const projects: Project[] = [
     category: "Community, Discord",
     status: "Aktiv",
     owner: "Lars & Joel Nef",
-    coverImage: "/images/zelda/zelda-de-header.webp",
+    coverImage: "/images/zelda/zelda-cover.png",
     shortDescription:
       "Grösste deutsche Zelda-Community auf Discord: Theorien, Spiele, Speedruns und Nostalgie.",
     longDescription:
-      "Die grösste deutschsprachige The-Legend-of-Zelda-Community auf Discord. Im Fokus stehen Theorien, Speedruns und Nostalgie. Aracle übernimmt die technische Pflege und das Community-Management.",
+      "Die grösste deutschsprachige The-Legend-of-Zelda-Community auf Discord. Geredet wird über Theorien, Speedruns und Nostalgie, und Aracle kümmert sich um Technik und Moderation.",
     scope: ["Community-Management", "Discord-Setup", "Moderation"],
     goal: "Deutschsprachigen Fans von The Legend of Zelda einen gemeinsamen Ort geben.",
     includes: [
@@ -356,6 +385,16 @@ export const projects: Project[] = [
     techStack: ["Minecraft", "Modrinth"],
     timeline: [{ date: "2023", label: "Erste Version auf Modrinth" }],
     links: [{ label: "All the Clients auf Modrinth", url: "https://modrinth.com/modpack/mc-atc" }],
+    gallery: [
+      { kind: "photo", src: "/images/smp/smp-world.webp", alt: "Spielwelt auf dem AracleSMP-Server", caption: "Im Einsatz auf AracleSMP", width: 1920, height: 1080 },
+      // PLATZHALTER: echte Screenshots einsetzen
+      { kind: "slot", motif: "screen", caption: "Screenshot folgt: Modliste auf Modrinth" },
+    ],
+    faq: [
+      { q: "Kann ich damit auf normalen Servern spielen?", a: "Ja. Das Pack bleibt vanilla-kompatibel, du brauchst keinen modifizierten Server." },
+      { q: "Wie installiere ich es?", a: "Über Modrinth: in der Modrinth App oder einem kompatiblen Launcher nach All the Clients suchen und installieren." },
+    ],
+    related: ["araclesmp", "aracle-cloud-hosting"],
   },
   {
     slug: "aracle-living",
@@ -365,7 +404,7 @@ export const projects: Project[] = [
     pillar: "Marken & Produkte",
     category: "Konzept",
     status: "Konzept",
-    owner: "Jan Waser",
+    owner: "Aracle",
     coverImage: `${H}/immo.jpg`,
     shortDescription:
       "Konzept für Immobilienfotografie und virtuelle Rundgänge. Noch kein buchbares Angebot.",
@@ -384,6 +423,12 @@ export const projects: Project[] = [
     links: [],
     gallery: [
       { kind: "photo", src: `${H}/immo.jpg`, alt: "Wohnzimmer mit Holzdecke, Stufen und Essbereich", caption: "Testaufnahme", width: 1600, height: 1067 },
+      // PLATZHALTER: weitere Testaufnahmen
+      { kind: "slot", motif: "photo", caption: "Weitere Testaufnahme folgt" },
+      { kind: "slot", motif: "video", caption: "Idee: virtueller Rundgang" },
+    ],
+    faq: [
+      { q: "Kann ich Aracle Living buchen?", a: "Nein. Aracle Living ist ein Konzept und aktuell kein buchbares Angebot." },
     ],
   },
   {
@@ -441,6 +486,7 @@ export const projects: Project[] = [
       { date: "2023", label: "Eingestellt" },
     ],
     links: [],
+    related: ["zelda-de-server"],
   },
 ];
 

@@ -23,7 +23,7 @@ export const journey: JourneyStage[] = [
     items: [
       {
         name: "YouTube-Kanal xSakuto",
-        desc: "Der Anfang: Content Creation auf YouTube, damals noch als Rex_HD. Der Grundstein für alles, was folgt.",
+        desc: "Der Anfang: Content Creation auf YouTube, damals noch als Rex_HD, und ohne diesen Kanal gäbe es Aracle heute nicht.",
         project: "sakuto",
       },
     ],
@@ -70,7 +70,7 @@ export const journey: JourneyStage[] = [
       },
       {
         name: "RexusMods",
-        desc: "3D-Modelling für GTA V, von MLO-Maps bis zu Fahrzeuglackierungen. Zusammen mit Tim Mockweiss, heute wieder aktiv und um Flugsimulator-Add-ons erweitert.",
+        desc: "3D-Modelling für GTA V, vor allem MLO-Maps und Fahrzeuglackierungen. Zusammen mit Tim Mockweiss, heute wieder aktiv und um Flugsimulator-Add-ons erweitert.",
         tag: "Aktiv",
         project: "rexusmods",
       },

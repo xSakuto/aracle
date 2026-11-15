@@ -94,17 +94,17 @@ export default function HeroPhoto() {
           <div className="mt-auto grid gap-8 md:grid-cols-12 md:items-end">
             <div className="md:col-span-8">
               <p className="kicker text-aqua" data-rise style={{ ["--i" as string]: 1 }}>
-                Create. Connect. Inspire.
-              </p>
-              <h1 id="hero-title" className="display mt-5" data-split="load">
                 Creative thinking. Technical execution.
+              </p>
+              <h1 id="hero-title" className="mega mt-4" data-split="load">
+                Create. Connect. Inspire.
               </h1>
             </div>
             <div className="md:col-span-4" data-rise style={{ ["--i" as string]: 3 }}>
               <p className="text-ink/90">
-                Aracle ist ein Studio aus dem Glarnerland für Creative Production,
-                Digital Experiences und Cloud-Infrastruktur. Wir gestalten,
-                entwickeln und betreiben, mit Präzision bis ins Detail.
+                Aracle ist ein Studio aus dem Glarnerland für Design und Technik,
+                und alles, was wir bauen, läuft am Ende auf unserer eigenen
+                Hardware.
               </p>
               <div className="mt-6 flex flex-wrap gap-3">
                 <Link href="/projekte" className="btn">Projekte ansehen</Link>

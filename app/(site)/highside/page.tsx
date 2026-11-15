@@ -53,9 +53,14 @@ export default function HighsidePage() {
             <p className="hs-sans max-w-[30ch] text-[clamp(1.125rem,1rem+0.6vw,1.5rem)] font-medium leading-snug">
               Schweizer Streetwear aus der Motorrad-Szene. Zwischen Rennstrecke und Strasse.
             </p>
-            <p className="hs-sans text-[clamp(1.5rem,1rem+1.4vw,2.5rem)] font-extrabold uppercase tracking-[-0.02em] text-aqua">
-              Ride or regret.
-            </p>
+            <div className="flex flex-col items-start gap-4 md:items-end">
+              <p className="hs-sans text-[clamp(1.5rem,1rem+1.4vw,2.5rem)] font-extrabold uppercase tracking-[-0.02em] text-aqua">
+                Ride or regret.
+              </p>
+              <a href="https://highside.ch" target="_blank" rel="noopener noreferrer" className="btn rounded-[2px] font-semibold uppercase tracking-[0.04em]">
+                Zur Website, highside.ch <span aria-hidden>↗</span>
+              </a>
+            </div>
           </div>
         </div>
       </header>
@@ -111,7 +116,7 @@ export default function HighsidePage() {
       <section aria-label="Weiter" className="border-t border-white/15">
         <div className="wrap hs-sans flex flex-col gap-8 py-16 md:flex-row md:items-center md:justify-between">
           <p className="max-w-[36ch] text-white/80">
-            Bis zum ersten Drop läuft die Marke über Content. Fahrten, Strecke und Strasse auf Swizzly.
+            Bis zum ersten Drop läuft die Marke über Content, also Fahrten auf der Strecke und auf der Strasse bei Swizzly.
           </p>
           <div className="flex flex-wrap gap-3">
             <a href="https://highside.ch" target="_blank" rel="noopener noreferrer" className="btn rounded-[2px] font-semibold uppercase tracking-[0.04em]">

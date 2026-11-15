@@ -30,8 +30,17 @@ export interface NewsPost {
   signature: string;
   /** Als Embed senden statt als normale Nachricht */
   useEmbed: boolean;
+  /** Ein Bild zum Beitrag (Adresse), auf der Webseite und in Discord */
+  imageUrl: string | null;
+  /** Wer den Beitrag geschrieben hat, für die Anzeige auf der Webseite */
+  author: { name: string; slug: string } | null;
   publishedAt: string;
 }
+
+export const asHttpsUrl = (v: unknown): string | null => {
+  const s = String(v ?? "").trim().slice(0, 500);
+  return /^https:\/\//i.test(s) ? s : null;
+};
 
 export const topicOf = (key: string) => TOPICS.find((t) => t.key === key) ?? TOPICS[0];
 export const templateOf = (key: string) => TEMPLATES.find((t) => t.key === key) ?? TEMPLATES[0];
