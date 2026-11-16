@@ -12,7 +12,7 @@ function Stat({ label, value, sub }: { label: string; value: React.ReactNode; su
   );
 }
 
-function Row({ i, p, value }: { i: number; p: Person; value: string }) {
+export function Row({ i, p, value }: { i: number; p: Person; value: string }) {
   return (
     <li className="flex items-center gap-3 py-2">
       <span className="nums w-5 text-right text-xs text-muted">{i + 1}</span>
